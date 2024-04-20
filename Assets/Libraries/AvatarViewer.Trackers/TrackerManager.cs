@@ -148,8 +148,10 @@ namespace AvatarViewer.Trackers
             processStartInfo.ArgumentList.Add(settings.Camera.ToString());
             processStartInfo.ArgumentList.Add("--camera-cap");
             processStartInfo.ArgumentList.Add(settings.CameraCap.ToString());
+#if UNITY_STANDALONE_WIN
             processStartInfo.ArgumentList.Add("--mode");
             processStartInfo.ArgumentList.Add("mediapipe");
+#endif
             processStartInfo.RedirectStandardOutput = true;
             processStartInfo.RedirectStandardError = true;
             processStartInfo.CreateNoWindow = true;
