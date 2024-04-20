@@ -1,0 +1,180 @@
+Label {
+    color: rgb(255, 255, 255);
+}
+
+.root .unity-button {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    color: rgb(255, 255, 255);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 5px;
+    padding-right: 11px;
+    padding-bottom: 6px;
+    padding-left: 11px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    align-self: center;
+    font-size: 13px;
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.root .unity-button:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    color: rgb(255, 255, 255);
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.root .unity-button:focus:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    color: rgb(255, 255, 255);
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.root .unity-button:active {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 255, 255, 0.05);
+    border-right-color: rgba(255, 255, 255, 0.05);
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    color: rgb(255, 255, 255);
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.root .unity-button:focus:active {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 255, 255, 0.05);
+    border-right-color: rgba(255, 255, 255, 0.05);
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+    color: rgb(255, 255, 255);
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.root .unity-button:focus {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    transition-property: background-color;
+    transition-duration: 83ms;
+}
+
+.unity-progress-bar__container {
+    height: 3px;
+    min-height: 0;
+}
+
+.unity-progress-bar__background {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.55);
+    height: 1px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    overflow: visible;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    max-height: 1px;
+    top: 1px;
+}
+
+.unity-progress-bar__progress {
+    padding: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    height: 3px;
+    top: -1px;
+    background-color: rgb(97, 204, 255);
+}
+
+.unity-progress-bar__title {
+    display: none;
+}
+
+.root .unity-list-view__item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgba(0, 0, 0, 0.1);
+    border-right-color: rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(0, 0, 0, 0.1);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: 3px;
+}
+
+.root .unity-list-view__item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+}
+
+.root .unity-collection-view__item .unity-list-view__item .unity-collection-view__item--selected:focus {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left-color: rgba(255, 255, 255, 0.09);
+    border-right-color: rgba(255, 255, 255, 0.09);
+    border-top-color: rgba(255, 255, 255, 0.09);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+}
+
+.root .unity-list-view__item:active {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 255, 255, 0.05);
+    border-right-color: rgba(255, 255, 255, 0.05);
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.root {
+    background-color: rgb(32, 32, 32);
+}
+

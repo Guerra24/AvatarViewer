@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Global.uss?fileID=7433441132597879392&amp;guid=8ee02cf71021bfd4795a90c0774ddc4a&amp;type=3#Global" />
+    <ui:VisualElement name="Root" class="root" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement style="padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px; flex-grow: 1;">
+            <ui:ListView name="AvatarList" fixed-item-height="138" style="flex-grow: 1;" />
+            <ui:VisualElement style="flex-direction: row; margin-top: 8px;">
+                <ui:Button text="Add avatar" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AvatarPicker" />
+                <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" style="margin-left: 8px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px; flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

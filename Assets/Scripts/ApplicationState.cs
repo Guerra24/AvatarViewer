@@ -1,0 +1,256 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using AvatarViewer.Trackers;
+using UnityEngine;
+#if UNITY_STANDALONE_WIN
+using UnityRawInput;
+#endif
+using VRM;
+
+namespace AvatarViewer
+{
+    public static class ApplicationState
+    {
+        public static Avatar CurrentAvatar;
+
+        public static int RuntimeWidth, RuntimeHeight;
+
+        public static Dictionary<Guid, LoadedAvatar> AvatarBundles { get; } = new();
+
+        public static Dictionary<Guid, VRMData> VrmData { get; } = new();
+    }
+
+    public static class ApplicationPersistence
+    {
+        private static string FilePath = Path.Combine(Application.persistentDataPath, "Settings.json");
+
+        public static AppSettings AppSettings { get; private set; } = new AppSettings();
+
+        public static void Load()
+        {
+            if (File.Exists(FilePath))
+                AppSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(FilePath), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+        }
+
+        public static void Save()
+        {
+            File.WriteAllText(FilePath, JsonConvert.SerializeObject(AppSettings, Formatting.Indented, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto }));
+        }
+    }
+
+    public class AppSettings
+    {
+        public int Version { get; } = 1;
+        public List<Avatar> Avatars { get; } = new();
+        public int Camera { get; set; } = -1;
+        public int CameraCapability { get; set; } = -1;
+        public string Microphone { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Tracker Tracker { get; set; }
+        public Guid DefaultCameraPreset { get; } = Guid.Parse("00000000-0000-0000-0000-000000000000");
+        public Dictionary<string, Reward> Rewards { get; } = new();
+        public Dictionary<Tracker, TrackerSettings> Trackers { get; } = new()
+        {
+            { Tracker.OpenSee, new OpenSeeTrackerSettings() },
+            { Tracker.Mediapipe, new MediapipeTrackerSettings()},
+        };
+        public Dictionary<Guid, CameraPreset> CameraPresets { get; } = new()
+        {
+            { Guid.Parse("00000000-0000-0000-0000-000000000000"), new CameraPreset{ Name= "Default", Absolute = false, Position = new Vector3(), Rotation = Quaternion.identity } },
+        };
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AntiAliasing AntiAliasing { get; set; } = AntiAliasing.Disabled;
+        public int MSAALevel { get; set; } = 2;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ShadowResolution ShadowResolution { get; set; } = ShadowResolution.VeryHigh;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public CaptureMode CaptureMode { get; set; }
+        public int VSync { get; set; } = 1;
+        public int TargetFrameRate { get; set; } = 60;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Resolution Resolution { get; set; } = Resolution.Res720;
+        public int Width { get; set; } = 1280;
+        public int Height { get; set; } = 720;
+        public bool IncreasedPriority { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LipSyncProvider LipSyncProvider { get; set; } = LipSyncProvider.uLipSync;
+
+    }
+
+    public enum AntiAliasing
+    {
+        Disabled, FXAA, SMAA, TAA, MSAA
+    }
+
+    public enum CaptureMode
+    {
+        GameWindow, Spout2
+    }
+
+    public enum Resolution
+    {
+        Res720, Res1080, Res1440, ResCustom
+    }
+
+    public enum LipSyncProvider
+    {
+        uLipSync, OculusLipSync
+    }
+
+    public class TrackerSettings
+    {
+        public bool UseLocalTracker { get; set; } = true;
+        public string ListenAddress { get; set; } = "127.0.0.1";
+        public int Port { get; set; }
+    }
+
+
+    public class OpenSeeTrackerSettings : TrackerSettings
+    {
+
+        public int Quality { get; set; } = 3;
+
+        public OpenSeeTrackerSettings()
+        {
+            Port = 11573;
+        }
+    }
+
+    public class MediapipeTrackerSettings : TrackerSettings
+    {
+        public MediapipeTrackerSettings()
+        {
+            Port = 49983;
+        }
+    }
+
+    public class CameraPreset
+    {
+        public string Name { get; set; }
+        [JsonConverter(typeof(Vector3JsonConverter))]
+        public Vector3 Position { get; set; }
+        [JsonConverter(typeof(QuaternionJsonConverter))]
+        public Quaternion Rotation { get; set; }
+        public float FOV { get; set; } = 14.24756f;
+        public bool Absolute { get; set; }
+    }
+
+    public class Avatar
+    {
+        public Guid Guid { get; set; }
+        public string Title { get; set; }
+        public string Path { get; set; }
+        public bool Vrm { get; set; }
+        public AvatarSettings Settings { get; set; }
+        public Dictionary<string, AvatarBlendshape> Blendshapes { get; set; }
+
+        public Avatar(string title, string path, bool vrm)
+        {
+            Guid = Guid.NewGuid();
+            Title = title;
+            Path = path;
+            Vrm = vrm;
+            Blendshapes = new();
+            Settings = new();
+        }
+    }
+
+    public class AvatarSettings
+    {
+        public bool Mirror { get; set; }
+        public float TranslationScale { get; set; } = 0.05f;
+        public float Smoothing { get; set; } = 0.5f;
+        public bool DriftBack { get; set; }
+        public bool AutoBlink { get; set; }
+        public float BlinkSmoothing { get; set; } = 0.75f;
+        public float EyeCloseThreshold { get; set; } = 0.2f;
+        public float EyeOpenThreshold { get; set; } = 0.55f;
+        public float EyebrowStrength { get; set; } = 1.0f;
+        public float EyebrowZero { get; set; }
+        public float EyebrowSensitivity { get; set; } = 1.0f;
+        public float GazeSmoothing { get; set; } = 0.6f;
+        public float GazeSensitivity { get; set; } = 0.9f;
+        public float GazeStrength { get; set; } = 1.0f;
+        public float GazeVerticalOffset { get; set; } = 0;
+        public float GazeHorizontalOffset { get; set; } = 0;
+    }
+
+    public class AvatarBlendshape
+    {
+
+        public bool Enabled { get; set; } = true;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AvatarBlendshapeType Type { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AvatarBlendshapeMode Mode { get; set; } = AvatarBlendshapeMode.Toggle;
+#if UNITY_STANDALONE_WIN
+        public List<RawKey> Hotkey { get; } = new();
+#else
+        public List<int> Hotkey { get; } = new();
+#endif
+        public float Transition { get; set; }
+    }
+
+    public enum AvatarBlendshapeType
+    {
+        Base, Additive
+    }
+
+    public enum AvatarBlendshapeMode
+    {
+        Hold, Toggle
+    }
+
+    public class LoadedAvatar
+    {
+
+        public AssetBundle Bundle { get; }
+        public GameObject Object { get; }
+
+        public LoadedAvatar(AssetBundle bundle, GameObject @object)
+        {
+            Bundle = bundle;
+            Object = @object;
+        }
+    }
+
+    public class Reward
+    {
+        public string Title { get; set; }
+
+        public string Path { get; set; } = "";
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AssetType Type { get; set; } = AssetType.Box;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public AssetSound Sound { get; set; } = AssetSound.Cardboard;
+
+        public string SoundPath { get; set; } = "";
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public RewardSpawnPoint SpawnPoint { get; set; } = RewardSpawnPoint.Above;
+
+        public float Timeout { get; set; } = 15;
+    }
+
+    public enum RewardSpawnPoint
+    {
+        Above, Front, Left, Right, Random
+    }
+
+    public enum AssetType
+    {
+        Custom, Box
+    }
+
+    public enum AssetSound
+    {
+        Custom, Cardboard
+    }
+}
