@@ -1,0 +1,40 @@
+name: CD
+
+on: [push]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build:
+         - { target-platform: StandaloneWindows64, image: 'unityci/editor:ubuntu-2023.2.18f1-windows-mono-3' }
+         - { target-platform: StandaloneLinux64, image: 'unityci/editor:ubuntu-2023.2.18f1-linux-il2cpp-3' }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ matrix.build.target-platform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.build.target-platform }}-
+      - name: Prepare docker image
+        run: docker build -t game-ci:latest --build-arg="GAMECI_IMAGE=${{ matrix.build.image }}" .github/game-ci
+      - name: Build
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.build.target-platform }}
+          buildName: AvatarViewer
+          customParameters: -CompressWithLz4HC
+          customImage: game-ci:latest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AvatarViewer-${{ matrix.build.target-platform }}
+          path: build/${{ matrix.build.target-platform }}
