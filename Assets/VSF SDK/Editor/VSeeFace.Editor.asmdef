@@ -1,0 +1,19 @@
+{
+    "name": "VSeeFace.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f75442450a675324793b07b914a606e3",
+        "GUID:05dd262a0c0a2f841b8252c8c3815582"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

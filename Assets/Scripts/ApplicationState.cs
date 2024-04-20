@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using AvatarViewer.Trackers;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+
 #if UNITY_STANDALONE_WIN
 using UnityRawInput;
 #endif
@@ -29,10 +31,13 @@ namespace AvatarViewer
 
         public static AppSettings AppSettings { get; private set; } = new AppSettings();
 
-        public static void Load()
+        public static async UniTask Load()
         {
             if (File.Exists(FilePath))
-                AppSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(FilePath), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+            {
+                var content = await File.ReadAllTextAsync(FilePath);
+                AppSettings = await UniTask.RunOnThreadPool(() => JsonConvert.DeserializeObject<AppSettings>(content, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto }));
+            }
         }
 
         public static void Save()

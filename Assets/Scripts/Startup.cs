@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using AvatarViewer.Trackers;
@@ -32,7 +33,10 @@ namespace AvatarViewer
 
         async UniTaskVoid Load()
         {
-            ApplicationPersistence.Load();
+            await UniTask.Delay(TimeSpan.FromMilliseconds(500));
+            _progressBar.visible = true;
+
+            await ApplicationPersistence.Load();
 
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;
@@ -41,29 +45,15 @@ namespace AvatarViewer
             {
                 if (!avatar.Vrm)
                 {
-                    var bundleOp = AssetBundle.LoadFromFileAsync(avatar.Path);
                     Debug.Log($"Loading Bundle {avatar.Path}");
-                    while (!bundleOp.isDone)
-                    {
-                        _progressBar.value = baseProgress + bundleOp.progress * percentPerStep;
-                        await UniTask.Yield();
-                        await UniTask.NextFrame();
-                    }
+                    var assetBundle = await AssetBundle.LoadFromFileAsync(avatar.Path).ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
                     baseProgress += percentPerStep;
 
-                    var assetBundle = bundleOp.assetBundle;
-
-                    var assetOp = assetBundle.LoadAssetAsync<GameObject>("VSFAvatar");
                     Debug.Log($"Loading Asset");
-                    while (!assetOp.isDone)
-                    {
-                        _progressBar.value = baseProgress + assetOp.progress * percentPerStep;
-                        await UniTask.Yield();
-                        await UniTask.NextFrame();
-                    }
+                    var asset = await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
                     baseProgress += percentPerStep;
 
-                    ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, assetOp.asset as GameObject));
+                    ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject));
                 }
                 else
                 {
@@ -83,13 +73,7 @@ namespace AvatarViewer
             await UniTask.NextFrame();
             {
 
-                var op = SceneManager.LoadSceneAsync("Scenes/AlwaysLoaded", LoadSceneMode.Additive);
-                while (!op.isDone)
-                {
-                    _progressBar.value = baseProgress + op.progress * percentPerStep;
-                    await UniTask.Yield();
-                    await UniTask.NextFrame();
-                }
+                await SceneManager.LoadSceneAsync("Scenes/AlwaysLoaded", LoadSceneMode.Additive).ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
                 baseProgress += percentPerStep;
             }
 

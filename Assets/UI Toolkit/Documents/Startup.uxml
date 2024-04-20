@@ -5,7 +5,7 @@
         <ui:VisualElement style="flex-grow: 1;" />
         <ui:VisualElement style="flex-grow: 1;" />
         <ui:VisualElement style="flex-grow: 1;">
-            <ui:ProgressBar name="Progress" high-value="1" style="align-self: center; margin-top: 18px; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 200px;" />
+            <ui:ProgressBar name="Progress" high-value="1" style="align-self: center; margin-top: 18px; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 200px; visibility: hidden;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
