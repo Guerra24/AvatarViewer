@@ -32,6 +32,7 @@ namespace AvatarViewer.Twitch
             var accessToken = await server.Listen();
 
             PlayerPrefs.SetString("TwitchAccessToken", accessToken);
+            PlayerPrefs.Save();
         }
 
         public async Task<bool> ValidateToken()
@@ -51,6 +52,7 @@ namespace AvatarViewer.Twitch
             {
                 var response = JsonConvert.DeserializeObject<TwitchValidateResponse>(await res.Content.ReadAsStringAsync());
                 PlayerPrefs.SetString("UserId", response!.user_id);
+                PlayerPrefs.Save();
                 return true;
             }
         }

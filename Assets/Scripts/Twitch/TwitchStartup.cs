@@ -72,6 +72,7 @@ namespace AvatarViewer.Twitch
         private async UniTaskVoid SkipAsync()
         {
             PlayerPrefs.SetInt("SkipTwitchAccount", 1);
+            PlayerPrefs.Save();
             await UniTask.Yield();
             await UniTask.NextFrame();
             await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single);

@@ -52,6 +52,7 @@ namespace AvatarViewer.Twitch
                     PubSub.Disconnect();
                     PlayerPrefs.SetString("TwitchAccessToken", "");
                     PlayerPrefs.SetString("UserId", "");
+                    PlayerPrefs.Save();
 
                     var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
                     var data = dialog.GetComponent<Dialog>();
