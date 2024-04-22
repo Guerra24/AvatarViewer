@@ -25,7 +25,6 @@ namespace AvatarViewer.Trackers
             TemporaryPath = temporaryPath;
             Client = new HttpClient();
             Client.BaseAddress = new Uri("https://s3.guerra24.net/projects/avatarviewer/trackers/");
-
         }
 
         public static async Task Download(Tracker tracker)

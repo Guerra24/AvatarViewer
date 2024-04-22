@@ -53,6 +53,7 @@ namespace AvatarViewer
         public int Camera { get; set; } = -1;
         public int CameraCapability { get; set; } = -1;
         public string Microphone { get; set; }
+        public float MicGain { get; set; } = 2.0f;
         [JsonConverter(typeof(StringEnumConverter))]
         public Tracker Tracker { get; set; }
         public Guid DefaultCameraPreset { get; } = Guid.Parse("00000000-0000-0000-0000-000000000000");

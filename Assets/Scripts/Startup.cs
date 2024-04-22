@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using AvatarViewer.Trackers;
+using AvatarViewer.Twitch;
 using Cysharp.Threading.Tasks;
 using UniGLTF;
 using UnityEngine;
@@ -88,8 +89,7 @@ namespace AvatarViewer
             await UniTask.Yield();
             await UniTask.NextFrame();
             {
-
-                var op = SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single);
+                var op = SceneManager.LoadSceneAsync("Scenes/TwitchAuth", LoadSceneMode.Single);
                 op.allowSceneActivation = false;
 
                 while (!op.isDone)

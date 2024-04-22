@@ -89,6 +89,7 @@ namespace AvatarViewer
                 driver.gazeStrength = settings.GazeStrength;
                 driver.gazeCenter.x = settings.GazeHorizontalOffset;
                 driver.gazeCenter.y = settings.GazeVerticalOffset;
+                driver.gain = ApplicationPersistence.AppSettings.MicGain;
             }
 #if UNITY_STANDALONE
             using (var p = Process.GetCurrentProcess())

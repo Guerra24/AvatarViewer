@@ -1,4 +1,5 @@
 using System;
+using AvatarViewer.Twitch;
 using TwitchLib.PubSub.Events;
 using UnityEngine;
 

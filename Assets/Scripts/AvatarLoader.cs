@@ -174,6 +174,7 @@ namespace AvatarViewer
                 lipSyncVRM.AddBlendShape("U", "U");
                 lipSyncVRM.AddBlendShape("E", "E");
                 lipSyncVRM.AddBlendShape("O", "O");
+                //lipSyncVRM.AddBlendShape("-", "Neutral");
 
                 lipSync.onLipSyncUpdate.AddListener(lipSyncVRM.OnLipSyncUpdate);
             }
