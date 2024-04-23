@@ -157,21 +157,4 @@ namespace AvatarViewer.Ui
         }
     }
 
-    public class GuidDropdownData : TMP_Dropdown.OptionData
-    {
-        [SerializeField]
-        private Guid m_Guid;
-
-        public Guid guid
-        {
-            get => m_Guid;
-            set { m_Guid = value; }
-        }
-
-        public GuidDropdownData(string text, Guid guid)
-        {
-            this.text = text;
-            this.guid = guid;
-        }
-    }
 }

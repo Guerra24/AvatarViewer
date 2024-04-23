@@ -809,6 +809,11 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2031346863231288520, guid: c6864c8a1c4511d4ebe8c473c2a49164,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2803371909357211346, guid: c6864c8a1c4511d4ebe8c473c2a49164,
         type: 3}
       propertyPath: m_Options.m_Options.Array.size
@@ -983,6 +988,11 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2031346863231288520, guid: c6864c8a1c4511d4ebe8c473c2a49164,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2803371909357211346, guid: c6864c8a1c4511d4ebe8c473c2a49164,
         type: 3}
       propertyPath: m_Options.m_Options.Array.size
@@ -1128,6 +1138,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2031346863231288520, guid: c6864c8a1c4511d4ebe8c473c2a49164,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2803371909357211346, guid: c6864c8a1c4511d4ebe8c473c2a49164,
         type: 3}
@@ -2197,7 +2212,7 @@ PrefabInstance:
     - target: {fileID: 5917283288401401515, guid: adf8ad31abbd8d742834c7a426520334,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -17.009033
+      value: -16.460052
       objectReference: {fileID: 0}
     - target: {fileID: 6332600843900379313, guid: adf8ad31abbd8d742834c7a426520334,
         type: 3}
@@ -2396,6 +2411,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009212116133596355, guid: 4c7cd13c00f35324997d969f69956881,
+        type: 3}
+      propertyPath: m_text
+      value: Increased priority
       objectReference: {fileID: 0}
     - target: {fileID: 7959850649957408338, guid: 4c7cd13c00f35324997d969f69956881,
         type: 3}

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.IO;
 using SimpleFileBrowser;
-using TMPro;
 using UniGLTF;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -117,21 +116,4 @@ namespace AvatarViewer.Ui
         }
     }
 
-    public class IdDropdownData : TMP_Dropdown.OptionData
-    {
-        [SerializeField]
-        private int m_Id;
-
-        public int id
-        {
-            get => m_Id;
-            set { m_Id = value; }
-        }
-
-        public IdDropdownData(string text, int id)
-        {
-            this.text = text;
-            this.id = id;
-        }
-    }
 }

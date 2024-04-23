@@ -582,8 +582,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListenAddress: {fileID: 1477781867630124029}
   Port: {fileID: 6884961357496049312}
-  Quality: {fileID: 8338018650983888585}
   UseLocalTracker: {fileID: 3708756716683669885}
+  Quality: {fileID: 8338018650983888585}
 --- !u!1001 &762809585809987759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1072,6 +1072,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5430989283552079599, guid: adf8ad31abbd8d742834c7a426520334,
+        type: 3}
+      propertyPath: ShowDescription
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6332600843900379313, guid: adf8ad31abbd8d742834c7a426520334,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1397,6 +1402,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6502925606041112609, guid: 4c7cd13c00f35324997d969f69956881,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7959850649957408338, guid: 4c7cd13c00f35324997d969f69956881,
         type: 3}
       propertyPath: m_Text
@@ -1542,6 +1552,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2031346863231288520, guid: c6864c8a1c4511d4ebe8c473c2a49164,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 2803371909357211346, guid: c6864c8a1c4511d4ebe8c473c2a49164,
         type: 3}
@@ -1917,6 +1932,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430989283552079599, guid: adf8ad31abbd8d742834c7a426520334,
+        type: 3}
+      propertyPath: ShowDescription
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6332600843900379313, guid: adf8ad31abbd8d742834c7a426520334,
         type: 3}

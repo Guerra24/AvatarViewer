@@ -162,6 +162,16 @@ namespace AvatarViewer
             Blendshapes = new();
             Settings = new();
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Avatar avatar && Guid.Equals(avatar.Guid);
+        }
+
+        public override int GetHashCode()
+        {
+            return Guid.GetHashCode();
+        }
     }
 
     public class AvatarSettings
@@ -175,13 +185,37 @@ namespace AvatarViewer
         public float EyeCloseThreshold { get; set; } = 0.2f;
         public float EyeOpenThreshold { get; set; } = 0.55f;
         public float EyebrowStrength { get; set; } = 1.0f;
-        public float EyebrowZero { get; set; }
+        public float EyebrowZero { get; set; } = 0;
         public float EyebrowSensitivity { get; set; } = 1.0f;
         public float GazeSmoothing { get; set; } = 0.6f;
         public float GazeSensitivity { get; set; } = 0.9f;
         public float GazeStrength { get; set; } = 1.0f;
         public float GazeVerticalOffset { get; set; } = 0;
         public float GazeHorizontalOffset { get; set; } = 0;
+
+        public AvatarSettings()
+        {
+        }
+
+        public AvatarSettings(AvatarSettings o)
+        {
+            Mirror = o.Mirror;
+            TranslationScale = o.TranslationScale;
+            Smoothing = o.Smoothing;
+            DriftBack = o.DriftBack;
+            AutoBlink = o.AutoBlink;
+            BlinkSmoothing = o.BlinkSmoothing;
+            EyeCloseThreshold = o.EyeCloseThreshold;
+            EyeOpenThreshold = o.EyeOpenThreshold;
+            EyebrowStrength = o.EyebrowStrength;
+            EyebrowZero = o.EyebrowZero;
+            EyebrowSensitivity = o.EyebrowSensitivity;
+            GazeSmoothing = o.GazeSmoothing;
+            GazeSensitivity = o.GazeSensitivity;
+            GazeStrength = o.GazeStrength;
+            GazeVerticalOffset = o.GazeVerticalOffset;
+            GazeHorizontalOffset = o.GazeHorizontalOffset;
+        }
     }
 
     public class AvatarBlendshape

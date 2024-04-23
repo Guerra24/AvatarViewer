@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using TwitchLib.Api;
+using TwitchLib.Api.Helix.Models.Users.GetUsers;
 using TwitchLib.PubSub.Events;
 using TwitchLib.Unity;
 using UnityEngine;
@@ -12,20 +16,33 @@ namespace AvatarViewer.Twitch
         public PubSub PubSub { get; private set; }
         public TwitchManager Manager { get; private set; }
 
+        public User User { get; private set; }
+
+        public bool IsAccountConnected { get; private set; }
+
         public GameObject Dialog;
+
+        private TwitchAPI TwitchAPI;
 
         void Awake()
         {
             PubSub = new();
             Manager = new();
+            TwitchAPI = new();
+            TwitchAPI.Settings.ClientId = Manager.ClientId;
             PubSub.OnPubSubServiceConnected += PubSub_OnPubSubServiceConnected;
             PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
         }
 
-        public void Init()
+        public async Task Init()
         {
+            TwitchAPI.Settings.AccessToken = PlayerPrefs.GetString("TwitchAccessToken");
+
+            User = (await TwitchAPI.Helix.Users.GetUsersAsync(new List<string> { PlayerPrefs.GetString("UserId") })).Users[0];
+
             PubSub.ListenToChannelPoints(PlayerPrefs.GetString("UserId"));
             PubSub.Connect();
+            IsAccountConnected = true;
             StartTokenValidation().Forget();
         }
 
@@ -42,37 +59,38 @@ namespace AvatarViewer.Twitch
 
         public async UniTaskVoid StartTokenValidation()
         {
-            while (true)
+            while (IsAccountConnected)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(30));
+                await UniTask.Delay(TimeSpan.FromHours(1));
                 Debug.Log("Validating twitch token");
                 if (!await Manager.ValidateToken())
                 {
                     Debug.Log("Invalid token");
-                    PubSub.Disconnect();
-                    PlayerPrefs.SetString("TwitchAccessToken", "");
-                    PlayerPrefs.SetString("UserId", "");
-                    PlayerPrefs.Save();
+                    Disconnect();
 
                     var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
-                    var data = dialog.GetComponent<Dialog>();
+                    var data = dialog.GetComponentInChildren<Dialog>();
                     data.SetTitle("Authenticate");
                     data.SetContent("Twitch token became invalid; please authenticate again.\nThis will open the main menu.");
                     data.SetOnOkAction(() => SceneManager.LoadScene("Scenes/TwitchAuth", LoadSceneMode.Single));
-                    data.SetOnCancelAction(() => Destroy(dialog));
                     return;
                 }
             }
         }
 
-        private void OnDestroy()
+        public void Disconnect()
         {
+            IsAccountConnected = false;
             PubSub.Disconnect();
+            TwitchAPI.Settings.AccessToken = "";
+            User = null;
+            PlayerPrefs.SetString("TwitchAccessToken", "");
+            PlayerPrefs.SetString("UserId", "");
+            PlayerPrefs.Save();
         }
 
-        private void OnApplicationQuit()
-        {
-            PubSub.Disconnect();
-        }
+        private void OnDestroy() => PubSub.Disconnect();
+
+        private void OnApplicationQuit() => PubSub.Disconnect();
     }
 }

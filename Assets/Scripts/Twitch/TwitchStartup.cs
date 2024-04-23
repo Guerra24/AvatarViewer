@@ -34,7 +34,7 @@ namespace AvatarViewer.Twitch
                     return;
                 }
                 else
-                    TwitchController.Init();
+                    await TwitchController.Init();
             }
 
             await UniTask.Yield();
@@ -54,7 +54,7 @@ namespace AvatarViewer.Twitch
             await UniTask.NextFrame();
 
             await TwitchController.Manager.GenerateClientSecret();
-            if (await TwitchController.Manager.ValidateToken()) TwitchController.Init();
+            if (await TwitchController.Manager.ValidateToken()) await TwitchController.Init();
             else
             {
                 Buttons.SetActive(true);

@@ -16,6 +16,8 @@ public class Dialog : MonoBehaviour
         Content = transform.Find("Content").GetComponent<TMP_Text>();
         Ok = transform.Find("Actions/Ok").GetComponent<Button>();
         Cancel = transform.Find("Actions/Cancel").GetComponent<Button>();
+        Ok.onClick.AddListener(() => Destroy(gameObject.transform.parent.gameObject));
+        Cancel.onClick.AddListener(() => Destroy(gameObject.transform.parent.gameObject));
     }
 
     public void SetTitle(string title)
