@@ -1555,6 +1555,11 @@ PrefabInstance:
       propertyPath: m_ActiveFontFeatures.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6356921853628687055, guid: a60302a355ed5ae4cac9937c0e94e238,
+        type: 3}
+      propertyPath: m_MinWidth
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 7841373409011577476, guid: a60302a355ed5ae4cac9937c0e94e238,
         type: 3}
       propertyPath: m_Pivot.x

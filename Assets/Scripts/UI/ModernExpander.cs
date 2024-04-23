@@ -16,9 +16,9 @@ namespace AvatarViewer.Ui
         public void OnClick()
         {
             ExpandedContent.SetActive(!ExpandedContent.activeSelf);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+            /*LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
             foreach (var item in GetComponentsInParent<LayoutGroup>())
-                LayoutRebuilder.ForceRebuildLayoutImmediate(item.GetComponent<RectTransform>());
+                LayoutRebuilder.ForceRebuildLayoutImmediate(item.GetComponent<RectTransform>());*/
         }
     }
 }
