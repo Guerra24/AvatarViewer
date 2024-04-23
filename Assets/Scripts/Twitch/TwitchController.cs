@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
 using TwitchLib.PubSub.Events;
 using TwitchLib.Unity;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 namespace AvatarViewer.Twitch
@@ -20,9 +20,12 @@ namespace AvatarViewer.Twitch
 
         public bool IsAccountConnected { get; private set; }
 
+        public Sprite ProfileImage { get; private set; }
+
         public GameObject Dialog;
 
         private TwitchAPI TwitchAPI;
+        private Texture2D ProfileImageTexture;
 
         void Awake()
         {
@@ -34,11 +37,19 @@ namespace AvatarViewer.Twitch
             PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
         }
 
-        public async Task Init()
+        public async UniTask Init()
         {
             TwitchAPI.Settings.AccessToken = PlayerPrefs.GetString("TwitchAccessToken");
 
             User = (await TwitchAPI.Helix.Users.GetUsersAsync(new List<string> { PlayerPrefs.GetString("UserId") })).Users[0];
+
+            using var request = UnityWebRequestTexture.GetTexture(User.ProfileImageUrl);
+            await request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                ProfileImageTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                ProfileImage = Sprite.Create(ProfileImageTexture, new Rect(0, 0, ProfileImageTexture.width, ProfileImageTexture.height), new Vector2(0.5f, 0.5f));
+            }
 
             PubSub.ListenToChannelPoints(PlayerPrefs.GetString("UserId"));
             PubSub.Connect();
@@ -84,13 +95,32 @@ namespace AvatarViewer.Twitch
             PubSub.Disconnect();
             TwitchAPI.Settings.AccessToken = "";
             User = null;
+            ClearProfileImage();
             PlayerPrefs.SetString("TwitchAccessToken", "");
             PlayerPrefs.SetString("UserId", "");
             PlayerPrefs.Save();
         }
 
-        private void OnDestroy() => PubSub.Disconnect();
+        private void ClearProfileImage()
+        {
+            if (ProfileImage != null)
+            {
+                Destroy(ProfileImage);
+                Destroy(ProfileImageTexture);
+                ProfileImage = null;
+            }
+        }
 
-        private void OnApplicationQuit() => PubSub.Disconnect();
+        private void OnDestroy()
+        {
+            ClearProfileImage();
+            PubSub.Disconnect();
+        }
+
+        private void OnApplicationQuit()
+        {
+            ClearProfileImage();
+            PubSub.Disconnect();
+        }
     }
 }

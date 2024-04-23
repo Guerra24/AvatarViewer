@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class ModernBase : MonoBehaviour
@@ -11,6 +12,13 @@ public class ModernBase : MonoBehaviour
     public RectTransform Panel;
     public GameObject Description;
 
+    private LayoutElement LayoutElement;
+
+    private void Awake()
+    {
+        LayoutElement = GetComponent<LayoutElement>();
+    }
+
     private void Start()
     {
         Icon.SetActive(ShowIcon);
@@ -19,11 +27,17 @@ public class ModernBase : MonoBehaviour
         else
             Panel.offsetMin = new Vector2(17, Panel.offsetMin.y);
         Description.SetActive(ShowDescription);
-        var rectTransform = GetComponent<RectTransform>();
+        //var rectTransform = GetComponent<RectTransform>();
         if (ShowDescription)
-            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 69);
+        {
+            LayoutElement.preferredHeight = 69;
+            //rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 69);
+        }
         else
-            rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 53);
+        {
+            LayoutElement.preferredHeight = 53;
+            //rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 53);
+        }
     }
 
 }

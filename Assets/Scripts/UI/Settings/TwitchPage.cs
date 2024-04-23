@@ -1,9 +1,7 @@
 using AvatarViewer.Twitch;
 using AvatarViewer.Ui.Settings;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -30,20 +28,14 @@ public class TwitchPage : BaseSettingsPage
         ConnectAccount.SetActive(!twitchController.IsAccountConnected);
         CurrentAccount.SetActive(twitchController.IsAccountConnected);
         if (twitchController.IsAccountConnected)
-            LoadTwitchAccount().Forget();
+            LoadTwitchAccount();
     }
 
-    private async UniTaskVoid LoadTwitchAccount()
+    private void LoadTwitchAccount()
     {
         var user = twitchController.User;
         DisplayName.text = user.DisplayName;
-        using var request = UnityWebRequestTexture.GetTexture(user.ProfileImageUrl);
-        await request.SendWebRequest();
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            var texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-            ProfileImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-        }
+        ProfileImage.sprite = twitchController.ProfileImage;
     }
 
     public void ConnectAccountOnClick()
