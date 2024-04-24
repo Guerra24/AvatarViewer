@@ -24,7 +24,7 @@ namespace AvatarViewer.Ui
         public Slider Transition;
         public TMP_Text TransitionValue;
 
-        private bool registerHotkey;
+        private bool registerHotkey, cancel, escapeWasPressed;
 #if UNITY_STANDALONE_WIN
         private List<RawKey> keys = new();
 #else
@@ -44,8 +44,15 @@ namespace AvatarViewer.Ui
             if (!registerHotkey)
                 return;
 #if UNITY_STANDALONE_WIN
-            if (RawInput.PressedKeys.Count >= keys.Count)
-                keys = RawInput.PressedKeys.ToList();
+            var pressedKeys = RawInput.PressedKeys.ToList();
+            pressedKeys.Remove(RawKey.Escape);
+            pressedKeys.Remove(RawKey.Return);
+
+            if (pressedKeys.Count >= keys.Count)
+            {
+                keys = pressedKeys;
+                cancel = false;
+            }
 
             if (RawInput.IsKeyDown(RawKey.Return))
             {
@@ -53,15 +60,24 @@ namespace AvatarViewer.Ui
                 AvatarBlendshape.Hotkey.AddRange(keys);
                 registerHotkey = false;
             }
-            if (RawInput.IsKeyDown(RawKey.Escape))
+            if (RawInput.IsKeyDown(RawKey.Escape) && !escapeWasPressed)
             {
-                if (keys.Count > 0)
+                escapeWasPressed = true;
+                if (keys.Count > 0 && !cancel)
+                {
                     keys.Clear();
+                    cancel = true;
+                }
                 else
+                {
                     registerHotkey = false;
+                    cancel = false;
+                }
             }
+            if (!RawInput.IsKeyDown(RawKey.Escape) && escapeWasPressed)
+                escapeWasPressed = false;
 #endif
-            Hotkey.GetComponentInChildren<TMP_Text>().text = string.Concat(keys.Select(k => k.ToString() + "+").ToList());
+            Hotkey.GetComponentInChildren<TMP_Text>().text = string.Concat(keys.Select(k => k.ToString() + "+").ToList()).TrimEnd('+');
         }
 
         public void LoadValues(string name)
@@ -72,7 +88,7 @@ namespace AvatarViewer.Ui
             Additive.isOn = AvatarBlendshape.Type == AvatarBlendshapeType.Additive;
             Hold.isOn = AvatarBlendshape.Mode == AvatarBlendshapeMode.Hold;
             Toggle.isOn = AvatarBlendshape.Mode == AvatarBlendshapeMode.Toggle;
-            Hotkey.GetComponentInChildren<TMP_Text>().text = string.Concat(AvatarBlendshape.Hotkey.Select(k => k.ToString() + "+").ToList());
+            Hotkey.GetComponentInChildren<TMP_Text>().text = string.Concat(AvatarBlendshape.Hotkey.Select(k => k.ToString() + "+").ToList()).TrimEnd('+');
             Transition.value = AvatarBlendshape.Transition;
         }
 

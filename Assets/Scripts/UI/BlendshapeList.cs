@@ -1,4 +1,7 @@
 using UnityEngine;
+#if UNITY_STANDALONE_WIN
+using UnityRawInput;
+#endif
 
 namespace AvatarViewer.Ui
 {
@@ -9,6 +12,8 @@ namespace AvatarViewer.Ui
 
         private PageViewer _pageViewer;
 
+        private bool rawInputAlreadyRunning;
+
         void Start()
         {
             foreach (var anim in ApplicationState.CurrentAvatar.Blendshapes)
@@ -17,6 +22,11 @@ namespace AvatarViewer.Ui
             }
             _pageViewer = GetComponentInParent<PageViewer>();
             _pageViewer.GoBackInitial.AddListener(SaveChanges);
+#if UNITY_STANDALONE_WIN
+            rawInputAlreadyRunning = RawInput.IsRunning;
+            if (!rawInputAlreadyRunning)
+                RawInput.Start();
+#endif
         }
 
         public void CreateItem(string name, AvatarBlendshape avatarBlendshape)
@@ -33,5 +43,21 @@ namespace AvatarViewer.Ui
             ApplicationPersistence.Save();
         }
 
+
+        private void OnDestroy()
+        {
+#if UNITY_STANDALONE_WIN
+            if (!rawInputAlreadyRunning)
+                RawInput.Stop();
+#endif
+        }
+
+        private void OnApplicationQuit()
+        {
+#if UNITY_STANDALONE_WIN
+            if (!rawInputAlreadyRunning)
+                RawInput.Stop();
+#endif
+        }
     }
 }

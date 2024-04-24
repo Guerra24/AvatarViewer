@@ -72,7 +72,7 @@ namespace UnityRawInput
         private static void SetHooks ()
         {
             hooks.Add(Win32API.SetWindowsHookEx(HookType.WH_KEYBOARD_LL, HandleKeyboardProc, IntPtr.Zero, 0));
-            hooks.Add(Win32API.SetWindowsHookEx(HookType.WH_MOUSE_LL, HandleMouseProc, IntPtr.Zero, 0));
+            //hooks.Add(Win32API.SetWindowsHookEx(HookType.WH_MOUSE_LL, HandleMouseProc, IntPtr.Zero, 0));
         }
 
         private static void RemoveHooks ()

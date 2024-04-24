@@ -3,13 +3,18 @@
 #endif
 
 using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using UnityEngine;
 using OpenSee;
 using VRM;
 using AvatarViewer;
 using AvatarViewer.Trackers;
+#if UNITY_STANDALONE_WIN
+using UnityRawInput;
+#endif
+using System.Linq;
+using UnityEngine.Playables;
+using UnityEngine.Animations;
 
 // This is a more comprehensive VRM avatar animator than the OpenSeeVRMExpression example.
 // To use the lip sync functionality, place the OVRLipSync 1.28 component somewhere in the scene.
@@ -17,14 +22,6 @@ using AvatarViewer.Trackers;
 
 public class OpenSeeVRMDriver : MonoBehaviour
 {
-#if WINDOWS_BUILD
-    #region DllImport
-    [DllImport("user32.dll", SetLastError = true)]
-    static extern ushort GetAsyncKeyState(int vKey);
-    #endregion
-#else
-    static ushort GetAsyncKeyState(int vKey) { return 0; }
-#endif
 
     [Header("Settings")]
     [Tooltip("This is the OpenSeeExpression module used for expression prediction.")]
@@ -101,7 +98,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
     public OpenSeeEyeBlink eyeBlinker = new OpenSeeEyeBlink();
     [Tooltip("When enabled, expressions will respond to global hotkeys.")]
     public bool hotkeys = true;
-    [Tooltip("This component lets configure your VRM expressions.")]
+    /*[Tooltip("This component lets configure your VRM expressions.")]
     public OpenSeeVRMExpression[] expressions = new OpenSeeVRMExpression[]{
         new OpenSeeVRMExpression("neutral", BlendShapePreset.Neutral, true, 1f, 1f, 1f, true, true, 0x70, true, true, false, true, 50f, 120f),
         new OpenSeeVRMExpression("fun", BlendShapePreset.Fun, true, 1f, 1f, 1f, true, true, 0x71, true, true, false, true, 1f, 120f),
@@ -109,7 +106,8 @@ public class OpenSeeVRMDriver : MonoBehaviour
         new OpenSeeVRMExpression("angry", BlendShapePreset.Angry, true, 1f, 1f, 0f, true, true, 0x73, true, true, false, true, 1f, 120f),
         new OpenSeeVRMExpression("sorrow", BlendShapePreset.Sorrow, true, 1f, 1f, 0f, true, true, 0x74, true, true, false, true, 1f, 120f),
         new OpenSeeVRMExpression("surprise", "Surprised", true, 1f, 1f, 0f, true, true, 0x75, true, true, false, true, 1f, 120f)
-    };
+    };*/
+    public List<OpenSeeVRMExpression> expressions = new();
     [Tooltip("The expression configuration is initialized on startup. If it is changed and needs to be reinitialized, this can be triggered by using this flag or calling InitExpressionMap. This flag is reset to false afterwards.")]
     public bool reloadExpressions = false;
     [Header("Lip sync settings")]
@@ -256,6 +254,8 @@ public class OpenSeeVRMDriver : MonoBehaviour
     private BlendShapeKey[] browClips;
 
     private float lastAudioTime = -1f;
+
+    public AnimationMixerPlayable mixer;
 
     private class TimeInterpolate
     {
@@ -1054,12 +1054,12 @@ public class OpenSeeVRMDriver : MonoBehaviour
     {
         [Tooltip("This is the expression string from the OpenSeeExpression component that will trigger this expression")]
         public string trigger = "neutral";
-        [Tooltip("This is the VRM blend shape that will get triggered by the expression.")]
+        /*[Tooltip("This is the VRM blend shape that will get triggered by the expression.")]
         public BlendShapePreset blendShapePreset;
         [Tooltip("When this name is set, it will be used to create a custom blendshape key.")]
-        public string customBlendShapeName = "";
-        [Tooltip("When disabled, this expression is considered a base expression. Only one base expression can be active at a time. Otherwise it can be added on top of other expressions.")]
-        public bool additive = false;
+        public string customBlendShapeName = "";*/
+        //[Tooltip("When disabled, this expression is considered a base expression. Only one base expression can be active at a time. Otherwise it can be added on top of other expressions.")]
+        //public bool additive = false;
         [Tooltip("The weight determines the value the expression blend shape should be set to.")]
         [Range(0, 1)]
         public float weight = 1f;
@@ -1069,25 +1069,30 @@ public class OpenSeeVRMDriver : MonoBehaviour
         [Tooltip("Some expressions involving the eyebrows require the eyebrow weight to be changed. Setting this weight to 0 will disable eyebrow tracking for this expression. Setting it to 1 enables it fully.")]
         [Range(0, 1)]
         public float eyebrowWeight = 1f;
-        [Tooltip("This is the transition time for changing expressions. Setting it to 0 makes the transition instant.")]
-        [Range(0, 1000)]
-        public float transitionTime = 0f;
+        //[Tooltip("This is the transition time for changing expressions. Setting it to 0 makes the transition instant.")]
+        //[Range(0, 1000)]
+        //public float transitionTime = 0f;
         [Tooltip("If the expression is not compatible with visemes, it can be turned off here.")]
         public bool enableVisemes = true;
         [Tooltip("If the expression is not compatible with blinking, it can be turned off here.")]
         public bool enableBlinking = true;
-        [Tooltip("This can be set to a virtual key value. If this key is pressed together with shift and control, the expression will trigger as an override.")]
-        public int hotkey = -1;
-        [Tooltip("If this is set, the shift key has to be pressed for the hotkey to trigger.")]
-        public bool shiftKey = false;
-        [Tooltip("If this is set, the ctrl key has to be pressed for the hotkey to trigger.")]
-        public bool ctrlKey = false;
-        [Tooltip("If this is set, the alt key has to be pressed for the hotkey to trigger.")]
-        public bool altKey = false;
-        [Tooltip("If this is set, the expression will toggle, otherwise it will only be active while this is pressed.")]
-        public bool toggle = true;
+        //[Tooltip("This can be set to a virtual key value. If this key is pressed together with shift and control, the expression will trigger as an override.")]
+        //public int hotkey = -1;
+        //[Tooltip("If this is set, the shift key has to be pressed for the hotkey to trigger.")]
+        //public bool shiftKey = false;
+        //[Tooltip("If this is set, the ctrl key has to be pressed for the hotkey to trigger.")]
+        //public bool ctrlKey = false;
+        //[Tooltip("If this is set, the alt key has to be pressed for the hotkey to trigger.")]
+        //public bool altKey = false;
+        //[Tooltip("If this is set, the expression will toggle, otherwise it will only be active while this is pressed.")]
+        //public bool toggle = true;
         [Tooltip("This is the weight for this class's error when training the model.")]
         public float errorWeight = 1f;
+
+        public AvatarBlendshape AvatarBlendshape;
+
+        public int animId;
+
         [HideInInspector]
         public BlendShapeKey blendShapeKey;
         [HideInInspector]
@@ -1127,7 +1132,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
             {
                 stateChangedTime = Time.time;
                 stateChangedWeight = lastWeight;
-                currentTransitionTime = transitionTime;
+                currentTransitionTime = AvatarBlendshape.Transition;
                 lastActive = triggered;
                 if (triggered)
                 {
@@ -1156,43 +1161,20 @@ public class OpenSeeVRMDriver : MonoBehaviour
             return lastWeight;
         }
 
-        public OpenSeeVRMExpression(string trigger, BlendShapePreset preset, bool additive, float weight, float factor, float eyebrows, bool visemes, bool blinking, int hotkey, bool shiftKey, bool ctrlKey, bool altKey, bool toggle, float errorWeight, float transitionTime)
+        public OpenSeeVRMExpression(string trigger, BlendShapeKey blendShapeKey, float weight, float factor, float eyebrows, bool visemes, bool blinking, float errorWeight, int animId, AvatarBlendshape avatarBlendshape)
         {
             this.trigger = trigger;
-            this.blendShapePreset = preset;
-            this.additive = additive;
+            this.blendShapeKey = blendShapeKey;
             this.weight = weight;
             this.visemeFactor = factor;
             this.eyebrowWeight = eyebrows;
             this.enableVisemes = visemes;
             this.enableBlinking = blinking;
-            this.hotkey = hotkey;
-            this.shiftKey = shiftKey;
-            this.ctrlKey = ctrlKey;
-            this.altKey = altKey;
-            this.toggle = toggle;
             this.errorWeight = errorWeight;
-            this.transitionTime = transitionTime;
+            this.animId = animId;
+            AvatarBlendshape = avatarBlendshape;
         }
 
-        public OpenSeeVRMExpression(string trigger, string name, bool additive, float weight, float factor, float eyebrows, bool visemes, bool blinking, int hotkey, bool shiftKey, bool ctrlKey, bool altKey, bool toggle, float errorWeight, float transitionTime)
-        {
-            this.trigger = trigger;
-            this.customBlendShapeName = name;
-            this.additive = additive;
-            this.weight = weight;
-            this.visemeFactor = factor;
-            this.eyebrowWeight = eyebrows;
-            this.enableVisemes = visemes;
-            this.enableBlinking = blinking;
-            this.hotkey = hotkey;
-            this.shiftKey = shiftKey;
-            this.ctrlKey = ctrlKey;
-            this.altKey = altKey;
-            this.toggle = toggle;
-            this.errorWeight = errorWeight;
-            this.transitionTime = transitionTime;
-        }
     }
 
     public OpenSeeVRMExpression GetExpression(string trigger)
@@ -1218,10 +1200,6 @@ public class OpenSeeVRMDriver : MonoBehaviour
             expression.lastActive = false;
             expression.reached = true;
             openSeeExpression.weightMap.Add(expression.trigger, expression.errorWeight);
-            if (expression.customBlendShapeName != "")
-                expression.blendShapeKey = BlendShapeKey.CreateUnknown(expression.customBlendShapeName);
-            else
-                expression.blendShapeKey = BlendShapeKey.CreateFromPreset(expression.blendShapePreset);
             expressionMap.Add(expression.trigger, expression);
         }
     }
@@ -1243,18 +1221,17 @@ public class OpenSeeVRMDriver : MonoBehaviour
             currentExpression = null;
             return;
         }
+        if (!mixer.IsValid())
+            return;
 
         bool trigger = false;
         currentExpression = null;
         if (hotkeys)
         {
-            bool shiftKey = (GetAsyncKeyState(0x10) & 0x8000U) != 0;
-            bool ctrlKey = (GetAsyncKeyState(0x11) & 0x8000U) != 0;
-            bool altKey = (GetAsyncKeyState(0x12) & 0x8000U) != 0;
             foreach (var expression in expressionMap.Values)
             {
                 // Clean up inconsistent states
-                if (!expression.toggle && expression.toggled)
+                if (expression.AvatarBlendshape.Mode == AvatarBlendshapeMode.Hold && expression.toggled)
                 {
                     expression.toggled = false;
                     if (toggledExpression == expression)
@@ -1265,12 +1242,12 @@ public class OpenSeeVRMDriver : MonoBehaviour
                     if (continuedPress.Contains(expression))
                         continuedPress.Remove(expression);
                 }
-                if (expression.toggled && expression.additive && toggledExpression == expression)
+                if (expression.toggled && expression.AvatarBlendshape.Type == AvatarBlendshapeType.Additive && toggledExpression == expression)
                 {
                     toggledExpression = null;
                     overridden = false;
                 }
-                if (expression.toggled && !expression.additive && toggledExpression != expression)
+                if (expression.toggled && expression.AvatarBlendshape.Type == AvatarBlendshapeType.Base && toggledExpression != expression)
                 {
                     if (toggledExpression == null && !overridden)
                     {
@@ -1282,26 +1259,31 @@ public class OpenSeeVRMDriver : MonoBehaviour
                 }
 
                 // Automatically trigger toggled expressions
-                if ((expression.additive || expression == toggledExpression) && expression.toggled)
+                if ((expression.AvatarBlendshape.Type == AvatarBlendshapeType.Additive || expression == toggledExpression) && expression.toggled)
                     expression.triggered = true;
                 else
                     expression.triggered = false;
 
-                if (expression.hotkey >= 0 && expression.hotkey < 256 && (GetAsyncKeyState(expression.hotkey) & 0x8000) != 0 && shiftKey == expression.shiftKey && ctrlKey == expression.ctrlKey && altKey == expression.altKey)
+                bool activate = false;
+#if UNITY_STANDALONE_WIN
+                activate = expression.AvatarBlendshape.Hotkey.Count > 0 && RawInput.PressedKeys.SequenceEqual(expression.AvatarBlendshape.Hotkey);
+#endif
+
+                if (activate)
                 {
-                    if (!expression.toggle && continuedPress.Contains(expression))
+                    if (expression.AvatarBlendshape.Mode == AvatarBlendshapeMode.Hold && continuedPress.Contains(expression))
                         continuedPress.Remove(expression);
                     if (!continuedPress.Contains(expression))
                     {
                         // Generally, turn on expressions when their hotkey is pressed
                         expression.triggered = true;
-                        if (expression.toggle)
+                        if (expression.AvatarBlendshape.Mode == AvatarBlendshapeMode.Toggle)
                         {
                             // If can be toggled, toggle it and update the triggered value accordingly
                             expression.toggled = !expression.toggled;
                             expression.triggered = expression.toggled;
                             // If it is a base expression
-                            if (!expression.additive)
+                            if (expression.AvatarBlendshape.Type == AvatarBlendshapeType.Base)
                             {
                                 if (expression.toggled)
                                 {
@@ -1311,7 +1293,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
                                     toggledExpression = expression;
                                     foreach (var otherExpression in expressionMap.Values)
                                     {
-                                        if (otherExpression.toggle && !otherExpression.additive && otherExpression != expression)
+                                        if (otherExpression.AvatarBlendshape.Mode == AvatarBlendshapeMode.Toggle && otherExpression.AvatarBlendshape.Type == AvatarBlendshapeType.Base && otherExpression != expression)
                                         {
                                             otherExpression.toggled = false;
                                             otherExpression.triggered = false;
@@ -1332,7 +1314,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
                         }
                         else
                         {
-                            if (!expression.additive)
+                            if (expression.AvatarBlendshape.Type == AvatarBlendshapeType.Base)
                             {
                                 // If it's a base expression being triggered on, override expression detection
                                 trigger = true;
@@ -1367,7 +1349,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
         }
         else if (!only30Points && openSeeExpression.enabled && openSeeExpression.expressionTime + 15f > Time.time && openSeeExpression.expression != null && openSeeExpression.expression != "" && expressionMap.ContainsKey(openSeeExpression.expression))
         {
-            if (expressionMap[openSeeExpression.expression].additive)
+            if (expressionMap[openSeeExpression.expression].AvatarBlendshape.Type == AvatarBlendshapeType.Additive)
                 expressionMap[openSeeExpression.expression].triggered = true;
         }
 
@@ -1384,17 +1366,23 @@ public class OpenSeeVRMDriver : MonoBehaviour
         currentExpressionVisemeFactor = 1f;
 
         float baseTransitionTime = 1000f;
-        if (currentExpression != null && (!currentExpression.reached || currentExpression.lastActive != currentExpression.triggered) && currentExpression.transitionTime < baseTransitionTime)
-            baseTransitionTime = currentExpression.transitionTime;
-        if (lastExpression != currentExpression && lastExpression != null && (!lastExpression.reached || lastExpression.lastActive != lastExpression.triggered) && lastExpression.transitionTime < baseTransitionTime)
-            baseTransitionTime = lastExpression.transitionTime;
+        if (currentExpression != null && (!currentExpression.reached || currentExpression.lastActive != currentExpression.triggered) && currentExpression.AvatarBlendshape.Transition < baseTransitionTime)
+            baseTransitionTime = currentExpression.AvatarBlendshape.Transition;
+        if (lastExpression != currentExpression && lastExpression != null && (!lastExpression.reached || lastExpression.lastActive != lastExpression.triggered) && lastExpression.AvatarBlendshape.Transition < baseTransitionTime)
+            baseTransitionTime = lastExpression.AvatarBlendshape.Transition;
+
+        mixer.SetInputWeight(0, 1);
+
         foreach (var expression in expressionMap.Values)
         {
             float weight = expression.GetWeight(baseTransitionTime);
+            if (expression.animId != -1)
+                mixer.SetInputWeight(expression.animId, 0f);
             if (weight > 0f)
             {
                 proxy.AccumulateValue(expression.blendShapeKey, weight);
-
+                if (expression.animId != -1)
+                    mixer.SetInputWeight(expression.animId, weight);
                 // Accumulate limits on expressions
                 currentExpressionEnableBlinking = currentExpressionEnableBlinking && expression.enableBlinking;
                 currentExpressionEnableVisemes = currentExpressionEnableVisemes && expression.enableVisemes;
@@ -1997,6 +1985,7 @@ public class OpenSeeVRMDriver : MonoBehaviour
 
     void Start()
     {
+        mixer = AnimationMixerPlayable.Null;
         InitExpressionMap();
         humanBodyBones = (HumanBodyBones[])Enum.GetValues(typeof(HumanBodyBones));
         humanBodyBoneTransforms = new Transform[humanBodyBones.Length];

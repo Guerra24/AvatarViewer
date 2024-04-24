@@ -41,7 +41,7 @@ namespace AvatarViewer
 
         private PlayableGraph graph;
         private AnimationMixerPlayable mixer;
-        private VRMBlendShapeProxy proxy;
+        //private VRMBlendShapeProxy proxy;
 
         //private string defaultExpression = "Neutral";
         private BlendShapeKey defaultBlendShapeKey = BlendShapeKey.CreateFromPreset(BlendShapePreset.Neutral);
@@ -58,8 +58,10 @@ namespace AvatarViewer
 
         public void Awake()
         {
-            //RawInput.WorkInBackground = true;
-            //RawInput.Start();
+#if UNITY_STANDALONE_WIN
+            RawInput.WorkInBackground = true;
+            RawInput.Start();
+#endif
         }
 
         // Start is called before the first frame update
@@ -184,7 +186,6 @@ namespace AvatarViewer
         {
             ranOnFirstFrame = true;
             BuildAnimationMapping(avatar);
-
             foreach (var anim in Animations)
             {
                 var config = ApplicationState.CurrentAvatar.Blendshapes.GetValueOrDefault(anim.Key.Name);
@@ -201,13 +202,15 @@ namespace AvatarViewer
                     }
                     ApplicationState.CurrentAvatar.Blendshapes.Add(anim.Key.Name, config);
                 }
+                Driver.expressions.Add(new OpenSeeVRMDriver.OpenSeeVRMExpression(anim.Key.Name, anim.Key, 1, 1, 1, true, true, 1, anim.Value.HasValue ? anim.Value.Value.animId : -1, config));
             }
             ApplicationPersistence.Save();
+            Driver.InitExpressionMap();
         }
 
         public void BuildAnimationMapping(GameObject avatar)
         {
-            proxy = avatar.GetComponent<VRMBlendShapeProxy>();
+            var proxy = avatar.GetComponent<VRMBlendShapeProxy>();
             var animator = avatar.GetComponent<Animator>();
             var vsfAnimations = avatar.GetComponent<VSF_Animations>();
 
@@ -265,6 +268,7 @@ namespace AvatarViewer
             }
 
             graph.Play();
+            Driver.mixer = mixer;
         }
 
         public void Update()
@@ -272,6 +276,7 @@ namespace AvatarViewer
             if (!ranOnFirstFrame)
                 OnFirstFrame();
 #if UNITY_STANDALONE_WIN
+            /*
             if (RawInput.PressedKeys.Count > 0 && !triggered)
                 foreach (var blendshape in ApplicationState.CurrentAvatar.Blendshapes)
                 {
@@ -312,13 +317,15 @@ namespace AvatarViewer
                     }
                 }
                 triggered = false;
-            }
+            }*/
 #endif
         }
 
         public void OnDestroy()
         {
-            //RawInput.Stop();
+#if UNITY_STANDALONE_WIN
+            RawInput.Stop();
+#endif
             if (graph.IsValid())
                 graph.Destroy();
             if (vrm != null)
@@ -331,7 +338,9 @@ namespace AvatarViewer
 
         public void OnApplicationQuit()
         {
-            //RawInput.Stop();
+#if UNITY_STANDALONE_WIN
+            RawInput.Stop();
+#endif
             if (graph.IsValid())
                 graph.Destroy();
             if (vrm != null)
