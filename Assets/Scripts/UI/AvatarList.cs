@@ -41,7 +41,7 @@ namespace AvatarViewer.Ui
 
             item.GetComponent<AvatarListItem>().Avatar = avatar;
 
-            item.transform.Find("Thumbnail").GetComponent<Image>().sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f));
+            item.transform.Find("Thumbnail").GetComponent<Image>().sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
 
             item.transform.Find("Title").GetComponent<TMP_Text>().text = avatar.Title;
         }

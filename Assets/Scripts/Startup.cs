@@ -4,6 +4,7 @@ using System.IO;
 using AvatarViewer.Trackers;
 using AvatarViewer.Twitch;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UniGLTF;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,8 @@ namespace AvatarViewer
         {
             await UniTask.Delay(TimeSpan.FromMilliseconds(500));
             _progressBar.visible = true;
+
+            DOTween.Init();
 
             await ApplicationPersistence.Load();
 

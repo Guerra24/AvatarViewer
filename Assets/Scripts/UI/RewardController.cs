@@ -25,6 +25,7 @@ namespace AvatarViewer.Ui
         public Button PickAsset;
         public TMP_Text AssetPath;
         public GameObject Asset;
+        public Image Image;
 
         public void Awake()
         {
@@ -96,6 +97,7 @@ namespace AvatarViewer.Ui
             Type.value = (int)Reward.Type;
             AssetPath.text = Reward.Path;
             Asset.SetActive(Reward.Type == AssetType.Custom);
+            Image.sprite = Reward.TwitchImage;
         }
     }
 }

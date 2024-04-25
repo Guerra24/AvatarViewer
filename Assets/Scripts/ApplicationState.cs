@@ -262,21 +262,17 @@ namespace AvatarViewer
     public class Reward
     {
         public string Title { get; set; }
-
         public string Path { get; set; } = "";
-
         [JsonConverter(typeof(StringEnumConverter))]
         public AssetType Type { get; set; } = AssetType.Box;
-
         [JsonConverter(typeof(StringEnumConverter))]
         public AssetSound Sound { get; set; } = AssetSound.Cardboard;
-
         public string SoundPath { get; set; } = "";
-
         [JsonConverter(typeof(StringEnumConverter))]
         public RewardSpawnPoint SpawnPoint { get; set; } = RewardSpawnPoint.Above;
-
         public float Timeout { get; set; } = 15;
+        [JsonIgnore]
+        public Sprite TwitchImage { get; set; }
     }
 
     public enum RewardSpawnPoint

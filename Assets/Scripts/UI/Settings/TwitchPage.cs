@@ -1,5 +1,6 @@
 using AvatarViewer.Twitch;
 using AvatarViewer.Ui.Settings;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,9 +41,18 @@ public class TwitchPage : BaseSettingsPage
 
     public void ConnectAccountOnClick()
     {
+        ConnectAccountOnClickAsync().Forget();
+    }
+
+    private async UniTaskVoid ConnectAccountOnClickAsync()
+    {
         PlayerPrefs.SetInt("SkipTwitchAccount", 0);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("Scenes/TwitchAuth");
+
+        var anim = GetComponentInParent<PageDrillIn>();
+        anim.Easing = AnimationEasing.EaseOut;
+        await anim.StartAnimation();
+        await SceneManager.LoadSceneAsync("Scenes/TwitchAuth");
     }
 
     public void Disconnect()

@@ -692,7 +692,6 @@ MonoBehaviour:
     rangeDurUpper: 0.2
     smoothBlink: 1
   hotkeys: 1
-  TPose: {fileID: 7400000, guid: 3293cdd72fddb9e428a98388947b4697, type: 2}
   expressions: []
   reloadExpressions: 0
   lipSync: 1
@@ -1423,7 +1422,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

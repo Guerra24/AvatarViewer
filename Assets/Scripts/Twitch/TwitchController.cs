@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
@@ -27,6 +28,8 @@ namespace AvatarViewer.Twitch
         private TwitchAPI TwitchAPI;
         private Texture2D ProfileImageTexture;
 
+        private string UserId = "";
+
         void Awake()
         {
             PubSub = new();
@@ -39,21 +42,33 @@ namespace AvatarViewer.Twitch
 
         public async UniTask Init()
         {
+            UserId = PlayerPrefs.GetString("UserId");
             TwitchAPI.Settings.AccessToken = PlayerPrefs.GetString("TwitchAccessToken");
 
-            User = (await TwitchAPI.Helix.Users.GetUsersAsync(new List<string> { PlayerPrefs.GetString("UserId") })).Users[0];
+            await UniTask.SwitchToThreadPool();
+
+            User = (await TwitchAPI.Helix.Users.GetUsersAsync(new List<string> { UserId })).Users[0];
+
+            await UniTask.SwitchToMainThread();
 
             using var request = UnityWebRequestTexture.GetTexture(User.ProfileImageUrl);
             await request.SendWebRequest();
             if (request.result == UnityWebRequest.Result.Success)
             {
                 ProfileImageTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-                ProfileImage = Sprite.Create(ProfileImageTexture, new Rect(0, 0, ProfileImageTexture.width, ProfileImageTexture.height), new Vector2(0.5f, 0.5f));
+                ProfileImage = Sprite.Create(ProfileImageTexture, new Rect(0, 0, ProfileImageTexture.width, ProfileImageTexture.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
             }
 
-            PubSub.ListenToChannelPoints(PlayerPrefs.GetString("UserId"));
+            await UpdateRewards();
+
+            await UniTask.SwitchToThreadPool();
+
+            PubSub.ListenToChannelPoints(UserId);
             PubSub.Connect();
             IsAccountConnected = true;
+
+            await UniTask.SwitchToMainThread();
+
             StartTokenValidation().Forget();
         }
 
@@ -89,12 +104,45 @@ namespace AvatarViewer.Twitch
             }
         }
 
+        public async Task UpdateRewards()
+        {
+            await UniTask.SwitchToThreadPool();
+
+            var rewards = await TwitchAPI.Helix.ChannelPoints.GetCustomReward(UserId);
+
+            await UniTask.SwitchToMainThread();
+
+            foreach (var twitchReward in rewards.Data)
+            {
+                if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(twitchReward.Id, out var reward))
+                {
+                    reward.Title = twitchReward.Title;
+                }
+                else
+                {
+                    reward = new Reward
+                    {
+                        Title = twitchReward.Title,
+                    };
+                    ApplicationPersistence.AppSettings.Rewards.Add(twitchReward.Id, reward);
+                }
+                using var request = UnityWebRequestTexture.GetTexture(twitchReward.Image?.Url1x ?? twitchReward.DefaultImage?.Url1x ?? "https://static-cdn.jtvnw.net/custom-reward-images/default-1.png");
+                await request.SendWebRequest();
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    var texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                    reward.TwitchImage = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
+                }
+            }
+        }
+
         public void Disconnect()
         {
             IsAccountConnected = false;
             PubSub.Disconnect();
             TwitchAPI.Settings.AccessToken = "";
             User = null;
+            UserId = "";
             ClearProfileImage();
             PlayerPrefs.SetString("TwitchAccessToken", "");
             PlayerPrefs.SetString("UserId", "");

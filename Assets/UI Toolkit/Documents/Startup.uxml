@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Root" class="root" style="flex-grow: 1; justify-content: center;">
         <ui:Label tabindex="-1" text="Avatar Viewer" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="align-self: center; height: 25px; position: absolute; display: none;" />
-        <ui:VisualElement style="flex-grow: 1; position: absolute; align-self: center; background-image: url(&quot;project://database/Assets/UI%20Toolkit/Images/Logo.png?fileID=2800000&amp;guid=f3feffce0b4f59e458c48768993e5407&amp;type=3#Logo&quot;); width: 326px; height: 326px;" />
+        <ui:VisualElement style="flex-grow: 1; position: absolute; align-self: center; background-image: url(&quot;project://database/Assets/UI%20Toolkit/Images/Logo.png?fileID=2800000&amp;guid=f3feffce0b4f59e458c48768993e5407&amp;type=3#Logo&quot;); width: 326px; height: 326px; display: none;" />
         <ui:VisualElement style="flex-grow: 1;" />
         <ui:VisualElement style="flex-grow: 1;" />
         <ui:VisualElement style="flex-grow: 1;">

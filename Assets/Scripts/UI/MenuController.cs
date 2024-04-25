@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using Cysharp.Threading.Tasks;
 using SimpleFileBrowser;
 using UniGLTF;
 using UnityEngine;
@@ -16,9 +17,19 @@ namespace AvatarViewer.Ui
 
         public void StartTracker()
         {
+            StartTrackerAsync().Forget();
+        }
+
+        private async UniTaskVoid StartTrackerAsync()
+        {
             Debug.Log("Start");
             if (ApplicationState.CurrentAvatar != null)
-                SceneManager.LoadScene("Scenes/Main");
+            {
+                var drillIn = GetComponent<PageDrillIn>();
+                drillIn.Easing = AnimationEasing.EaseOut;
+                await drillIn.StartAnimation().ToUniTask();
+                await SceneManager.LoadSceneAsync("Scenes/Main");
+            }
         }
 
         public void AddAvatar()

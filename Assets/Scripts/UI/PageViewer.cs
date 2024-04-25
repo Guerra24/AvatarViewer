@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,22 +23,40 @@ namespace AvatarViewer.Ui
 
         private Stack<GameObject> pageStack = new();
 
+        private bool _working;
+
         void Awake()
         {
             _headerBackButton.GetComponent<Button>().onClick.AddListener(GoBack);
 
-            OpenPage(_initialPage);
+            OpenPage(_initialPage, false);
         }
 
         private void GoBack()
         {
+            if (_working)
+                return;
+            _working = true;
+            GoBackAsync().Forget();
+        }
+
+        private async UniTaskVoid GoBackAsync()
+        {
             if (pageStack.Count > 1)
             {
-                Destroy(_content.transform.GetChild(0).gameObject);
+                var oldPage = _content.transform.GetChild(0).gameObject;
+                var animOut = oldPage.GetComponent<PageSlide>();
+                animOut.Mode = PageSlideMode.Left;
+                animOut.Easing = AnimationEasing.EaseOut;
+                await animOut.StartAnimation().ToUniTask();
+                Destroy(oldPage);
 
                 pageStack.Pop();
 
-                Instantiate(pageStack.Peek(), _content.transform, false);
+                var page = Instantiate(pageStack.Peek(), _content.transform, false);
+                var pageSlide = page.AddComponent<PageSlide>();
+                pageSlide.Mode = PageSlideMode.Right;
+                pageSlide.Easing = AnimationEasing.EaseIn;
 
                 var items = _header.transform.childCount;
                 Destroy(_header.transform.GetChild(items - 1).gameObject);
@@ -50,14 +68,33 @@ namespace AvatarViewer.Ui
                     gameObject.SetActive(false);
             }
             GoBackInitial.Invoke();
+            _working = false;
         }
 
-        public void OpenPage(GameObject template)
+        public void OpenPage(GameObject template, bool animate = true)
+        {
+            if (_working)
+                return;
+            _working = true;
+            OpenPageAsync(template, animate).Forget();
+        }
+
+        private async UniTaskVoid OpenPageAsync(GameObject template, bool animate = true)
         {
             if (pageStack.Count > 0)
-                Destroy(_content.transform.GetChild(0).gameObject);
+            {
+                var oldPage = _content.transform.GetChild(0).gameObject;
+                var animOut = oldPage.GetComponent<PageSlide>();
+                animOut.Mode = PageSlideMode.Right;
+                animOut.Easing = AnimationEasing.EaseOut;
+                await animOut.StartAnimation().ToUniTask();
+                Destroy(oldPage);
+            }
 
             var page = Instantiate(template, _content.transform, false);
+            var pageSlide = page.AddComponent<PageSlide>();
+            pageSlide.AutoStart = animate;
+
             var details = page.GetComponent<PageViewerPage>();
 
             if (pageStack.Count > 0)
@@ -70,6 +107,7 @@ namespace AvatarViewer.Ui
             pageText.GetComponent<TMP_Text>().text = details.Title;
 
             pageStack.Push(template);
+            _working = false;
         }
 
     }

@@ -11,8 +11,11 @@ namespace AvatarViewer.Twitch
         private TwitchController TwitchController;
 
         public GameObject Content;
+        public GameObject Startup;
         public GameObject Buttons;
         public GameObject Placeholder;
+
+        public PageDrillIn PageDrillIn;
 
         private void Awake()
         {
@@ -21,15 +24,16 @@ namespace AvatarViewer.Twitch
 
         private void Start()
         {
-            Startup().Forget();
+            StartAsync().Forget();
         }
 
-        private async UniTaskVoid Startup()
+        private async UniTaskVoid StartAsync()
         {
             if (PlayerPrefs.GetInt("SkipTwitchAccount", 0) == 0)
             {
                 if (!await TwitchController.Manager.ValidateToken())
                 {
+                    Startup.SetActive(false);
                     Content.SetActive(true);
                     return;
                 }
@@ -39,7 +43,9 @@ namespace AvatarViewer.Twitch
 
             await UniTask.Yield();
             await UniTask.NextFrame();
-            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single);
+
+            await PageDrillIn.StartAnimation().ToUniTask();
+            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single).ToUniTask();
         }
 
         public void ConnectAccount() => ConnectAccountAsync().Forget();
@@ -64,7 +70,9 @@ namespace AvatarViewer.Twitch
 
             await UniTask.Yield();
             await UniTask.NextFrame();
-            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single);
+
+            await PageDrillIn.StartAnimation().ToUniTask();
+            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single).ToUniTask();
         }
 
         public void Skip() => SkipAsync().Forget();
@@ -75,7 +83,9 @@ namespace AvatarViewer.Twitch
             PlayerPrefs.Save();
             await UniTask.Yield();
             await UniTask.NextFrame();
-            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single);
+
+            await PageDrillIn.StartAnimation().ToUniTask();
+            await SceneManager.LoadSceneAsync("Scenes/Menu", LoadSceneMode.Single).ToUniTask();
         }
 
     }
