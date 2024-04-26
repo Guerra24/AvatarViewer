@@ -517,7 +517,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99371babc021e4428907945e902b27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _template: {fileID: 8926520845915259311, guid: 906ced31b2235454d9434756eb9719b8,
+  _templateRewardListItem: {fileID: 577451871631834696, guid: 214983abc8228b54dba8c8696c762b1c,
+    type: 3}
+  _templateItemRewardListItem: {fileID: 8926520845915259311, guid: 906ced31b2235454d9434756eb9719b8,
+    type: 3}
+  _templateCameraRewardListItem: {fileID: 8926520845915259311, guid: 417a4ca0cf3cfcd4d9f160325105cc86,
     type: 3}
 --- !u!114 &708724749330520880
 MonoBehaviour:

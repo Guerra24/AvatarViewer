@@ -1,3 +1,4 @@
+using AvatarViewer.Ui.Items;
 using AvatarViewer.Ui.Settings;
 using UnityEngine;
 
@@ -6,18 +7,59 @@ namespace AvatarViewer.Ui
     public class RewardList : BaseSettingsPage
     {
 
-        public GameObject _template;
+        [SerializeField]
+        private GameObject _templateRewardListItem;
+        [SerializeField]
+        private GameObject _templateItemRewardListItem;
+        [SerializeField]
+        private GameObject _templateCameraRewardListItem;
 
         void Start()
         {
-            foreach (var reward in ApplicationPersistence.AppSettings.Rewards)
-                CreateItem(reward.Key, reward.Value);
+            RefreshList();
         }
 
-        public void CreateItem(string id, Reward reward)
+        public void RefreshList()
         {
-            var item = Instantiate(_template, this.transform, false);
-            var controller = item.GetComponent<RewardController>();
+            for (int i = 0; i < transform.childCount; i++)
+                Destroy(transform.GetChild(i).gameObject);
+            foreach (var reward in ApplicationPersistence.AppSettings.Rewards)
+            {
+                switch (reward.Value)
+                {
+                    case ItemReward ir:
+                        CreateItemReward(reward.Key, ir);
+                        break;
+                    case CameraReward cr:
+                        CreateCameraReward(reward.Key, cr);
+                        break;
+                    default:
+                        CreateReward(reward.Key, reward.Value);
+                        break;
+                }
+            }
+        }
+
+        public void CreateReward(string id, Reward reward)
+        {
+            var item = Instantiate(_templateRewardListItem, this.transform, false);
+            var controller = item.GetComponent<InitialRewardListItem>();
+            controller.Reward = reward;
+            controller.LoadValues(id);
+        }
+
+        public void CreateItemReward(string id, ItemReward reward)
+        {
+            var item = Instantiate(_templateItemRewardListItem, this.transform, false);
+            var controller = item.GetComponent<ItemRewardListItem>();
+            controller.Reward = reward;
+            controller.LoadValues(id);
+        }
+
+        public void CreateCameraReward(string id, CameraReward reward)
+        {
+            var item = Instantiate(_templateCameraRewardListItem, this.transform, false);
+            var controller = item.GetComponent<CameraRewardListItem>();
             controller.Reward = reward;
             controller.LoadValues(id);
         }

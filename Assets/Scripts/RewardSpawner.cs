@@ -25,19 +25,20 @@ namespace AvatarViewer
 
         private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
         {
-            if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var reward))
+            if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var r) && r is ItemReward reward)
             {
                 MainThreadDispatcher.AddOnUpdate(() =>
                 {
-                    var spawnPoint = GetSpawn(reward.SpawnPoint);
-                    var gameObject = GetBasebject(reward.Type);
+                    var itemReward = reward;
+                    var spawnPoint = GetSpawn(itemReward.SpawnPoint);
+                    var gameObject = GetBasebject(itemReward.Asset);
 
                     SetupReward(Instantiate(gameObject, spawnPoint.position, spawnPoint.rotation * gameObject.transform.rotation), spawnPoint, reward);
                 });
             }
         }
 
-        private void SetupReward(GameObject gameObject, Transform spawnPoint, Reward reward)
+        private void SetupReward(GameObject gameObject, Transform spawnPoint, ItemReward reward)
         {
             gameObject.AddComponent<RewardController>();
             gameObject.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
@@ -45,29 +46,29 @@ namespace AvatarViewer
             rigidbody.velocity = spawnPoint.forward.normalized * 5;
         }
 
-        private GameObject GetBasebject(AssetType assetType)
+        private GameObject GetBasebject(ItemRewardAsset assetType)
         {
             switch (assetType)
             {
-                case AssetType.Box:
+                case ItemRewardAsset.Box:
                     return Box;
             }
             throw new Exception();
         }
 
-        private Transform GetSpawn(RewardSpawnPoint spawnPoint)
+        private Transform GetSpawn(ItemRewardSpawnPoint spawnPoint)
         {
             switch (spawnPoint)
             {
-                case RewardSpawnPoint.Above:
+                case ItemRewardSpawnPoint.Above:
                     return Above;
-                case RewardSpawnPoint.Front:
+                case ItemRewardSpawnPoint.Front:
                     return Front;
-                case RewardSpawnPoint.Left:
+                case ItemRewardSpawnPoint.Left:
                     return Left;
-                case RewardSpawnPoint.Right:
+                case ItemRewardSpawnPoint.Right:
                     return Right;
-                case RewardSpawnPoint.Random:
+                case ItemRewardSpawnPoint.Random:
                     break;
             }
             throw new Exception();

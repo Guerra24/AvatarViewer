@@ -5,16 +5,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.Ui.Items
 {
-    public class RewardController : MonoBehaviour
+    public class ItemRewardListItem : RewardListItem<ItemReward>
     {
-        [HideInInspector]
-        public string Id;
-        public Reward Reward;
-
-        public TMP_Text Title;
-        public TMP_Text Description;
         public TMP_Dropdown SpawnPoint;
         public TMP_InputField Timeout;
         public TMP_Dropdown Sound;
@@ -25,24 +19,24 @@ namespace AvatarViewer.Ui
         public Button PickAsset;
         public TMP_Text AssetPath;
         public GameObject Asset;
-        public Image Image;
 
-        public void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             SpawnPoint.onValueChanged.AddListener(OnSpawnPointChanged);
             Timeout.onEndEdit.AddListener(OnTimeoutEditEnd);
             Sound.onValueChanged.AddListener(OnSoundChanged);
             PickSound.onClick.AddListener(OnPickSoundClick);
             Type.onValueChanged.AddListener(OnAssetTypeChanged);
             PickAsset.onClick.AddListener(OnPickAssetClick);
-            SpawnPoint.AddOptions(Enum.GetValues(typeof(RewardSpawnPoint)).Cast<RewardSpawnPoint>().Select(r => r.ToString()).ToList());
-            Sound.AddOptions(Enum.GetValues(typeof(AssetSound)).Cast<AssetSound>().Select(r => r.ToString()).ToList());
-            Type.AddOptions(Enum.GetValues(typeof(AssetType)).Cast<AssetType>().Select(r => r.ToString()).ToList());
+            SpawnPoint.AddOptions(Enum.GetNames(typeof(ItemRewardSpawnPoint)).ToList());
+            Sound.AddOptions(Enum.GetNames(typeof(ItemRewardSound)).ToList());
+            Type.AddOptions(Enum.GetNames(typeof(ItemRewardAsset)).ToList());
         }
 
         private void OnSpawnPointChanged(int item)
         {
-            Reward.SpawnPoint = (RewardSpawnPoint)item;
+            Reward.SpawnPoint = (ItemRewardSpawnPoint)item;
         }
 
         private void OnTimeoutEditEnd(string value)
@@ -52,14 +46,14 @@ namespace AvatarViewer.Ui
 
         private void OnSoundChanged(int item)
         {
-            Reward.Sound = (AssetSound)item;
-            CustomSound.SetActive(Reward.Sound == AssetSound.Custom);
+            Reward.Sound = (ItemRewardSound)item;
+            CustomSound.SetActive(Reward.Sound == ItemRewardSound.Custom);
         }
 
         private void OnAssetTypeChanged(int item)
         {
-            Reward.Type = (AssetType)item;
-            Asset.SetActive(Reward.Type == AssetType.Custom);
+            Reward.Asset = (ItemRewardAsset)item;
+            Asset.SetActive(Reward.Asset == ItemRewardAsset.Custom);
         }
 
         private void OnPickAssetClick()
@@ -69,7 +63,7 @@ namespace AvatarViewer.Ui
 
         private void AssetFilePicked(string[] files)
         {
-            AssetPath.text = Reward.Path = files[0];
+            AssetPath.text = Reward.AssetPath = files[0];
         }
 
         private void OnPickSoundClick()
@@ -84,20 +78,17 @@ namespace AvatarViewer.Ui
 
         private void FileCancelled() { }
 
-        public void LoadValues(string id)
+        public override void LoadValues(string id)
         {
-            Id = id;
-            Title.text = Reward.Title;
-
+            base.LoadValues(id);
             SpawnPoint.value = (int)Reward.SpawnPoint;
             Timeout.text = Reward.Timeout.ToString();
             Sound.value = (int)Reward.Sound;
             SoundPath.text = Reward.SoundPath;
-            CustomSound.SetActive(Reward.Sound == AssetSound.Custom);
-            Type.value = (int)Reward.Type;
-            AssetPath.text = Reward.Path;
-            Asset.SetActive(Reward.Type == AssetType.Custom);
-            Image.sprite = Reward.TwitchImage;
+            CustomSound.SetActive(Reward.Sound == ItemRewardSound.Custom);
+            Type.value = (int)Reward.Asset;
+            AssetPath.text = Reward.AssetPath;
+            Asset.SetActive(Reward.Asset == ItemRewardAsset.Custom);
         }
     }
 }

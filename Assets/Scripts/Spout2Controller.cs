@@ -1,3 +1,4 @@
+using AvatarViewer.Ui;
 using Klak.Spout;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace AvatarViewer
         private RenderTexture RenderTexture;
         private SpoutSender SpoutSender;
 
+        public MainController MainController;
         public CopyRTToCamera Final;
 
         private int Width, Height;
@@ -19,6 +21,9 @@ namespace AvatarViewer
             SpoutSender = GetComponent<SpoutSender>();
             Width = ApplicationState.RuntimeWidth;
             Height = ApplicationState.RuntimeHeight;
+#if UNITY_EDITOR_WIN
+            SpoutSender.spoutName = "AvatarViewer (DEBUG)";
+#endif
         }
 
         private void Start()
@@ -43,6 +48,9 @@ namespace AvatarViewer
                 Destroy(RenderTexture);
             RenderTexture = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGB32);
             SpoutSender.sourceTexture = Final.Source = Camera.targetTexture = RenderTexture;
+
+            float _1OverAspect = 1f / Camera.aspect;
+            Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(MainController.CurrentCameraPreset.FOV * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
         }
 
         private void OnDestroy()

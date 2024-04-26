@@ -14,7 +14,7 @@ namespace AvatarViewer
 
         IEnumerator DestroySelf()
         {
-            yield return new WaitForSecondsRealtime(Seconds);
+            yield return new WaitForSeconds(Seconds);
             Destroy(gameObject);
         }
 

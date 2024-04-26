@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using OpenSee;
 using TMPro;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace AvatarViewer.Ui
 
         public Camera Camera;
 
-        private CameraPreset CurrentCameraPreset;
+        public CameraPreset CurrentCameraPreset { get; private set; }
 
         private void Awake()
         {
@@ -100,7 +101,10 @@ namespace AvatarViewer.Ui
 
         private void OnFOVValueChanged(float value)
         {
-            CurrentCameraPreset.FOV = Camera.fieldOfView = value;
+            CurrentCameraPreset.FOV = value;
+
+            float _1OverAspect = 1f / Camera.aspect;
+            Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(value * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
         }
 
         private void OnAbsoluteValueChanged(bool state)
@@ -122,7 +126,13 @@ namespace AvatarViewer.Ui
 
         public void Back()
         {
-            SceneManager.LoadScene("Scenes/Menu");
+            BackAsync().Forget();
+        }
+
+        private async UniTaskVoid BackAsync()
+        {
+            SceneLoader.Scene = "Scenes/Menu";
+            await SceneManager.LoadSceneAsync("Scenes/Loader");
         }
 
         public void ResetAvatar()
@@ -150,9 +160,7 @@ namespace AvatarViewer.Ui
         {
             CameraPresets.ClearOptions();
             foreach (var preset in ApplicationPersistence.AppSettings.CameraPresets)
-            {
                 CameraPresets.options.Add(new GuidDropdownData(preset.Value.Name, preset.Key));
-            }
             CameraPresets.RefreshShownValue();
         }
     }

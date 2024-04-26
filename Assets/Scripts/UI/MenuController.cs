@@ -28,7 +28,9 @@ namespace AvatarViewer.Ui
                 var drillIn = GetComponent<PageDrillIn>();
                 drillIn.Easing = AnimationEasing.EaseOut;
                 await drillIn.StartAnimation().ToUniTask();
-                await SceneManager.LoadSceneAsync("Scenes/Main");
+
+                SceneLoader.Scene = "Scenes/Main";
+                await SceneManager.LoadSceneAsync("Scenes/Loader");
             }
         }
 

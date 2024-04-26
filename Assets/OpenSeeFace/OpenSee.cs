@@ -463,7 +463,7 @@ namespace OpenSee
             if (receiveThread != null && receiveThread.IsAlive)
             {
                 stopReception = true;
-                receiveThread.Join();
+                receiveThread.Interrupt();
             }
             if (udp != null)
             {

@@ -140,7 +140,7 @@ namespace AvatarViewer
         public Vector3 Position { get; set; }
         [JsonConverter(typeof(QuaternionJsonConverter))]
         public Quaternion Rotation { get; set; }
-        public float FOV { get; set; } = 14.24756f;
+        public float FOV { get; set; } = 25.05336f;
         public bool Absolute { get; set; }
     }
 
@@ -262,30 +262,57 @@ namespace AvatarViewer
     public class Reward
     {
         public string Title { get; set; }
-        public string Path { get; set; } = "";
-        [JsonConverter(typeof(StringEnumConverter))]
-        public AssetType Type { get; set; } = AssetType.Box;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public AssetSound Sound { get; set; } = AssetSound.Cardboard;
-        public string SoundPath { get; set; } = "";
-        [JsonConverter(typeof(StringEnumConverter))]
-        public RewardSpawnPoint SpawnPoint { get; set; } = RewardSpawnPoint.Above;
         public float Timeout { get; set; } = 15;
         [JsonIgnore]
         public Sprite TwitchImage { get; set; }
+
     }
 
-    public enum RewardSpawnPoint
+    public class ItemReward : Reward
+    {
+        public ItemReward() { }
+        public ItemReward(Reward reward)
+        {
+            Title = reward.Title;
+            Timeout = reward.Timeout;
+            TwitchImage = reward.TwitchImage;
+        }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemRewardAsset Asset { get; set; } = ItemRewardAsset.Box;
+        public string AssetPath { get; set; } = "";
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemRewardSound Sound { get; set; } = ItemRewardSound.Cardboard;
+        public string SoundPath { get; set; } = "";
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ItemRewardSpawnPoint SpawnPoint { get; set; } = ItemRewardSpawnPoint.Above;
+    }
+
+    public class CameraReward : Reward
+    {
+        public CameraReward() { }
+
+        public CameraReward(Reward reward)
+        {
+            Title = reward.Title;
+            Timeout = reward.Timeout;
+            TwitchImage = reward.TwitchImage;
+        }
+
+        public Guid CameraPreset { get; set; }
+    }
+
+    public enum ItemRewardSpawnPoint
     {
         Above, Front, Left, Right, Random
     }
 
-    public enum AssetType
+    public enum ItemRewardAsset
     {
         Custom, Box
     }
 
-    public enum AssetSound
+    public enum ItemRewardSound
     {
         Custom, Cardboard
     }
