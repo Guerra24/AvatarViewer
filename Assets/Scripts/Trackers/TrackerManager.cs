@@ -164,8 +164,8 @@ namespace AvatarViewer.Trackers
             var process = new Process();
             process.StartInfo = processStartInfo;
             process.EnableRaisingEvents = true;
-            process.OutputDataReceived += (sender, e) => Debug.WriteLine($"{e.Data}\n");
-            process.ErrorDataReceived += (sender, e) => Debug.WriteLine($"{e.Data}\n");
+            process.OutputDataReceived += (sender, e) => UnityEngine.Debug.Log($"{e.Data}\n");
+            process.ErrorDataReceived += (sender, e) => UnityEngine.Debug.Log($"{e.Data}\n");
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
@@ -194,7 +194,11 @@ namespace AvatarViewer.Trackers
             if (!Process.HasExited)
             {
                 Process.CloseMainWindow();
-                Process.Kill();
+                try
+                {
+                    Process.Kill();
+                }
+                catch { }
             }
             Process.Dispose();
         }

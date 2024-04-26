@@ -24,11 +24,11 @@ public class CameraRewardController : MonoBehaviour
 
     private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
     {
-        if (running)
-            return;
-        running = true;
         if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var r) && r is CameraReward reward)
         {
+            if (running)
+                return;
+            running = true;
             MainThreadDispatcher.AddOnUpdate(() => StartCoroutine(ApplyPreset(reward)));
         }
     }

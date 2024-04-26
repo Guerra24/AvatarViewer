@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.IO;
 using AvatarViewer.Trackers;
-using AvatarViewer.Twitch;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniGLTF;
@@ -24,7 +22,6 @@ namespace AvatarViewer
         {
             _document = GetComponent<UIDocument>();
             _progressBar = _document.rootVisualElement.Q<ProgressBar>("Progress");
-            RuntimeSettings.Apply();
             TrackerManager.Initialize(Path.Combine(Application.persistentDataPath, "trackers"), Application.temporaryCachePath);
         }
 
@@ -41,6 +38,8 @@ namespace AvatarViewer
             DOTween.Init();
 
             await ApplicationPersistence.Load();
+
+            RuntimeSettings.Apply();
 
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;

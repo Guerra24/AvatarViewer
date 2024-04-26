@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AvatarViewer.Trackers
 {
-    public class MediapipeLauncher : MonoBehaviour
+    public class MediapipeLauncherComponent : MonoBehaviour
     {
 
         /*private Process Process;
