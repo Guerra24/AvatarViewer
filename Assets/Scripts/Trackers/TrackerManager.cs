@@ -12,8 +12,8 @@ namespace AvatarViewer.Trackers
     {
         private static Dictionary<Tracker, TrackerInfo> Trackers = new()
         {
-            //{ Tracker.OpenSee, new TrackerInfo ("OpenSee", "" , new Version(0,0,0)) },
-            { Tracker.Mediapipe, new TrackerInfo ("Mediapipe", "main", new Version(0,0,0)) },
+            { Tracker.OpenSee, new TrackerInfo ("OpenSee", "facetracker" , new Version(0, 0, 0)) },
+            { Tracker.Mediapipe, new TrackerInfo ("Mediapipe", "main", new Version(0, 0, 0)) },
         };
 
         private static string PersistentPath, TemporaryPath;
@@ -127,6 +127,7 @@ namespace AvatarViewer.Trackers
         public string Ip { get; set; }
         public int Port { get; set; }
         public int Camera { get; set; }
+        public bool IncreasedPriority { get; set; }
     }
 
     public class MediapipeLauncherSettings : TrackerLauncherSettings
@@ -162,6 +163,7 @@ namespace AvatarViewer.Trackers
             processStartInfo.WorkingDirectory = workingDirectory;
 
             var process = new Process();
+            process.PriorityClass = settings.IncreasedPriority ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
             process.StartInfo = processStartInfo;
             process.EnableRaisingEvents = true;
             process.OutputDataReceived += (sender, e) => UnityEngine.Debug.Log($"{e.Data}\n");

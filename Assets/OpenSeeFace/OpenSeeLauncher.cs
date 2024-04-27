@@ -128,7 +128,7 @@ namespace OpenSee
                 return false;
             }
             IPAddress address;
-            if (!File.Exists(Application.streamingAssetsPath + exePath))
+            if (!File.Exists(Path.Combine(Application.persistentDataPath, "trackers", "opensee", exePath)))
             {
                 UnityEngine.Debug.LogError("Facetracker executable cannot be found.");
                 return false;
@@ -359,7 +359,7 @@ namespace OpenSee
             arguments.Add("--port");
             arguments.Add(TrackerSettings.Port.ToString());
             arguments.Add("--model-dir");
-            arguments.Add(Application.streamingAssetsPath + modelPath);
+            arguments.Add(Path.Combine(Application.persistentDataPath, "trackers", "opensee", "models"));
 
             arguments.Add("--capture");
             if (videoPath != "" && File.Exists(videoPath))
@@ -392,7 +392,7 @@ namespace OpenSee
                 processStartInfo.RedirectStandardInput = true;
                 processStartInfo.RedirectStandardError = true;
                 processStartInfo.UseShellExecute = false;
-                processStartInfo.FileName = Application.streamingAssetsPath + exePath;
+                processStartInfo.FileName = Path.Combine(Application.persistentDataPath, "trackers", "opensee", exePath);
                 processStartInfo.Arguments = argumentString;
 
                 trackerSB = new StringBuilder();

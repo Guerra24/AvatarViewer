@@ -14,22 +14,33 @@ namespace AvatarViewer.Ui
         public OpenSeeIKTarget IKTarget;
 
         public TMP_Dropdown CameraPresets;
+        public TMP_InputField PresetName;
         public Button AddPreset;
+        public Button RemovePreset;
         public Button Save;
 
-        public Slider RotX;
-        public Slider RotY;
-        public Slider RotZ;
+        public Slider SRotX;
+        public Slider SRotY;
+        public Slider SRotZ;
+        public Slider SPosX;
+        public Slider SPosY;
+        public Slider SPosZ;
 
-        public TMP_InputField PosX;
-        public TMP_InputField PosY;
-        public TMP_InputField PosZ;
+        public TMP_InputField IRotX;
+        public TMP_InputField IRotY;
+        public TMP_InputField IRotZ;
+        public TMP_InputField IPosX;
+        public TMP_InputField IPosY;
+        public TMP_InputField IPosZ;
 
-        public Slider FOV;
+        public Slider SFOV;
+        public TMP_InputField IFOV;
 
         public Toggle Absolute;
 
         public Camera Camera;
+
+        private float RotX, RotY, RotZ, PosX, PosY, PosZ, FOV;
 
         public CameraPreset CurrentCameraPreset { get; private set; }
 
@@ -37,15 +48,31 @@ namespace AvatarViewer.Ui
         {
             ReloadCameraPresets();
             CameraPresets.onValueChanged.AddListener(OnCameraPresetChanged);
+            PresetName.onEndEdit.AddListener(OnPresetNameEndEdit);
             AddPreset.onClick.AddListener(OnAddPresetClick);
+            RemovePreset.onClick.AddListener(OnRemovePresetClick);
             Save.onClick.AddListener(OnSaveClick);
-            RotX.onValueChanged.AddListener(OnRotationValueChanged);
-            RotY.onValueChanged.AddListener(OnRotationValueChanged);
-            RotZ.onValueChanged.AddListener(OnRotationValueChanged);
-            PosX.onValueChanged.AddListener(OnPositionValueChanged);
-            PosY.onValueChanged.AddListener(OnPositionValueChanged);
-            PosZ.onValueChanged.AddListener(OnPositionValueChanged);
-            FOV.onValueChanged.AddListener(OnFOVValueChanged);
+
+            IRotX.onValueChanged.AddListener(OnRotationValueChanged);
+            IRotY.onValueChanged.AddListener(OnRotationValueChanged);
+            IRotZ.onValueChanged.AddListener(OnRotationValueChanged);
+
+            IRotX.onEndEdit.AddListener(OnRotationEndEdit);
+            IRotY.onEndEdit.AddListener(OnRotationEndEdit);
+            IRotZ.onEndEdit.AddListener(OnRotationEndEdit);
+
+            IPosX.onValueChanged.AddListener(OnPositionValueChanged);
+            IPosY.onValueChanged.AddListener(OnPositionValueChanged);
+            IPosZ.onValueChanged.AddListener(OnPositionValueChanged);
+
+            IPosX.onEndEdit.AddListener(OnPositionEndEdit);
+            IPosY.onEndEdit.AddListener(OnPositionEndEdit);
+            IPosZ.onEndEdit.AddListener(OnPositionEndEdit);
+
+            IFOV.onValueChanged.AddListener(OnFOVValueChanged);
+
+            IFOV.onEndEdit.AddListener(OnFOVEndEdit);
+
             Absolute.onValueChanged.AddListener(OnAbsoluteValueChanged);
         }
 
@@ -55,6 +82,26 @@ namespace AvatarViewer.Ui
             CameraPresets.value = CameraPresets.options.FindIndex(g => ((GuidDropdownData)g).guid == preset);
             CurrentCameraPreset = ApplicationPersistence.AppSettings.CameraPresets[preset];
             LoadPreset();
+        }
+
+        private void Update()
+        {
+            if (SRotX.value != 0)
+                IRotX.text = (RotX += SRotX.value * 6 * Time.deltaTime).ToString();
+            if (SRotY.value != 0)
+                IRotY.text = (RotY += SRotY.value * 6 * Time.deltaTime).ToString();
+            if (SRotZ.value != 0)
+                IRotZ.text = (RotZ += SRotZ.value * 8 * Time.deltaTime).ToString();
+
+            if (SPosX.value != 0)
+                IPosX.text = (PosX += SPosX.value * Time.deltaTime).ToString();
+            if (SPosY.value != 0)
+                IPosY.text = (PosY += SPosY.value * Time.deltaTime).ToString();
+            if (SPosZ.value != 0)
+                IPosZ.text = (PosZ += SPosZ.value * Time.deltaTime).ToString();
+
+            if (SFOV.value != 0)
+                IFOV.text = (FOV += SFOV.value * 6 * Time.deltaTime).ToString();
         }
 
         private void OnCameraPresetChanged(int value)
@@ -68,10 +115,23 @@ namespace AvatarViewer.Ui
             LoadPreset();
         }
 
+        private void OnPresetNameEndEdit(string text)
+        {
+            CurrentCameraPreset.Name = text;
+        }
+
         private void OnAddPresetClick()
         {
-            ApplicationPersistence.AppSettings.CameraPresets.Add(Guid.NewGuid(), new CameraPreset { Name = "New preset" });
+            if (string.IsNullOrEmpty(PresetName.text))
+                return;
+            ApplicationPersistence.AppSettings.CameraPresets.Add(Guid.NewGuid(), new CameraPreset { Name = PresetName.text });
+            PresetName.text = "";
             ReloadCameraPresets();
+        }
+
+        private void OnRemovePresetClick()
+        {
+
         }
 
         public void OnSaveClick()
@@ -79,32 +139,57 @@ namespace AvatarViewer.Ui
             ApplicationPersistence.Save();
         }
 
-        private void OnRotationValueChanged(float _)
+        private void OnRotationEndEdit(string _)
         {
-            CurrentCameraPreset.Rotation = Camera.transform.localRotation = Quaternion.Euler(RotX.value, RotY.value, RotZ.value);
+            RotX = float.Parse(IRotX.text);
+            RotY = float.Parse(IRotY.text);
+            RotZ = float.Parse(IRotZ.text);
+            CurrentCameraPreset.Rotation = Camera.transform.localRotation = Quaternion.Euler(RotX, RotY, RotZ);
         }
 
-        private void OnPositionValueChanged(string _)
+        private void OnRotationValueChanged(string _)
+        {
+            CurrentCameraPreset.Rotation = Camera.transform.localRotation = Quaternion.Euler(RotX, RotY, RotZ);
+        }
+
+        private void OnPositionEndEdit(string _)
         {
             var pos = CurrentCameraPreset.Position;
-            if (float.TryParse(PosX.text, out var x))
-                pos.x = x;
-            if (float.TryParse(PosY.text, out var y))
-                pos.y = y;
-            if (float.TryParse(PosZ.text, out var z))
-                pos.z = z;
+            pos.x = PosX = float.Parse(IPosX.text);
+            pos.y = PosY = float.Parse(IPosY.text);
+            pos.z = PosZ = float.Parse(IPosZ.text);
             if (CurrentCameraPreset.Absolute)
                 CurrentCameraPreset.Position = Camera.transform.position = pos;
             else
                 CurrentCameraPreset.Position = Camera.transform.localPosition = pos;
         }
 
-        private void OnFOVValueChanged(float value)
+        private void OnPositionValueChanged(string _)
         {
-            CurrentCameraPreset.FOV = value;
+            var pos = CurrentCameraPreset.Position;
+            pos.x = PosX;
+            pos.y = PosY;
+            pos.z = PosZ;
+            if (CurrentCameraPreset.Absolute)
+                CurrentCameraPreset.Position = Camera.transform.position = pos;
+            else
+                CurrentCameraPreset.Position = Camera.transform.localPosition = pos;
+        }
+
+        private void OnFOVEndEdit(string _)
+        {
+            CurrentCameraPreset.FOV = FOV = float.Parse(IFOV.text);
 
             float _1OverAspect = 1f / Camera.aspect;
-            Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(value * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
+            Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(FOV * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
+        }
+
+        private void OnFOVValueChanged(string _)
+        {
+            CurrentCameraPreset.FOV = FOV;
+
+            float _1OverAspect = 1f / Camera.aspect;
+            Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(FOV * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
         }
 
         private void OnAbsoluteValueChanged(bool state)
@@ -119,9 +204,12 @@ namespace AvatarViewer.Ui
                 CurrentCameraPreset.Position = Camera.transform.localPosition;
             }
             var pos = CurrentCameraPreset.Position;
-            PosX.text = pos.x.ToString();
-            PosY.text = pos.y.ToString();
-            PosZ.text = pos.z.ToString();
+            PosX = pos.x;
+            PosY = pos.y;
+            PosZ = pos.z;
+            IPosX.text = PosX.ToString();
+            IPosY.text = PosY.ToString();
+            IPosZ.text = PosZ.ToString();
         }
 
         public void Back()
@@ -143,17 +231,28 @@ namespace AvatarViewer.Ui
         private void LoadPreset()
         {
             var angles = CurrentCameraPreset.Rotation.eulerAngles;
-            RotX.value = angles.x > 180 ? angles.x - 360 : angles.x;
-            RotY.value = angles.y > 180 ? angles.y - 360 : angles.y;
-            RotZ.value = angles.z > 180 ? angles.z - 360 : angles.z;
+            RotX = angles.x > 180 ? angles.x - 360 : angles.x;
+            RotY = angles.y > 180 ? angles.y - 360 : angles.y;
+            RotZ = angles.z > 180 ? angles.z - 360 : angles.z;
+
+            IRotX.text = RotX.ToString();
+            IRotY.text = RotY.ToString();
+            IRotZ.text = RotZ.ToString();
 
             var pos = CurrentCameraPreset.Position;
-            PosX.text = pos.x.ToString();
-            PosY.text = pos.y.ToString();
-            PosZ.text = pos.z.ToString();
+            PosX = pos.x;
+            PosY = pos.y;
+            PosZ = pos.z;
 
-            FOV.value = CurrentCameraPreset.FOV;
+            IPosX.text = PosX.ToString();
+            IPosY.text = PosY.ToString();
+            IPosZ.text = PosZ.ToString();
+
+            FOV = CurrentCameraPreset.FOV;
+
+            IFOV.text = FOV.ToString();
             Absolute.isOn = CurrentCameraPreset.Absolute;
+            PresetName.text = CurrentCameraPreset.Name;
         }
 
         private void ReloadCameraPresets()
