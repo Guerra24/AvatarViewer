@@ -57,8 +57,8 @@ namespace OpenSee
         public bool dontPrint = true;
         [Tooltip("If enabled, the next available port within 500 starting after the one given on the OpenSee component will be used.")]
         public bool dynamicPort = false;
-        [Tooltip("The path to \"facetracker.exe\".")]
-        public string exePath = "facetracker.exe";
+        /*[Tooltip("The path to \"facetracker.exe\".")]
+        public string exePath = "facetracker.exe";*/
         [Tooltip("The path, where the .onnx model files can be found")]
         public string modelPath = "models\\";
         [Tooltip("Additional options that should be passed to the face tracker.")]
@@ -87,6 +87,8 @@ namespace OpenSee
         private System.IntPtr processStdOut = System.IntPtr.Zero;
         private System.IntPtr processStdErr = System.IntPtr.Zero;
         private Job job = null;
+
+        private TrackerInfo trackerInfo;
 
         private OpenSeeTrackerSettings TrackerSettings;
 
@@ -128,7 +130,7 @@ namespace OpenSee
                 return false;
             }
             IPAddress address;
-            if (!File.Exists(Path.Combine(Application.persistentDataPath, "trackers", "opensee", exePath)))
+            if (!File.Exists(Path.Combine(Application.persistentDataPath, "trackers", "opensee", trackerInfo.Executable)))
             {
                 UnityEngine.Debug.LogError("Facetracker executable cannot be found.");
                 return false;
@@ -230,7 +232,7 @@ namespace OpenSee
             processStartInfo.RedirectStandardInput = true;
             processStartInfo.RedirectStandardError = true;
             processStartInfo.UseShellExecute = false;
-            processStartInfo.FileName = Application.streamingAssetsPath + exePath;
+            processStartInfo.FileName = Application.streamingAssetsPath + trackerInfo.Executable;
             processStartInfo.Arguments = "--list-cameras 2";
 
             process = new Process();
@@ -269,7 +271,7 @@ namespace OpenSee
             processStartInfo.RedirectStandardInput = true;
             processStartInfo.RedirectStandardError = true;
             processStartInfo.UseShellExecute = false;
-            processStartInfo.FileName = Application.streamingAssetsPath + exePath;
+            processStartInfo.FileName = Application.streamingAssetsPath + trackerInfo.Executable;
             processStartInfo.Arguments = "--benchmark 1 --priority 4 --max-threads " + threads.ToString();
 
             process = new Process();
@@ -392,7 +394,7 @@ namespace OpenSee
                 processStartInfo.RedirectStandardInput = true;
                 processStartInfo.RedirectStandardError = true;
                 processStartInfo.UseShellExecute = false;
-                processStartInfo.FileName = Path.Combine(Application.persistentDataPath, "trackers", "opensee", exePath);
+                processStartInfo.FileName = Path.Combine(Application.persistentDataPath, "trackers", "opensee", trackerInfo.Executable);
                 processStartInfo.Arguments = argumentString;
 
                 trackerSB = new StringBuilder();
@@ -425,10 +427,10 @@ namespace OpenSee
             }
             else
             {
-                string dir = Path.GetDirectoryName(Application.streamingAssetsPath + exePath);
+                string dir = Path.GetDirectoryName(Application.streamingAssetsPath + trackerInfo.Executable);
                 string outputLog = Application.persistentDataPath + "/" + pinvokeStdOut;
                 string errorLog = Application.persistentDataPath + "/" + pinvokeStdErr;
-                OpenSeeProcessInterface.Start(Application.streamingAssetsPath + exePath, "facetracker " + argumentString, dir, true, outputLog, errorLog, out processHandle, out processStdOut, out processStdErr);
+                OpenSeeProcessInterface.Start(Application.streamingAssetsPath + trackerInfo.Executable, "facetracker " + argumentString, dir, true, outputLog, errorLog, out processHandle, out processStdOut, out processStdErr);
                 if (processHandle != System.IntPtr.Zero)
                 {
                     job.AddProcess(processHandle);
@@ -477,6 +479,7 @@ namespace OpenSee
 
         public void Start()
         {
+            trackerInfo = TrackerManager.GetTracker(Tracker.OpenSee);
             TrackerSettings = (OpenSeeTrackerSettings)ApplicationPersistence.AppSettings.Trackers[Tracker.OpenSee];
             if (TrackerSettings.UseLocalTracker && ApplicationPersistence.AppSettings.Tracker == Tracker.OpenSee)
                 StartTracker();

@@ -119,7 +119,7 @@ namespace AvatarViewer.Ui.Settings
         public void OnIncreasedPriorityValueChanged(bool state)
         {
             Settings.IncreasedPriority = state;
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE_WIN
             using (var p = Process.GetCurrentProcess())
                 p.PriorityClass = state ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
 #endif
