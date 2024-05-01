@@ -23,9 +23,13 @@ namespace AvatarViewer.Trackers
         {
             PersistentPath = persistentPath;
             TemporaryPath = temporaryPath;
-            Client = new HttpClient();
-            Client.BaseAddress = new Uri("https://s3.guerra24.net/projects/avatarviewer/trackers/");
+            Client = new HttpClient
+            {
+                BaseAddress = new Uri("https://s3.guerra24.net/projects/avatarviewer/trackers/")
+            };
         }
+
+        public static TrackerInfo GetTracker(Tracker tracker) => Trackers[tracker];
 
         public static async Task Download(Tracker tracker)
         {
@@ -163,7 +167,6 @@ namespace AvatarViewer.Trackers
             processStartInfo.WorkingDirectory = workingDirectory;
 
             var process = new Process();
-            process.PriorityClass = settings.IncreasedPriority ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
             process.StartInfo = processStartInfo;
             process.EnableRaisingEvents = true;
             process.OutputDataReceived += (sender, e) => UnityEngine.Debug.Log($"{e.Data}\n");
@@ -171,7 +174,9 @@ namespace AvatarViewer.Trackers
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-
+#if UNITY_STANDALONE_WIN
+            process.PriorityClass = settings.IncreasedPriority ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
+#endif
             return new TrackerInstance(process);
         }
     }
