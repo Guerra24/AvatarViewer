@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using AvatarViewer.Trackers;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UniGLTF;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using VRM;
@@ -64,9 +67,7 @@ namespace AvatarViewer
                     _progressBar.value = baseProgress;
                     await UniTask.Yield();
                     await UniTask.NextFrame();
-                    GltfData data = new AutoGltfFileParser(avatar.Path).Parse();
-                    var vrm = new VRMData(data);
-                    ApplicationState.VrmData.Add(avatar.Guid, vrm);
+                    ApplicationState.VrmData.Add(avatar.Guid, new VRMImporterContext(new VRMData(new AutoGltfFileParser(avatar.Path).Parse())));
                     await UniTask.Yield();
                     await UniTask.NextFrame();
                 }
@@ -86,6 +87,25 @@ namespace AvatarViewer
                 await UniTask.SwitchToThreadPool();
                 await TrackerManager.DownloadAll();
                 await UniTask.SwitchToMainThread();
+            }
+
+            await UniTask.Yield();
+            await UniTask.NextFrame();
+            {
+                foreach (var kvp in ApplicationPersistence.AppSettings.Rewards)
+                {
+                    if (kvp.Value is ItemReward reward && reward.Sound == ItemRewardSound.Custom && !ApplicationState.ExternalAudios.ContainsKey(reward.SoundPath))
+                    {
+                        Debug.Log($"Loading sound {reward.SoundPath}");
+                        if (File.Exists(reward.SoundPath))
+                        {
+                            using var request = UnityWebRequestMultimedia.GetAudioClip($"file://{reward.SoundPath}", AudioType.WAV);
+                            await request.SendWebRequest();
+                            if (request.result == UnityWebRequest.Result.Success)
+                                ApplicationState.ExternalAudios.Add(reward.SoundPath, DownloadHandlerAudioClip.GetContent(request));
+                        }
+                    }
+                }
             }
 
             await UniTask.Yield();

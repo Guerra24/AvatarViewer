@@ -38,6 +38,8 @@ namespace AvatarViewer.Twitch
             TwitchAPI.Settings.ClientId = Manager.ClientId;
             PubSub.OnPubSubServiceConnected += PubSub_OnPubSubServiceConnected;
             PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
+            PubSub.OnPubSubServiceClosed += PubSub_OnPubSubServiceClosed;
+            PubSub.OnPubSubServiceError += PubSub_OnPubSubServiceError;
         }
 
         public async UniTask Init()
@@ -55,7 +57,7 @@ namespace AvatarViewer.Twitch
             await request.SendWebRequest();
             if (request.result == UnityWebRequest.Result.Success)
             {
-                ProfileImageTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                ProfileImageTexture = DownloadHandlerTexture.GetContent(request);
                 ProfileImage = Sprite.Create(ProfileImageTexture, new Rect(0, 0, ProfileImageTexture.width, ProfileImageTexture.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
             }
 
@@ -76,6 +78,18 @@ namespace AvatarViewer.Twitch
         {
             Debug.Log("Connected");
             PubSub.SendTopics(PlayerPrefs.GetString("TwitchAccessToken"));
+        }
+
+        private void PubSub_OnPubSubServiceClosed(object sender, EventArgs e)
+        {
+            Debug.Log("Disconnected");
+        }
+
+        private async void PubSub_OnPubSubServiceError(object sender, OnPubSubServiceErrorArgs e)
+        {
+            Debug.LogException(e.Exception);
+            await Task.Delay(10000);
+            PubSub.Connect();
         }
 
         private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)

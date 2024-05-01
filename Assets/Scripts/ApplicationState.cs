@@ -22,7 +22,9 @@ namespace AvatarViewer
 
         public static Dictionary<Guid, LoadedAvatar> AvatarBundles { get; } = new();
 
-        public static Dictionary<Guid, VRMData> VrmData { get; } = new();
+        public static Dictionary<Guid, VRMImporterContext> VrmData { get; } = new();
+
+        public static Dictionary<string, AudioClip> ExternalAudios { get; } = new();
     }
 
     public static class ApplicationPersistence
@@ -83,7 +85,15 @@ namespace AvatarViewer
         public bool IncreasedPriority { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public LipSyncProvider LipSyncProvider { get; set; } = LipSyncProvider.uLipSync;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LipSyncProfile LipSyncProfile { get; set; } = LipSyncProfile.Default;
+        public float Volume { get; set; } = 1.0f;
 
+    }
+
+    public enum LipSyncProfile
+    {
+        Default, Female, Male, Custom
     }
 
     public enum AntiAliasing
@@ -281,6 +291,7 @@ namespace AvatarViewer
         [JsonConverter(typeof(StringEnumConverter))]
         public ItemRewardAsset Asset { get; set; } = ItemRewardAsset.Box;
         public string AssetPath { get; set; } = "";
+        public float Volume { get; set; } = 1.0f;
         [JsonConverter(typeof(StringEnumConverter))]
         public ItemRewardSound Sound { get; set; } = ItemRewardSound.Cardboard;
         public string SoundPath { get; set; } = "";

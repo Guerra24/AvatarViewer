@@ -36,8 +36,12 @@ namespace AvatarViewer
         public Transform CameraPosition;
         [Header("Rewards")]
         public Transform Rewards;
-        [Header("uLipSync Profile")]
-        public Profile Profile;
+        [Header("uLipSync Profile Default")]
+        public Profile ProfileDefault;
+        [Header("uLipSync Profile Female")]
+        public Profile ProfileFemale;
+        [Header("uLipSync Profile Male")]
+        public Profile ProfileMale;
 
         private PlayableGraph graph;
         private AnimationMixerPlayable mixer;
@@ -76,12 +80,10 @@ namespace AvatarViewer
             }
             else
             {
-                using (var loader = new VRMImporterContext(ApplicationState.VrmData[ApplicationState.CurrentAvatar.Guid]))
-                {
-                    vrm = loader.Load();
-                    vrm.ShowMeshes();
-                    vrm.EnableUpdateWhenOffscreen();
-                }
+
+                vrm = ApplicationState.VrmData[ApplicationState.CurrentAvatar.Guid].Load();
+                vrm.ShowMeshes();
+                vrm.EnableUpdateWhenOffscreen();
 
                 avatar = vrm.gameObject;
             }
@@ -116,6 +118,32 @@ namespace AvatarViewer
                     sc.radius = 0.1f;
                 }
 
+            }
+
+            var chest = animator.GetBoneTransform(HumanBodyBones.Chest);
+
+            if (!neck.gameObject.TryGetComponent<CapsuleCollider>(out var _))
+            {
+                var cc = neck.gameObject.AddComponent<CapsuleCollider>();
+                if (neck.gameObject.TryGetComponent<VRMSpringBoneColliderGroup>(out var collider) && collider.Colliders.Length > 0)
+                {
+                    var coll = collider.Colliders.First();
+                    cc.radius = coll.Radius;
+                    cc.center = coll.Offset;
+                }
+                else
+                {
+                    cc.radius = 0.04f;
+                }
+                cc.height = head.position.y - chest.position.y;
+            }
+
+            if (!chest.gameObject.TryGetComponent<CapsuleCollider>(out var _))
+            {
+                var cc = chest.gameObject.AddComponent<CapsuleCollider>();
+                var hips = animator.GetBoneTransform(HumanBodyBones.Hips);
+                cc.radius = 0.08f;
+                cc.height = head.position.y - hips.position.y;
             }
 
             var leftWrist = animator.GetBoneTransform(HumanBodyBones.LeftHand);
@@ -161,7 +189,20 @@ namespace AvatarViewer
             {
                 var lipSync = avatar.AddComponent<uLipSync.uLipSync>();
                 lipSync.outputSoundGain = 0;
-                lipSync.profile = Profile;
+                switch (ApplicationPersistence.AppSettings.LipSyncProfile)
+                {
+                    case LipSyncProfile.Default:
+                        lipSync.profile = ProfileDefault;
+                        break;
+                    case LipSyncProfile.Female:
+                        lipSync.profile = ProfileFemale;
+                        break;
+                    case LipSyncProfile.Male:
+                        lipSync.profile = ProfileMale;
+                        break;
+                    case LipSyncProfile.Custom:
+                        break;
+                }
 
                 avatar.AddComponent<AudioSource>();
                 var lipSyncMic = avatar.AddComponent<uLipSyncMicrophone>();

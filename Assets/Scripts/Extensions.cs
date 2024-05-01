@@ -1,20 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using TMPro;
 using UnityEngine;
-
-
-public static class AssetBundleCreateRequestExtensions
-{
-
-    public static TaskAwaiter<AssetBundle> GetAwaiter(this AssetBundleCreateRequest request)
-    {
-        var tcs = new TaskCompletionSource<AssetBundle>();
-        request.completed += (_) => tcs.SetResult(request.assetBundle);
-        return tcs.Task.GetAwaiter();
-    }
-
-}
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public static class FloatExtensions
 {
@@ -24,4 +11,21 @@ public static class FloatExtensions
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
+}
+
+public static class UIExtensions
+{
+    public static void SetupSlider(this GameObject root, UnityAction<float> sliderEvent)
+    {
+        var text = root.transform.Find("Content/Text").gameObject.GetComponent<TMP_Text>();
+        var slider = root.transform.Find("Content/Slider").gameObject.GetComponent<Slider>();
+        slider.onValueChanged.AddListener(sliderEvent);
+        slider.onValueChanged.AddListener((value) => text.text = value.ToString("n2"));
+    }
+
+    public static void LoadSlider(this GameObject root, float value)
+    {
+        root.transform.Find("Content/Slider").gameObject.GetComponent<Slider>().value = value;
+        root.transform.Find("Content/Text").gameObject.GetComponent<TMP_Text>().text = value.ToString("n2");
+    }
 }

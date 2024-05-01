@@ -20,12 +20,11 @@ namespace AvatarViewer.Ui
             }
         }
 
-        public async void CreateItem(Avatar avatar)
+        public void CreateItem(Avatar avatar)
         {
             var item = Instantiate(_template, this.transform, false);
 
-            VRMMetaObject meta = null;
-
+            VRMMetaObject meta;
             if (!avatar.Vrm)
             {
                 var bundle = ApplicationState.AvatarBundles[avatar.Guid];
@@ -33,8 +32,7 @@ namespace AvatarViewer.Ui
             }
             else
             {
-                using (var loader = new VRMImporterContext(ApplicationState.VrmData[avatar.Guid]))
-                    meta = await loader.ReadMetaAsync(createThumbnail: true);
+                meta = ApplicationState.VrmData[avatar.Guid].ReadMeta(createThumbnail: true);
             }
 
             var thumb = meta.Thumbnail;

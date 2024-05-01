@@ -121,30 +121,34 @@
       }
     },
     "com.vrmc.gltf": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.89.0",
+      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.121.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.vrmc.vrmshaders": "0.89.0"
+        "com.vrmc.vrmshaders": "0.121.0",
+        "com.unity.modules.animation": "1.0.0"
       },
-      "hash": "947094cf4cdb5c1ea155c7c181fd97c7b56aa56e"
+      "hash": "640fabea73060227c33d0e4386e0ba504a99c3e4"
     },
     "com.vrmc.univrm": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM#v0.89.0",
+      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM#v0.121.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.vrmc.vrmshaders": "0.89.0",
-        "com.vrmc.gltf": "0.89.0"
+        "com.vrmc.vrmshaders": "0.121.0",
+        "com.vrmc.gltf": "0.121.0",
+        "com.unity.ugui": "1.0.0"
       },
-      "hash": "947094cf4cdb5c1ea155c7c181fd97c7b56aa56e"
+      "hash": "640fabea73060227c33d0e4386e0ba504a99c3e4"
     },
     "com.vrmc.vrmshaders": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.89.0",
+      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.121.0",
       "depth": 0,
       "source": "git",
-      "dependencies": {},
-      "hash": "947094cf4cdb5c1ea155c7c181fd97c7b56aa56e"
+      "dependencies": {
+        "com.unity.modules.imageconversion": "1.0.0"
+      },
+      "hash": "640fabea73060227c33d0e4386e0ba504a99c3e4"
     },
     "com.yasirkula.simplefilebrowser": {
       "version": "https://github.com/yasirkula/UnitySimpleFileBrowser.git",

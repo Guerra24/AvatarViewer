@@ -39,19 +39,19 @@ namespace AvatarViewer.Ui.Settings
 
             Avatar = ApplicationState.CurrentAvatar;
             SetupToggle(MirrorMotion, (state) => Avatar.Settings.Mirror = state);
-            SetupSlider(TranslationScale, (value) => Avatar.Settings.TranslationScale = value);
-            SetupSlider(Smoothing, (value) => Avatar.Settings.Smoothing = value);
+            TranslationScale.SetupSlider((value) => Avatar.Settings.TranslationScale = value);
+            Smoothing.SetupSlider((value) => Avatar.Settings.Smoothing = value);
             SetupToggle(DriftBack, (state) => Avatar.Settings.DriftBack = state);
             SetupToggle(AutoBlink, (state) => Avatar.Settings.AutoBlink = state);
-            SetupSlider(BlinkSmoothing, (value) => Avatar.Settings.BlinkSmoothing = value);
-            SetupSlider(EyebrowStrength, (value) => Avatar.Settings.EyebrowStrength = value);
-            SetupSlider(EyebrowOffset, (value) => Avatar.Settings.EyebrowZero = value);
-            SetupSlider(EyebrowSensitivity, (value) => Avatar.Settings.EyebrowSensitivity = value);
-            SetupSlider(GazeSmoothing, (value) => Avatar.Settings.GazeSmoothing = value);
-            SetupSlider(GazeSensitivity, (value) => Avatar.Settings.GazeSensitivity = value);
-            SetupSlider(GazeStrength, (value) => Avatar.Settings.GazeStrength = value);
-            SetupSlider(GazeOffsetX, (value) => Avatar.Settings.GazeHorizontalOffset = value);
-            SetupSlider(GazeOffsetY, (value) => Avatar.Settings.GazeVerticalOffset = value);
+            BlinkSmoothing.SetupSlider((value) => Avatar.Settings.BlinkSmoothing = value);
+            EyebrowStrength.SetupSlider((value) => Avatar.Settings.EyebrowStrength = value);
+            EyebrowOffset.SetupSlider((value) => Avatar.Settings.EyebrowZero = value);
+            EyebrowSensitivity.SetupSlider((value) => Avatar.Settings.EyebrowSensitivity = value);
+            GazeSmoothing.SetupSlider((value) => Avatar.Settings.GazeSmoothing = value);
+            GazeSensitivity.SetupSlider((value) => Avatar.Settings.GazeSensitivity = value);
+            GazeStrength.SetupSlider((value) => Avatar.Settings.GazeStrength = value);
+            GazeOffsetX.SetupSlider((value) => Avatar.Settings.GazeHorizontalOffset = value);
+            GazeOffsetY.SetupSlider((value) => Avatar.Settings.GazeVerticalOffset = value);
         }
 
         private void Start()
@@ -85,30 +85,20 @@ namespace AvatarViewer.Ui.Settings
         private void Load()
         {
             LoadToggle(MirrorMotion, Avatar.Settings.Mirror);
-            LoadSlider(TranslationScale, Avatar.Settings.TranslationScale);
-            LoadSlider(Smoothing, Avatar.Settings.Smoothing);
+            TranslationScale.LoadSlider(Avatar.Settings.TranslationScale);
+            Smoothing.LoadSlider(Avatar.Settings.Smoothing);
             LoadToggle(DriftBack, Avatar.Settings.DriftBack);
             LoadToggle(AutoBlink, Avatar.Settings.AutoBlink);
-            LoadSlider(BlinkSmoothing, Avatar.Settings.BlinkSmoothing);
-            LoadSlider(EyebrowStrength, Avatar.Settings.EyebrowStrength);
-            LoadSlider(EyebrowOffset, Avatar.Settings.EyebrowZero);
-            LoadSlider(EyebrowSensitivity, Avatar.Settings.EyebrowSensitivity);
-            LoadSlider(GazeSmoothing, Avatar.Settings.GazeSmoothing);
-            LoadSlider(GazeSensitivity, Avatar.Settings.GazeSensitivity);
-            LoadSlider(GazeStrength, Avatar.Settings.GazeStrength);
-            LoadSlider(GazeOffsetX, Avatar.Settings.GazeHorizontalOffset);
-            LoadSlider(GazeOffsetY, Avatar.Settings.GazeVerticalOffset);
+            BlinkSmoothing.LoadSlider(Avatar.Settings.BlinkSmoothing);
+            EyebrowStrength.LoadSlider(Avatar.Settings.EyebrowStrength);
+            EyebrowOffset.LoadSlider(Avatar.Settings.EyebrowZero);
+            EyebrowSensitivity.LoadSlider(Avatar.Settings.EyebrowSensitivity);
+            GazeSmoothing.LoadSlider(Avatar.Settings.GazeSmoothing);
+            GazeSensitivity.LoadSlider(Avatar.Settings.GazeSensitivity);
+            GazeStrength.LoadSlider(Avatar.Settings.GazeStrength);
+            GazeOffsetX.LoadSlider(Avatar.Settings.GazeHorizontalOffset);
+            GazeOffsetY.LoadSlider(Avatar.Settings.GazeVerticalOffset);
         }
-
-        private void SetupSlider(GameObject root, UnityAction<float> sliderEvent)
-        {
-            var text = root.transform.Find("Content/Text").gameObject.GetComponent<TMP_Text>();
-            var slider = root.transform.Find("Content/Slider").gameObject.GetComponent<Slider>();
-            slider.onValueChanged.AddListener(sliderEvent);
-            slider.onValueChanged.AddListener((value) => text.text = value.ToString("n2"));
-        }
-
-        private void LoadSlider(GameObject root, float value) => root.transform.Find("Content/Slider").gameObject.GetComponent<Slider>().value = value;
 
         private void SetupToggle(GameObject root, UnityAction<bool> toggleEvent)
         {

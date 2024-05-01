@@ -100,26 +100,19 @@ namespace AvatarViewer.Ui
             }
             else
             {
-                GltfData data = new AutoGltfFileParser(path).Parse();
-                var vrm = new VRMData(data);
-                using (var loader = new VRMImporterContext(vrm))
-                {
-                    var metaTask = loader.ReadMetaAsync();
-                    while (!metaTask.IsCompleted)
-                        yield return null;
-                    var meta = metaTask.Result;
+                var loader = new VRMImporterContext(new VRMData(new AutoGltfFileParser(path).Parse()));
+                var meta = loader.ReadMeta();
 
-                    var avatar = new Avatar(meta.Title, path, true);
-                    ApplicationPersistence.AppSettings.Avatars.Add(avatar);
-                    ApplicationState.VrmData.Add(avatar.Guid, vrm);
-                    Debug.Log($"Added {meta.Title}");
+                var avatar = new Avatar(meta.Title, path, true);
+                ApplicationPersistence.AppSettings.Avatars.Add(avatar);
+                ApplicationState.VrmData.Add(avatar.Guid, loader);
+                Debug.Log($"Added {meta.Title}");
 
-                    ApplicationPersistence.Save();
+                ApplicationPersistence.Save();
 
-                    List.CreateItem(avatar);
+                List.CreateItem(avatar);
 
-                    Destroy(meta);
-                }
+                Destroy(meta);
             }
         }
 

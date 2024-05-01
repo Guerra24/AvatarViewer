@@ -2,6 +2,7 @@ using System;
 using AvatarViewer.Twitch;
 using TwitchLib.PubSub.Events;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace AvatarViewer
 {
@@ -16,6 +17,8 @@ namespace AvatarViewer
         public Transform Right;
 
         public GameObject Box;
+
+        public AudioResource Cardboard;
 
         void Start()
         {
@@ -41,6 +44,16 @@ namespace AvatarViewer
         private void SetupReward(GameObject gameObject, Transform spawnPoint, ItemReward reward)
         {
             gameObject.AddComponent<RewardController>();
+            var @as = gameObject.AddComponent<AudioSource>();
+            if (reward.Sound == ItemRewardSound.Custom)
+            {
+                if (ApplicationState.ExternalAudios.TryGetValue(reward.SoundPath, out var clip))
+                    @as.clip = clip;
+            }
+            else
+                @as.resource = GetAudio(reward.Sound);
+            @as.volume = reward.Volume * ApplicationPersistence.AppSettings.Volume;
+
             gameObject.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
             var rigidbody = gameObject.GetComponent<Rigidbody>();
             rigidbody.velocity = spawnPoint.forward.normalized * 5;
@@ -69,7 +82,28 @@ namespace AvatarViewer
                 case ItemRewardSpawnPoint.Right:
                     return Right;
                 case ItemRewardSpawnPoint.Random:
+                    switch (UnityEngine.Random.Range(0, 1.0f))
+                    {
+                        case <= 0.25f:
+                            return Above;
+                        case <= 0.5f:
+                            return Front;
+                        case <= 0.75f:
+                            return Left;
+                        case <= 1.0f:
+                            return Right;
+                    }
                     break;
+            }
+            throw new Exception();
+        }
+
+        private AudioResource GetAudio(ItemRewardSound sound)
+        {
+            switch (sound)
+            {
+                case ItemRewardSound.Cardboard:
+                    return Cardboard;
             }
             throw new Exception();
         }

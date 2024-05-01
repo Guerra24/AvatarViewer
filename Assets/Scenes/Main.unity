@@ -338,6 +338,7 @@ MonoBehaviour:
   Left: {fileID: 2055562812}
   Right: {fileID: 1708866104}
   Box: {fileID: 4635790230465575798, guid: 40e23b62cc9ebfe4a986b9d73665a741, type: 3}
+  Cardboard: {fileID: 8300000, guid: 2178db9b6b0807e459a338ac71ceb539, type: 3}
 --- !u!114 &93356935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2629,6 +2630,7 @@ MonoBehaviour:
   IFOV: {fileID: 1401010506}
   Absolute: {fileID: 1406994202}
   Camera: {fileID: 963194227}
+  Dialog: {fileID: 5870148006066236234, guid: 929a948e7e667ca4abbe0284823e3ed5, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5219,7 +5221,9 @@ MonoBehaviour:
   TPose: {fileID: 7400000, guid: 3293cdd72fddb9e428a98388947b4697, type: 2}
   CameraPosition: {fileID: 1248007576}
   Rewards: {fileID: 93356933}
-  Profile: {fileID: 11400000, guid: 04d8d7db6114a384aaabeb1d02dd2013, type: 2}
+  ProfileDefault: {fileID: 11400000, guid: 0beeb56a431ea1646bb55ff6c6fc5a62, type: 2}
+  ProfileFemale: {fileID: 11400000, guid: 04d8d7db6114a384aaabeb1d02dd2013, type: 2}
+  ProfileMale: {fileID: 11400000, guid: e7bee847b0146493d97aceaf14bb2903, type: 2}
 --- !u!4 &1394971408
 Transform:
   m_ObjectHideFlags: 0

@@ -6,14 +6,19 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace AvatarViewer.Ui.Settings
 {
-    public class QualityPage : BaseSettingsPage
+    public class GeneralPage : BaseSettingsPage
     {
 
         private AppSettings Settings => ApplicationPersistence.AppSettings;
 
-        public TMP_Dropdown AntiAliasing;
-        public TMP_Dropdown MSAALevel;
-        public TMP_Dropdown ShadowQuality;
+        [SerializeField]
+        private GameObject Volume;
+        [SerializeField]
+        private TMP_Dropdown AntiAliasing;
+        [SerializeField]
+        private TMP_Dropdown MSAALevel;
+        [SerializeField]
+        private TMP_Dropdown ShadowQuality;
 
         private PostProcessLayer PostProcessLayer;
 
@@ -33,6 +38,8 @@ namespace AvatarViewer.Ui.Settings
             ShadowQuality.onValueChanged.AddListener(OnShadowQualityValueChanged);
             if (Camera.main.gameObject.TryGetComponent<PostProcessLayer>(out var component))
                 PostProcessLayer = component;
+
+            Volume.SetupSlider((value) => Settings.Volume = value);
         }
 
         private void Start()
@@ -41,6 +48,8 @@ namespace AvatarViewer.Ui.Settings
             ShadowQuality.value = (int)Settings.ShadowResolution;
 
             MSAALevel.value = MSAALevel.options.FindIndex(o => ((IdDropdownData)o).id == Settings.MSAALevel);
+
+            Volume.LoadSlider(Settings.Volume);
         }
 
         private void OnAntiAliasingValueChanged(int value)

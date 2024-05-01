@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 294fa040967fa6146a097aaff687303b,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.35
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 294fa040967fa6146a097aaff687303b,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.35
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 294fa040967fa6146a097aaff687303b,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.35
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 294fa040967fa6146a097aaff687303b,
         type: 3}
@@ -126,7 +126,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4635790230465575798}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -164,7 +164,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.02, z: 1}
+  m_Size: {x: 1.04, y: 0.05, z: 1}
   m_Center: {x: 0, y: 0.495, z: 0}
 --- !u!65 &975068250158876074
 BoxCollider:
@@ -185,7 +185,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.02, z: 1}
+  m_Size: {x: 1.04, y: 0.05, z: 1}
   m_Center: {x: 0, y: -0.495, z: 0}
 --- !u!65 &964095973049904394
 BoxCollider:
@@ -206,7 +206,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02, y: 1, z: 1}
+  m_Size: {x: 0.05, y: 1.04, z: 1}
   m_Center: {x: 0.495, y: 0, z: 0}
 --- !u!65 &4564894521642420021
 BoxCollider:
@@ -227,7 +227,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02, y: 1, z: 1}
+  m_Size: {x: 0.05, y: 1.04, z: 1}
   m_Center: {x: -0.495, y: 0, z: 0}
 --- !u!65 &3151379182292300971
 BoxCollider:
@@ -248,5 +248,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.02}
+  m_Size: {x: 1.04, y: 1.04, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0.495}

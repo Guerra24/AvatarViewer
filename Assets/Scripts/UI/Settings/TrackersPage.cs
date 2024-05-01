@@ -8,23 +8,29 @@ using UnityEngine;
 
 namespace AvatarViewer.Ui.Settings
 {
-    public class TrackersPage : MonoBehaviour
+    public class TrackersPage : BaseSettingsPage
     {
-        private PageViewer _pageViewer;
 
-        public TMP_Dropdown Cameras;
-        public TMP_Dropdown CameraCaps;
-        public TMP_Dropdown Microphones;
-        public TMP_Dropdown LipSyncProvider;
-        public TMP_Dropdown Tracker;
+        [SerializeField]
+        private TMP_Dropdown Cameras;
+        [SerializeField]
+        private TMP_Dropdown CameraCaps;
+        [SerializeField]
+        private TMP_Dropdown Microphones;
+        [SerializeField]
+        private TMP_Dropdown LipSyncProvider;
+        [SerializeField]
+        private GameObject LipSyncProfileModernBase;
+        [SerializeField]
+        private TMP_Dropdown LipSyncProfile;
+        [SerializeField]
+        private TMP_Dropdown Tracker;
 
         private List<OpenSeeWebcam> _cameras;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _pageViewer = GetComponentInParent<PageViewer>();
-            _pageViewer.GoBackInitial.AddListener(SaveChanges);
-
+            base.Awake();
             _cameras = OpenSeeWebcamInfo.ListCameraDetails(false);
 
             _cameras.ForEach(c => Cameras.options.Add(new IdDropdownData(c.name, c.id)));
@@ -34,12 +40,15 @@ namespace AvatarViewer.Ui.Settings
 
             LipSyncProvider.AddOptions(Enum.GetNames(typeof(LipSyncProvider)).ToList());
 
+            LipSyncProfile.AddOptions(Enum.GetNames(typeof(LipSyncProfile)).ToList());
+
             Tracker.AddOptions(Enum.GetNames(typeof(Tracker)).ToList());
 
             Cameras.onValueChanged.AddListener(OnCamerasValueChanged);
             CameraCaps.onValueChanged.AddListener(OnCameraCapsValueChanged);
             Microphones.onValueChanged.AddListener(OnMicrophonesValueChanged);
             LipSyncProvider.onValueChanged.AddListener(OnLipSyncProviderValueChanged);
+            LipSyncProfile.onValueChanged.AddListener(OnLipSyncProfileValueChanged);
             Tracker.onValueChanged.AddListener(OnTrackerValueChanged);
         }
 
@@ -49,7 +58,9 @@ namespace AvatarViewer.Ui.Settings
             CameraCaps.value = CameraCaps.options.FindIndex(o => ((IdDropdownData)o).id == ApplicationPersistence.AppSettings.CameraCapability);
             Microphones.value = Microphones.options.FindIndex(o => o.text == ApplicationPersistence.AppSettings.Microphone);
             LipSyncProvider.value = (int)ApplicationPersistence.AppSettings.LipSyncProvider;
+            LipSyncProfile.value = (int)ApplicationPersistence.AppSettings.LipSyncProfile;
             Tracker.value = (int)ApplicationPersistence.AppSettings.Tracker;
+            LipSyncProfileModernBase.SetActive(ApplicationPersistence.AppSettings.LipSyncProvider == AvatarViewer.LipSyncProvider.uLipSync);
         }
 
         private void OnCamerasValueChanged(int value)
@@ -83,17 +94,17 @@ namespace AvatarViewer.Ui.Settings
         private void OnLipSyncProviderValueChanged(int value)
         {
             ApplicationPersistence.AppSettings.LipSyncProvider = (LipSyncProvider)value;
+            LipSyncProfileModernBase.SetActive(ApplicationPersistence.AppSettings.LipSyncProvider == AvatarViewer.LipSyncProvider.uLipSync);
+        }
+
+        private void OnLipSyncProfileValueChanged(int value)
+        {
+            ApplicationPersistence.AppSettings.LipSyncProfile = (LipSyncProfile)value;
         }
 
         private void OnTrackerValueChanged(int value)
         {
             ApplicationPersistence.AppSettings.Tracker = (Tracker)value;
-        }
-
-        private void SaveChanges()
-        {
-            _pageViewer.GoBackInitial.RemoveListener(SaveChanges);
-            ApplicationPersistence.Save();
         }
 
     }

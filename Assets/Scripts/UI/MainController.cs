@@ -40,6 +40,8 @@ namespace AvatarViewer.Ui
 
         public Camera Camera;
 
+        public GameObject Dialog;
+
         private float RotX, RotY, RotZ, PosX, PosY, PosZ, FOV;
 
         public CameraPreset CurrentCameraPreset { get; private set; }
@@ -78,10 +80,7 @@ namespace AvatarViewer.Ui
 
         private void Start()
         {
-            var preset = ApplicationPersistence.AppSettings.DefaultCameraPreset;
-            CameraPresets.value = CameraPresets.options.FindIndex(g => ((GuidDropdownData)g).guid == preset);
-            CurrentCameraPreset = ApplicationPersistence.AppSettings.CameraPresets[preset];
-            LoadPreset();
+            LoadPreset(ApplicationPersistence.AppSettings.DefaultCameraPreset);
         }
 
         private void Update()
@@ -122,21 +121,35 @@ namespace AvatarViewer.Ui
 
         private void OnAddPresetClick()
         {
-            if (string.IsNullOrEmpty(PresetName.text))
-                return;
-            ApplicationPersistence.AppSettings.CameraPresets.Add(Guid.NewGuid(), new CameraPreset { Name = PresetName.text });
-            PresetName.text = "";
+            var preset = Guid.NewGuid();
+            ApplicationPersistence.AppSettings.CameraPresets.Add(preset, new CameraPreset { Name = "New preset" });
             ReloadCameraPresets();
+            LoadPreset(preset);
         }
 
         private void OnRemovePresetClick()
         {
+            var preset = ((GuidDropdownData)CameraPresets.options[CameraPresets.value]).guid;
 
+            var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
+            var data = dialog.GetComponentInChildren<Dialog>();
+            data.SetTitle("Delete camera preset");
+            data.SetContent($"{ApplicationPersistence.AppSettings.CameraPresets[preset].Name}");
+            data.SetOnOkAction(() =>
+            {
+                ApplicationPersistence.AppSettings.CameraPresets.Remove(preset);
+                ReloadCameraPresets();
+                LoadPreset(ApplicationPersistence.AppSettings.DefaultCameraPreset);
+                ApplicationPersistence.Save();
+            });
         }
 
         public void OnSaveClick()
         {
+            var preset = ((GuidDropdownData)CameraPresets.options[CameraPresets.value]).guid;
             ApplicationPersistence.Save();
+            ReloadCameraPresets();
+            LoadPreset(preset);
         }
 
         private void OnRotationEndEdit(string _)
@@ -226,6 +239,13 @@ namespace AvatarViewer.Ui
         public void ResetAvatar()
         {
             IKTarget.calibrate = true;
+        }
+
+        private void LoadPreset(Guid preset)
+        {
+            CameraPresets.value = CameraPresets.options.FindIndex(g => ((GuidDropdownData)g).guid == preset);
+            CurrentCameraPreset = ApplicationPersistence.AppSettings.CameraPresets[preset];
+            LoadPreset();
         }
 
         private void LoadPreset()

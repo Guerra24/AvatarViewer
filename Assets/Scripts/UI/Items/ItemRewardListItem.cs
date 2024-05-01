@@ -1,24 +1,38 @@
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using SimpleFileBrowser;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace AvatarViewer.Ui.Items
 {
     public class ItemRewardListItem : RewardListItem<ItemReward>
     {
-        public TMP_Dropdown SpawnPoint;
-        public TMP_InputField Timeout;
-        public TMP_Dropdown Sound;
-        public Button PickSound;
-        public TMP_Text SoundPath;
-        public GameObject CustomSound;
-        public TMP_Dropdown Type;
-        public Button PickAsset;
-        public TMP_Text AssetPath;
-        public GameObject Asset;
+        [SerializeField]
+        private TMP_Dropdown SpawnPoint;
+        [SerializeField]
+        private TMP_InputField Timeout;
+        [SerializeField]
+        private TMP_Dropdown Sound;
+        [SerializeField]
+        private GameObject Volume;
+        [SerializeField]
+        private Button PickSound;
+        [SerializeField]
+        private TMP_Text SoundPath;
+        [SerializeField]
+        private GameObject CustomSound;
+        [SerializeField]
+        private TMP_Dropdown Type;
+        [SerializeField]
+        private Button PickAsset;
+        [SerializeField]
+        private TMP_Text AssetPath;
+        [SerializeField]
+        private GameObject Asset;
 
         protected override void Awake()
         {
@@ -32,6 +46,7 @@ namespace AvatarViewer.Ui.Items
             SpawnPoint.AddOptions(Enum.GetNames(typeof(ItemRewardSpawnPoint)).ToList());
             Sound.AddOptions(Enum.GetNames(typeof(ItemRewardSound)).ToList());
             Type.AddOptions(Enum.GetNames(typeof(ItemRewardAsset)).ToList());
+            Volume.SetupSlider((value) => Reward.Volume = value);
         }
 
         private void OnSpawnPointChanged(int item)
@@ -73,7 +88,25 @@ namespace AvatarViewer.Ui.Items
 
         private void SoundFilePicked(string[] files)
         {
-            SoundPath.text = Reward.SoundPath = files[0];
+            SoundFilePickedAsync(files[0]).Forget();
+        }
+
+        private async UniTaskVoid SoundFilePickedAsync(string file)
+        {
+            if (ApplicationState.ExternalAudios.ContainsKey(file))
+            {
+                SoundPath.text = Reward.SoundPath = file;
+            }
+            else
+            {
+                using var request = UnityWebRequestMultimedia.GetAudioClip($"file://{file}", AudioType.WAV);
+                await request.SendWebRequest();
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    SoundPath.text = Reward.SoundPath = file;
+                    ApplicationState.ExternalAudios.Add(Reward.SoundPath, DownloadHandlerAudioClip.GetContent(request));
+                }
+            }
         }
 
         private void FileCancelled() { }
@@ -89,6 +122,7 @@ namespace AvatarViewer.Ui.Items
             Type.value = (int)Reward.Asset;
             AssetPath.text = Reward.AssetPath;
             Asset.SetActive(Reward.Asset == ItemRewardAsset.Custom);
+            Volume.LoadSlider(Reward.Volume);
         }
     }
 }
