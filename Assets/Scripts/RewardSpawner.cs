@@ -56,7 +56,7 @@ namespace AvatarViewer
 
             gameObject.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
             var rigidbody = gameObject.GetComponent<Rigidbody>();
-            rigidbody.velocity = spawnPoint.forward.normalized * 5;
+            rigidbody.linearVelocity = spawnPoint.forward.normalized * 5;
         }
 
         private GameObject GetBasebject(ItemRewardAsset assetType)
