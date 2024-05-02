@@ -338,7 +338,7 @@ MonoBehaviour:
   Left: {fileID: 2055562812}
   Right: {fileID: 1708866104}
   Box: {fileID: 4635790230465575798, guid: 40e23b62cc9ebfe4a986b9d73665a741, type: 3}
-  Cardboard: {fileID: 8300000, guid: 2178db9b6b0807e459a338ac71ceb539, type: 3}
+  Cardboard: {fileID: 8300000, guid: a970f7365b0b28b4bbda825ef77c7f39, type: 3}
 --- !u!114 &93356935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1855,7 +1855,6 @@ MonoBehaviour:
   autoListCameras: 0
   dontPrint: 0
   dynamicPort: 0
-  exePath: facetracker.exe
   modelPath: models
   commandlineOptions:
   - --silent

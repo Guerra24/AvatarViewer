@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using SimpleFileBrowser;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -73,22 +72,17 @@ namespace AvatarViewer.Ui.Items
 
         private void OnPickAssetClick()
         {
-            FileBrowser.ShowLoadDialog(AssetFilePicked, FileCancelled, FileBrowser.PickMode.Files);
-        }
-
-        private void AssetFilePicked(string[] files)
-        {
-            AssetPath.text = Reward.AssetPath = files[0];
+            var result = NativeFileDialogSharp.Dialog.FileOpen();
+            if (result.IsOk)
+                AssetPath.text = Reward.AssetPath = result.Path;
         }
 
         private void OnPickSoundClick()
         {
-            FileBrowser.ShowLoadDialog(SoundFilePicked, FileCancelled, FileBrowser.PickMode.Files);
-        }
+            var result = NativeFileDialogSharp.Dialog.FileOpen("wav");
+            if (result.IsOk)
+                SoundFilePickedAsync(result.Path).Forget();
 
-        private void SoundFilePicked(string[] files)
-        {
-            SoundFilePickedAsync(files[0]).Forget();
         }
 
         private async UniTaskVoid SoundFilePickedAsync(string file)

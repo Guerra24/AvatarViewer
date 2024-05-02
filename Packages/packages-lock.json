@@ -150,13 +150,6 @@
       },
       "hash": "640fabea73060227c33d0e4386e0ba504a99c3e4"
     },
-    "com.yasirkula.simplefilebrowser": {
-      "version": "https://github.com/yasirkula/UnitySimpleFileBrowser.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "45c8f4494bc2feb6da573423d46141c164cc9337"
-    },
     "jp.keijiro.klak.spout": {
       "version": "2.0.3",
       "depth": 0,

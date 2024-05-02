@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.IO;
 using Cysharp.Threading.Tasks;
-using SimpleFileBrowser;
 using UniGLTF;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -36,7 +35,9 @@ namespace AvatarViewer.Ui
 
         public void AddAvatar()
         {
-            FileBrowser.ShowLoadDialog(FilePicked, FileCanceled, FileBrowser.PickMode.Files);
+            var result = NativeFileDialogSharp.Dialog.FileOpen("vsfavatar,vrm");
+            if (result.IsOk)
+                StartCoroutine(AddAvatar(result.Path));
         }
 
         public void RemoveAvatar()
@@ -52,11 +53,6 @@ namespace AvatarViewer.Ui
                 bundle.Bundle.UnloadAsync(true);
             ApplicationPersistence.AppSettings.Avatars.Remove(avatar);
             ApplicationPersistence.Save();
-        }
-
-        private void FilePicked(string[] files)
-        {
-            StartCoroutine(AddAvatar(files[0]));
         }
 
         IEnumerator AddAvatar(string path)
