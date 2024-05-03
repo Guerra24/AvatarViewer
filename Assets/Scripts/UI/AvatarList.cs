@@ -35,11 +35,14 @@ namespace AvatarViewer.Ui
                 meta = ApplicationState.VrmData[avatar.Guid].ReadMeta(createThumbnail: true);
             }
 
-            var thumb = meta.Thumbnail;
 
             item.GetComponent<AvatarListItem>().Avatar = avatar;
 
-            item.transform.Find("Thumbnail").GetComponent<Image>().sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
+            if (meta.Thumbnail != null)
+            {
+                var thumb = meta.Thumbnail;
+                item.transform.Find("Thumbnail").GetComponent<Image>().sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
+            }
 
             item.transform.Find("Title").GetComponent<TMP_Text>().text = avatar.Title;
         }

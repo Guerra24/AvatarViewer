@@ -101,6 +101,9 @@ namespace AvatarViewer.Ui
 
             if (SFOV.value != 0)
                 IFOV.text = (FOV += SFOV.value * 6 * Time.deltaTime).ToString();
+#if false
+            Debug.Log($"D: {Texture.desiredTextureMemory / 1024 / 1024} L: {Texture.totalTextureMemory / 1024 / 1024}");
+#endif
         }
 
         private void OnCameraPresetChanged(int value)
