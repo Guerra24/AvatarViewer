@@ -1,51 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+namespace AvatarViewer
 {
-
-    public static string Scene = "";
-
-    //private PageDrillIn PageDrillIn;
-
-    /*private void Awake()
+    public class SceneLoader : MonoBehaviour
     {
-        PageDrillIn = GetComponent<PageDrillIn>();
-        GetComponent<CanvasGroup>().alpha = 0;
-    }*/
 
-    private void Start()
-    {
-        if (string.IsNullOrEmpty(Scene))
-            return;
-        StartAsync().Forget();
-    }
+        public static Scene Scene;
 
-    private async UniTaskVoid StartAsync()
-    {
-        //await PageDrillIn.StartAnimation().ToUniTask();
+        //private PageDrillIn PageDrillIn;
 
-        //PageDrillIn.Easing = AnimationEasing.EaseOut;
-
-        await UniTask.Yield();
-        await UniTask.NextFrame();
+        /*private void Awake()
         {
-            var op = SceneManager.LoadSceneAsync(Scene);
-            op.allowSceneActivation = false;
+            PageDrillIn = GetComponent<PageDrillIn>();
+            GetComponent<CanvasGroup>().alpha = 0;
+        }*/
 
-            Scene = "";
+        private void Start()
+        {
+            StartAsync().Forget();
+        }
 
-            while (!op.isDone)
+        private async UniTaskVoid StartAsync()
+        {
+            //await PageDrillIn.StartAnimation().ToUniTask();
+
+            //PageDrillIn.Easing = AnimationEasing.EaseOut;
+
+            await UniTask.Yield();
+            await UniTask.NextFrame();
             {
-                if (op.progress >= 0.9f)
+                var scene = "";
+                switch (Scene)
                 {
-                    //await PageDrillIn.StartAnimation().ToUniTask();
-                    op.allowSceneActivation = true;
+                    case Scene.Menu:
+                        scene = "Scenes/Menu";
+
+                        var tasks = new List<UniTask>();
+                        foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(v => !ApplicationState.AvatarBundles.ContainsKey(v.Guid) && !v.Vrm).ToList())
+                            tasks.Add(AssetBundle.LoadFromFileAsync(avatar.Path).ToUniTask().ContinueWith(async (assetBundle) => await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask().ContinueWith((asset) => ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject)))));
+                        await UniTask.WhenAll(tasks);
+
+                        break;
+                    case Scene.Main:
+                        scene = "Scenes/Main";
+
+                        foreach (var bundle in ApplicationState.AvatarBundles.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
+                        {
+                            await bundle.Value.Bundle.UnloadAsync(true);
+                            ApplicationState.AvatarBundles.Remove(bundle.Key);
+                        }
+
+                        break;
                 }
-                await UniTask.Yield();
-                await UniTask.NextFrame();
+                await SceneManager.LoadSceneAsync(scene);
+                /*op.allowSceneActivation = false;
+
+                while (!op.isDone)
+                {
+                    if (op.progress >= 0.9f)
+                    {
+                        //await PageDrillIn.StartAnimation().ToUniTask();
+                        op.allowSceneActivation = true;
+                    }
+                    await UniTask.Yield();
+                    await UniTask.NextFrame();
+                }*/
             }
         }
+    }
+
+    public enum Scene
+    {
+        Menu, Main
     }
 }

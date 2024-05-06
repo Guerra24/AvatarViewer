@@ -398,7 +398,7 @@ namespace OpenSee
         void performReceptionMediapipe()
         {
             listening = true;
-            IPEndPoint senderRemote = new IPEndPoint(IPAddress.Any, 0);
+            var senderRemote = new IPEndPoint(IPAddress.Any, 0);
             while (!stopReception)
             {
                 try
@@ -451,7 +451,7 @@ namespace OpenSee
 #if !UNITY_EDITOR
         void Update()
         {
-            if (!receiveThread.IsAlive)
+            if (receiveThread != null && !receiveThread.IsAlive)
             {
                 Start();
             }

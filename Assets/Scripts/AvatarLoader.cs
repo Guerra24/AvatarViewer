@@ -26,10 +26,11 @@ namespace AvatarViewer
         public Transform HeadTarget;
         [Header("Kinematic target")]
         public Transform KinematicInterpolation;
-        [Header("Left wrist target")]
-        public Transform LeftWrist;
-        [Header("Right wrist target")]
-        public Transform RightWrist;
+        [Header("Hand tracking")]
+        public Transform LeftWristTarget;
+        public Transform LeftElbowTarget;
+        public Transform RightWristTarget;
+        public Transform RightElbowTarget;
         [Header("Default T Pose")]
         public AnimationClip TPose;
         [Header("Camera position")]
@@ -149,36 +150,58 @@ namespace AvatarViewer
             var leftWrist = animator.GetBoneTransform(HumanBodyBones.LeftHand);
             var lwik = leftWrist.gameObject.AddComponent<FastIKFabric>();
             lwik.ChainLength = 2;
-            lwik.Target = LeftWrist;
+            lwik.Target = LeftWristTarget;
+            lwik.Pole = LeftElbowTarget;
 
             var rightWrist = animator.GetBoneTransform(HumanBodyBones.RightHand);
             var rwik = rightWrist.gameObject.AddComponent<FastIKFabric>();
             rwik.ChainLength = 2;
-            rwik.Target = RightWrist;
+            rwik.Target = RightWristTarget;
+            rwik.Pole = RightElbowTarget;
 
             /*var ltd = animator.GetBoneTransform(HumanBodyBones.LeftThumbDistal).gameObject.AddComponent<FastIKFabric>();
             ltd.ChainLength = 2;
+
             var lid = animator.GetBoneTransform(HumanBodyBones.LeftIndexDistal).gameObject.AddComponent<FastIKFabric>();
             lid.ChainLength = 2;
+
             var lmd = animator.GetBoneTransform(HumanBodyBones.LeftMiddleDistal).gameObject.AddComponent<FastIKFabric>();
             lmd.ChainLength = 2;
+
             var lrd = animator.GetBoneTransform(HumanBodyBones.LeftRingDistal).gameObject.AddComponent<FastIKFabric>();
             lrd.ChainLength = 2;
+
             var lld = animator.GetBoneTransform(HumanBodyBones.LeftLittleDistal).gameObject.AddComponent<FastIKFabric>();
             lld.ChainLength = 2;*/
 
-            /*var handTracker = GetComponent<HandTracker>();
-            handTracker.LeftWrist = LeftWrist;
-            handTracker.LeftThumb = ltd.Target;
-            handTracker.LeftIndex = lid.Target;
-            handTracker.LeftMiddle = lmd.Target;
-            handTracker.LeftRing = lrd.Target;
-            handTracker.LeftPinky = lld.Target;
-            handTracker.RightWrist = RightWrist;*/
+            var handTracker = GetComponent<HandTracker>();
+            handTracker.LeftWrist = LeftWristTarget;
+            handTracker.LeftElbow = LeftElbowTarget;
 
-            /*var vrm = await VrmUtility.LoadAsync(Path.Combine(Application.streamingAssetsPath, "Dani_El_Axolote_1.3.0.vrm"));
-            vrm.ShowMeshes();
-            vrm.EnableUpdateWhenOffscreen();*/
+            handTracker.RightWrist = RightWristTarget;
+            handTracker.RightElbow = RightElbowTarget;
+
+            handTracker.AvatarLeftShoulder = animator.GetBoneTransform(HumanBodyBones.LeftUpperArm);
+
+            handTracker.AvatarLeftThumbCmc = animator.GetBoneTransform(HumanBodyBones.LeftThumbProximal);
+            handTracker.AvatarLeftIndexMcp = animator.GetBoneTransform(HumanBodyBones.LeftIndexProximal);
+            handTracker.AvatarLeftMiddleMcp = animator.GetBoneTransform(HumanBodyBones.LeftMiddleProximal);
+            handTracker.AvatarLeftRingMcp = animator.GetBoneTransform(HumanBodyBones.LeftRingProximal);
+            handTracker.AvatarLeftPinkyMcp = animator.GetBoneTransform(HumanBodyBones.LeftLittleProximal);
+
+            /*ltd.Pole = handTracker.AvatarLeftThumbPole;
+            lid.Pole = handTracker.AvatarLeftIndexPole;
+            lmd.Pole = handTracker.AvatarLeftMiddlePole;
+            lrd.Pole = handTracker.AvatarLeftRingPole;
+            lld.Pole = handTracker.AvatarLeftPinkyPole;
+
+            handTracker.AvatarLeftThumbTarget = ltd.Target;
+            handTracker.AvatarLeftIndexTarget = lid.Target;
+            handTracker.AvatarLeftMiddleTarget = lmd.Target;
+            handTracker.AvatarLeftRingTarget = lrd.Target;
+            handTracker.AvatarLeftPinkyTarget = lld.Target;*/
+
+            handTracker.AvatarRightShoulder = animator.GetBoneTransform(HumanBodyBones.RightUpperArm);
 
             var yReference = neck.position.y + ((head.position.y - neck.position.y) * 2f);
 

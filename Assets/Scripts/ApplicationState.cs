@@ -16,7 +16,7 @@ namespace AvatarViewer
 {
     public static class ApplicationState
     {
-        public static Avatar CurrentAvatar;
+        public static Avatar CurrentAvatar { get; set; }
 
         public static int RuntimeWidth, RuntimeHeight;
 
@@ -29,7 +29,11 @@ namespace AvatarViewer
 
     public static class ApplicationPersistence
     {
+#if UNITY_EDITOR
+        private static string FilePath = Path.Combine(Application.persistentDataPath, "Settings-editor.json");
+#else
         private static string FilePath = Path.Combine(Application.persistentDataPath, "Settings.json");
+#endif
 
         public static AppSettings AppSettings { get; private set; } = new AppSettings();
 

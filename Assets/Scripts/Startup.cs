@@ -47,11 +47,26 @@ namespace AvatarViewer
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;
 
-            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars)
+            var tasks = new List<UniTask>();
+            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(v => !v.Vrm).ToList())
+                tasks.Add(AssetBundle.LoadFromFileAsync(avatar.Path).ToUniTask().ContinueWith(async (assetBundle) =>
+                {
+                    baseProgress += percentPerStep;
+                    _progressBar.value = baseProgress;
+                    await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask().ContinueWith((asset) =>
+                    {
+                        ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject));
+                        baseProgress += percentPerStep;
+                        _progressBar.value = baseProgress;
+                    });
+                }));
+            await UniTask.WhenAll(tasks);
+
+            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(a => a.Vrm).ToList())
             {
                 if (!avatar.Vrm)
                 {
-                    Debug.Log($"Loading Bundle {avatar.Path}");
+                    /*Debug.Log($"Loading Bundle {avatar.Path}");
                     var assetBundle = await AssetBundle.LoadFromFileAsync(avatar.Path).ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
                     baseProgress += percentPerStep;
 
@@ -59,7 +74,7 @@ namespace AvatarViewer
                     var asset = await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
                     baseProgress += percentPerStep;
 
-                    ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject));
+                    ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject));*/
                 }
                 else
                 {

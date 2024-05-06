@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using OpenSee;
 using TMPro;
 using UnityEngine;
@@ -42,6 +43,9 @@ namespace AvatarViewer.Ui
 
         public GameObject Dialog;
 
+        [SerializeField]
+        private GameObject Background;
+
         private float RotX, RotY, RotZ, PosX, PosY, PosZ, FOV;
 
         public CameraPreset CurrentCameraPreset { get; private set; }
@@ -81,6 +85,7 @@ namespace AvatarViewer.Ui
         private void Start()
         {
             LoadPreset(ApplicationPersistence.AppSettings.DefaultCameraPreset);
+            Background.GetComponent<CanvasGroup>().DOFade(0.0f, 0.2f).SetEase(Ease.OutExpo).OnComplete(() => Background.SetActive(false));
         }
 
         private void Update()
@@ -235,7 +240,9 @@ namespace AvatarViewer.Ui
 
         private async UniTaskVoid BackAsync()
         {
-            SceneLoader.Scene = "Scenes/Menu";
+            Background.SetActive(true);
+            await Background.GetComponent<CanvasGroup>().DOFade(1.0f, 0.2f).SetEase(Ease.OutExpo).ToUniTask();
+            SceneLoader.Scene = Scene.Menu;
             await SceneManager.LoadSceneAsync("Scenes/Loader");
         }
 
@@ -285,6 +292,7 @@ namespace AvatarViewer.Ui
                 CameraPresets.options.Add(new GuidDropdownData(preset.Value.Name, preset.Key));
             CameraPresets.RefreshShownValue();
         }
+
     }
 
 }

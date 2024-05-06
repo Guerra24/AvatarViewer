@@ -4,12 +4,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using AvatarViewer;
 using UnityEngine;
 
 public class HandTrackerReceiver : MonoBehaviour
 {
 
-    /*private UdpClient udp;
+    private UdpClient udp;
     private Thread receiveThread = null;
     private volatile bool stopReception = false;
     public volatile HandTrackingData HandTrackingData;
@@ -25,78 +26,84 @@ public class HandTrackerReceiver : MonoBehaviour
     {
         int index = int.Parse(segments[0], CultureInfo.InvariantCulture);
         string categoryName = segments[1];
-        var wrist = ReadVector(segments[2]);
-        var thumbTip = ReadVector(segments[3]);
-        var indexTip = ReadVector(segments[4]);
-        var middleTip = ReadVector(segments[5]);
-        var ringTip = ReadVector(segments[6]);
-        var pinkyTip = ReadVector(segments[7]);
-        var indexMcp = ReadVector(segments[8]);
-        var middleMcp = ReadVector(segments[9]);
         return new HandTrackingHand
         {
             Index = index,
-            Wrist = wrist,
-            ThumbTip = thumbTip,
-            IndexTip = indexTip,
-            MiddleTip = middleTip,
-            RingTip = ringTip,
-            PinkyTip = pinkyTip,
-            IndexMcp = indexMcp,
-            MiddleMcp = middleMcp
+            Wrist = ReadVector(segments[2]),
+            ThumbCmc = ReadVector(segments[3]),
+            ThumbMcp = ReadVector(segments[4]),
+            ThumbIp = ReadVector(segments[5]),
+            ThumbTip = ReadVector(segments[6]),
+            IndexMcp = ReadVector(segments[7]),
+            IndexPip = ReadVector(segments[8]),
+            IndexDip = ReadVector(segments[9]),
+            IndexTip = ReadVector(segments[10]),
+            MiddleMcp = ReadVector(segments[11]),
+            MiddlePip = ReadVector(segments[12]),
+            MiddleDip = ReadVector(segments[13]),
+            MiddleTip = ReadVector(segments[14]),
+            RingMcp = ReadVector(segments[15]),
+            RingPip = ReadVector(segments[16]),
+            RingDip = ReadVector(segments[17]),
+            RingTip = ReadVector(segments[18]),
+            PinkyMcp = ReadVector(segments[19]),
+            PinkyPip = ReadVector(segments[20]),
+            PinkyDip = ReadVector(segments[21]),
+            PinkyTip = ReadVector(segments[22]),
         };
     }
 
     private void performReceptionMediapipe()
     {
+        var senderRemote = new IPEndPoint(IPAddress.Any, 0);
         while (!stopReception)
         {
             try
             {
-                IPEndPoint remoteEP = null;
-                byte[] data = udp.Receive(ref remoteEP);
+                byte[] data = udp.Receive(ref senderRemote);
 
-                var message = Encoding.ASCII.GetString(data);
-                var parts = message.Split('|', StringSplitOptions.RemoveEmptyEntries);
+                var packet = Encoding.ASCII.GetString(data).Split('=', StringSplitOptions.RemoveEmptyEntries);
+                if (packet[0] == "hand")
+                {
+                    var parts = packet[1].Split('|', StringSplitOptions.RemoveEmptyEntries);
 
-                 var trackingData = new HandTrackingData();
+                     var trackingData = new HandTrackingData();
 
-                 if (parts.Length > 0)
-                 {
-                     var hand = ProcessSegment(parts[0].Split('#'));
-                     if (hand.Index == 1)
-                         trackingData.Left = hand;
-                     else
-                         trackingData.Right = hand;
-                 }
-                 if (parts.Length > 1)
-                 {
-                     var hand = ProcessSegment(parts[1].Split('#'));
-                     if (hand.Index == 1)
-                         trackingData.Left = hand;
-                     else
-                         trackingData.Right = hand;
-                 }
-                 HandTrackingData = trackingData;
+                     if (parts.Length > 0)
+                     {
+                         var hand = ProcessSegment(parts[0].Split('#'));
+                         if (hand.Index == 1)
+                             trackingData.Left = hand;
+                         else
+                             trackingData.Right = hand;
+                     }
+                     if (parts.Length > 1)
+                     {
+                         var hand = ProcessSegment(parts[1].Split('#'));
+                         if (hand.Index == 1)
+                             trackingData.Left = hand;
+                         else
+                             trackingData.Right = hand;
+                     }
+                     HandTrackingData = trackingData;
+                }
+                else if (packet[0] == "body")
+                {
+                    var trackingData = new PoseTrackingData();
 
-                var trackingData = new PoseTrackingData();
+                    var segments = packet[1].Split('#', StringSplitOptions.RemoveEmptyEntries);
 
-                var segments = message.Split('#', StringSplitOptions.RemoveEmptyEntries);
+                    trackingData.RightWrist = ReadVector(segments[0]);
+                    trackingData.RightElbow = ReadVector(segments[1]);
+                    trackingData.RightShoulder = ReadVector(segments[2]);
+                    trackingData.LeftWrist = ReadVector(segments[3]);
+                    trackingData.LeftElbow = ReadVector(segments[4]);
+                    trackingData.LeftShoulder = ReadVector(segments[5]);
 
-                trackingData.LeftWrist = ReadVector(segments[0]);
-                trackingData.LeftElbow = ReadVector(segments[1]);
-                trackingData.LeftShoukder = ReadVector(segments[2]);
-                trackingData.RightWrist = ReadVector(segments[3]);
-                trackingData.RightElbow = ReadVector(segments[4]);
-                trackingData.RightShoulder = ReadVector(segments[5]);
-
-                PoseTrackingData = trackingData;
-
+                    PoseTrackingData = trackingData;
+                }
             }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
+            catch { }
         }
     }
 
@@ -104,7 +111,16 @@ public class HandTrackerReceiver : MonoBehaviour
     {
         if (udp == null)
         {
-            udp = new UdpClient(49983 + 1);
+            var tracker = ApplicationPersistence.AppSettings.Tracker;
+            var trackerSettings = ApplicationPersistence.AppSettings.Trackers[tracker];
+
+            if (!IPAddress.TryParse(trackerSettings.UseLocalTracker ? "127.0.0.1" : trackerSettings.ListenAddress, out var ip))
+            {
+                Debug.LogWarning($"Invalid ip {trackerSettings.ListenAddress}");
+                return;
+            }
+
+            udp = new UdpClient(new IPEndPoint(ip, trackerSettings.Port + 1));
             udp.Client.ReceiveTimeout = 5000;
         }
         stopReception = false;
@@ -125,7 +141,7 @@ public class HandTrackerReceiver : MonoBehaviour
         if (receiveThread != null)
         {
             stopReception = true;
-            receiveThread.Join();
+            receiveThread.Interrupt();
         }
         if (udp != null)
             udp.Dispose();
@@ -139,9 +155,9 @@ public class HandTrackerReceiver : MonoBehaviour
     void OnDestroy()
     {
         EndReceiver();
-    }*/
+    }
 }
-/*
+
 public class HandTrackingData
 {
     public HandTrackingHand Left;
@@ -152,21 +168,35 @@ public class HandTrackingHand
 {
     public int Index;
     public Vector3 Wrist;
+    public Vector3 ThumbCmc;
+    public Vector3 ThumbMcp;
+    public Vector3 ThumbIp;
     public Vector3 ThumbTip;
-    public Vector3 IndexTip;
-    public Vector3 MiddleTip;
-    public Vector3 RingTip;
-    public Vector3 PinkyTip;
     public Vector3 IndexMcp;
+    public Vector3 IndexPip;
+    public Vector3 IndexDip;
+    public Vector3 IndexTip;
     public Vector3 MiddleMcp;
+    public Vector3 MiddlePip;
+    public Vector3 MiddleDip;
+    public Vector3 MiddleTip;
+    public Vector3 RingMcp;
+    public Vector3 RingPip;
+    public Vector3 RingDip;
+    public Vector3 RingTip;
+    public Vector3 PinkyMcp;
+    public Vector3 PinkyPip;
+    public Vector3 PinkyDip;
+    public Vector3 PinkyTip;
 }
 
 public class PoseTrackingData
 {
     public Vector3 LeftWrist;
     public Vector3 LeftElbow;
-    public Vector3 LeftShoukder;
+    public Vector3 LeftShoulder;
     public Vector3 RightWrist;
     public Vector3 RightElbow;
     public Vector3 RightShoulder;
-}*/
+
+}

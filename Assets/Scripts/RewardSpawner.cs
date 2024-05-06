@@ -108,5 +108,15 @@ namespace AvatarViewer
             throw new Exception();
         }
 
+        private void OnDestroy()
+        {
+            TwitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+        }
+
+        private void OnApplicationQuit()
+        {
+            TwitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+        }
+
     }
 }

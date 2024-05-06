@@ -59,4 +59,14 @@ public class CameraRewardController : MonoBehaviour
         float _1OverAspect = 1f / Camera.aspect;
         Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(preset.FOV * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
     }
+
+    private void OnDestroy()
+    {
+        twitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+    }
+
+    private void OnApplicationQuit()
+    {
+        twitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+    }
 }
