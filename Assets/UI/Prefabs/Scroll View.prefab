@@ -348,9 +348,9 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 3
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -499,7 +499,7 @@ PrefabInstance:
     - target: {fileID: 4213744415970196551, guid: 140fb93c0f759954ab4f2469c05eec41,
         type: 3}
       propertyPath: m_Size
-      value: 0.44237918
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8391850853414517714, guid: 140fb93c0f759954ab4f2469c05eec41,
         type: 3}

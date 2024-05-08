@@ -59,7 +59,6 @@ namespace AvatarViewer
         public int Camera { get; set; } = -1;
         public int CameraCapability { get; set; } = -1;
         public string Microphone { get; set; }
-        public float MicGain { get; set; } = 2.0f;
         [JsonConverter(typeof(StringEnumConverter))]
         public Tracker Tracker { get; set; }
         public Guid DefaultCameraPreset { get; } = Guid.Parse("00000000-0000-0000-0000-000000000000");
@@ -89,10 +88,12 @@ namespace AvatarViewer
         public bool IncreasedPriority { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public LipSyncProvider LipSyncProvider { get; set; } = LipSyncProvider.uLipSync;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public LipSyncProfile LipSyncProfile { get; set; } = LipSyncProfile.Default;
         public float Volume { get; set; } = 1.0f;
-
+        public Dictionary<LipSyncProvider, LipSyncSettings> LipSyncSettings { get; } = new()
+        {
+            { LipSyncProvider.uLipSync, new uLipSyncSettings() },
+            { LipSyncProvider.OculusLipSync, new OculusLipSyncSettings() },
+        };
     }
 
     public enum LipSyncProfile
@@ -120,7 +121,22 @@ namespace AvatarViewer
         uLipSync, OculusLipSync
     }
 
-    public class TrackerSettings
+    public abstract class LipSyncSettings { }
+
+    public class uLipSyncSettings : LipSyncSettings
+    {
+        public float MinVolume { get; set; } = -1.8f;
+        public float MaxVolume { get; set; } = -0.5f;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public LipSyncProfile Profile { get; set; } = LipSyncProfile.Default;
+    }
+
+    public class OculusLipSyncSettings : LipSyncSettings
+    {
+        public float Gain { get; set; } = 2.0f;
+    }
+
+    public abstract class TrackerSettings
     {
         public bool UseLocalTracker { get; set; } = true;
         public string ListenAddress { get; set; } = "127.0.0.1";

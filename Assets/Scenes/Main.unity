@@ -5272,7 +5272,7 @@ GameObject:
   - component: {fileID: 1394971410}
   - component: {fileID: 1394971409}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: AvatarLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5290,6 +5290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3efbe08272ac1d944a9f8ea8afb63429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  avatar: {fileID: 0}
   Driver: {fileID: 419208643}
   HeadTarget: {fileID: 1992916760}
   KinematicInterpolation: {fileID: 624442254}

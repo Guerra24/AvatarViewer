@@ -18,7 +18,8 @@ namespace AvatarViewer
     public class AvatarLoader : MonoBehaviour
     {
 
-        private GameObject avatar;
+        [HideInInspector]
+        public GameObject avatar;
 
         [Header("Driver")]
         public OpenSeeVRMDriver Driver;
@@ -212,7 +213,8 @@ namespace AvatarViewer
             {
                 var lipSync = avatar.AddComponent<uLipSync.uLipSync>();
                 lipSync.outputSoundGain = 0;
-                switch (ApplicationPersistence.AppSettings.LipSyncProfile)
+                var settings = (uLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.uLipSync];
+                switch (settings.Profile)
                 {
                     case LipSyncProfile.Default:
                         lipSync.profile = ProfileDefault;
@@ -233,8 +235,8 @@ namespace AvatarViewer
 
                 var lipSyncVRM = avatar.AddComponent<uLipSyncBlendShapeVRM>();
                 lipSyncVRM.usePhonemeBlend = true;
-                lipSyncVRM.minVolume = -1.8f;
-                lipSyncVRM.maxVolume = -0.5f;
+                lipSyncVRM.minVolume = settings.MinVolume;
+                lipSyncVRM.maxVolume = settings.MaxVolume;
                 lipSyncVRM.AddBlendShape("A", "A");
                 lipSyncVRM.AddBlendShape("I", "I");
                 lipSyncVRM.AddBlendShape("U", "U");

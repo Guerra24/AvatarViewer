@@ -10,25 +10,28 @@ namespace AvatarViewer.Ui.Settings
     {
         private Avatar Avatar;
 
-        public GameObject MirrorMotion;
-        public GameObject TranslationScale;
-        public GameObject Smoothing;
-        public GameObject DriftBack;
-        public GameObject AutoBlink;
-        public GameObject BlinkSmoothing;
+        [SerializeField] private GameObject MirrorMotion;
+        [SerializeField] private GameObject TranslationScale;
+        [SerializeField] private GameObject Smoothing;
+        [SerializeField] private GameObject DriftBack;
+        [SerializeField] private GameObject AutoBlink;
+        [SerializeField] private GameObject BlinkSmoothing;
 
-        public GameObject EyebrowStrength;
-        public GameObject EyebrowOffset;
-        public GameObject EyebrowSensitivity;
-        public GameObject GazeSmoothing;
-        public GameObject GazeSensitivity;
-        public GameObject GazeStrength;
-        public GameObject GazeOffsetX;
-        public GameObject GazeOffsetY;
+        [SerializeField] private GameObject EyebrowStrength;
+        [SerializeField] private GameObject EyebrowOffset;
+        [SerializeField] private GameObject EyebrowSensitivity;
+        [SerializeField] private GameObject GazeSmoothing;
+        [SerializeField] private GameObject GazeSensitivity;
+        [SerializeField] private GameObject GazeStrength;
+        [SerializeField] private GameObject GazeOffsetX;
+        [SerializeField] private GameObject GazeOffsetY;
 
-        public TMP_Dropdown OtherAvatars;
+        [SerializeField] private TMP_InputField EyeCloseThreshold;
+        [SerializeField] private TMP_InputField EyeOpenThreshold;
 
-        public GameObject Dialog;
+        [SerializeField] private TMP_Dropdown OtherAvatars;
+
+        [SerializeField] private GameObject Dialog;
 
         protected override void Awake()
         {
@@ -52,6 +55,9 @@ namespace AvatarViewer.Ui.Settings
             GazeStrength.SetupSlider((value) => Avatar.Settings.GazeStrength = value);
             GazeOffsetX.SetupSlider((value) => Avatar.Settings.GazeHorizontalOffset = value);
             GazeOffsetY.SetupSlider((value) => Avatar.Settings.GazeVerticalOffset = value);
+
+            EyeCloseThreshold.onEndEdit.AddListener((value) => Avatar.Settings.EyeCloseThreshold = float.Parse(value));
+            EyeOpenThreshold.onEndEdit.AddListener((value) => Avatar.Settings.EyeOpenThreshold = float.Parse(value));
         }
 
         private void Start()
@@ -98,6 +104,9 @@ namespace AvatarViewer.Ui.Settings
             GazeStrength.LoadSlider(Avatar.Settings.GazeStrength);
             GazeOffsetX.LoadSlider(Avatar.Settings.GazeHorizontalOffset);
             GazeOffsetY.LoadSlider(Avatar.Settings.GazeVerticalOffset);
+
+            EyeCloseThreshold.text = Avatar.Settings.EyeCloseThreshold.ToString();
+            EyeOpenThreshold.text = Avatar.Settings.EyeOpenThreshold.ToString();
         }
 
         private void SetupToggle(GameObject root, UnityAction<bool> toggleEvent)
