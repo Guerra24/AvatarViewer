@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using OpenSee;
@@ -12,7 +13,8 @@ namespace AvatarViewer.Ui
     public class MainController : MonoBehaviour
     {
 
-        public OpenSeeIKTarget IKTarget;
+        [SerializeField] private OpenSeeIKTarget IKTarget;
+        [SerializeField] private AvatarLoader AvatarLoader;
 
         public TMP_Dropdown CameraPresets;
         public TMP_InputField PresetName;
@@ -43,6 +45,9 @@ namespace AvatarViewer.Ui
 
         public GameObject Dialog;
 
+        [SerializeField] private TMP_Dropdown OtherAvatars;
+        [SerializeField] private Button ChangeAvatar;
+
         [SerializeField]
         private GameObject Background;
 
@@ -53,6 +58,11 @@ namespace AvatarViewer.Ui
         private void Awake()
         {
             ReloadCameraPresets();
+
+            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars)
+                OtherAvatars.options.Add(new GuidDropdownData(avatar.Title, avatar.Guid));
+            OtherAvatars.RefreshShownValue();
+
             CameraPresets.onValueChanged.AddListener(OnCameraPresetChanged);
             PresetName.onEndEdit.AddListener(OnPresetNameEndEdit);
             AddPreset.onClick.AddListener(OnAddPresetClick);
@@ -80,6 +90,9 @@ namespace AvatarViewer.Ui
             IFOV.onEndEdit.AddListener(OnFOVEndEdit);
 
             Absolute.onValueChanged.AddListener(OnAbsoluteValueChanged);
+
+            ChangeAvatar.onClick.AddListener(OnChangeAvatarClick);
+
         }
 
         private void Start()
@@ -291,6 +304,12 @@ namespace AvatarViewer.Ui
             foreach (var preset in ApplicationPersistence.AppSettings.CameraPresets)
                 CameraPresets.options.Add(new GuidDropdownData(preset.Value.Name, preset.Key));
             CameraPresets.RefreshShownValue();
+        }
+
+        private void OnChangeAvatarClick()
+        {
+            ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == ((GuidDropdownData)OtherAvatars.options[OtherAvatars.value]).guid);
+            AvatarLoader.LoadAvatar().Forget();
         }
 
     }

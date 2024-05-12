@@ -5,10 +5,10 @@ namespace AvatarViewer
     public class CopyRTToCamera : MonoBehaviour
     {
         public RenderTexture Source;
+        [SerializeField] private Camera MainCamera;
+        [SerializeField] private Material Blit;
 
         private Camera BlitCamera;
-        [SerializeField]
-        private Camera MainCamera;
 
         private void Awake()
         {
@@ -17,8 +17,9 @@ namespace AvatarViewer
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            var scale = BlitCamera.aspect / MainCamera.aspect;
-            Graphics.Blit(Source, destination, new Vector2(scale, 1), new Vector2((1 - scale) / 2f, 0));
+            Blit.SetFloat("_Scale", BlitCamera.aspect / MainCamera.aspect);
+            //Graphics.Blit(Source, destination, new Vector2(scale, 1), new Vector2((1 - scale) / 2f, 0));
+            Graphics.Blit(Source, destination, Blit);
         }
     }
 }

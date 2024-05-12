@@ -26,13 +26,19 @@ namespace AvatarViewer.Ui.Items
             var itemList = GetComponentInParent<RewardList>();
             var settings = ApplicationPersistence.AppSettings;
 
-            switch((InitialRewardListItemType)Type.value)
+            switch ((InitialRewardListItemType)Type.value)
             {
                 case InitialRewardListItemType.Item:
                     settings.Rewards[Id] = new ItemReward(Reward);
                     break;
                 case InitialRewardListItemType.Camera:
                     settings.Rewards[Id] = new CameraReward(Reward);
+                    break;
+                case InitialRewardListItemType.Avatar:
+                    settings.Rewards[Id] = new AvatarReward(Reward);
+                    break;
+                case InitialRewardListItemType.PickAvatar:
+                    settings.Rewards[Id] = new PickAvatarReward(Reward);
                     break;
             }
             itemList.RefreshList();
@@ -41,6 +47,6 @@ namespace AvatarViewer.Ui.Items
 
     public enum InitialRewardListItemType
     {
-        Item, Camera
+        Item, Camera, Avatar, PickAvatar
     }
 }

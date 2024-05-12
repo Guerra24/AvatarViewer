@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using DitzelGames.FastIK;
 using uLipSync;
 using UniGLTF;
@@ -24,39 +25,31 @@ namespace AvatarViewer
         [Header("Driver")]
         public OpenSeeVRMDriver Driver;
         [Header("IK Target at Head")]
-        public Transform HeadTarget;
+        [SerializeField] private Transform HeadTarget;
         [Header("Kinematic target")]
-        public Transform KinematicInterpolation;
+        [SerializeField] private Transform KinematicInterpolation;
         [Header("Hand tracking")]
-        public Transform LeftWristTarget;
-        public Transform LeftElbowTarget;
-        public Transform RightWristTarget;
-        public Transform RightElbowTarget;
+        [SerializeField] private Transform LeftWristTarget;
+        [SerializeField] private Transform LeftElbowTarget;
+        [SerializeField] private Transform RightWristTarget;
+        [SerializeField] private Transform RightElbowTarget;
         [Header("Default T Pose")]
-        public AnimationClip TPose;
+        [SerializeField] private AnimationClip TPose;
         [Header("Camera position")]
-        public Transform CameraPosition;
+        [SerializeField] private Transform CameraPosition;
         [Header("Rewards")]
-        public Transform Rewards;
+        [SerializeField] private Transform Rewards;
         [Header("uLipSync Profile Default")]
-        public Profile ProfileDefault;
+        [SerializeField] private Profile ProfileDefault;
         [Header("uLipSync Profile Female")]
-        public Profile ProfileFemale;
+        [SerializeField] private Profile ProfileFemale;
         [Header("uLipSync Profile Male")]
-        public Profile ProfileMale;
+        [SerializeField] private Profile ProfileMale;
 
         private PlayableGraph graph;
         private AnimationMixerPlayable mixer;
-        //private VRMBlendShapeProxy proxy;
 
-        //private string defaultExpression = "Neutral";
-        private BlendShapeKey defaultBlendShapeKey = BlendShapeKey.CreateFromPreset(BlendShapePreset.Neutral);
-
-        //private string currentExpression = "Neutral";
-        //private BlendShapeKey currentBlendShapeKey = BlendShapeKey.CreateFromPreset(BlendShapePreset.Neutral);
-        private List<BlendShapeKey> activeBlendshapeKeys = new();
-
-        private bool triggered, ranOnFirstFrame;
+        private bool ranOnFirstFrame = true;
 
         private Dictionary<BlendShapeKey, VsfAnimationDetails?> Animations = new();
 
@@ -73,6 +66,37 @@ namespace AvatarViewer
         // Start is called before the first frame update
         void Start()
         {
+            LoadAvatar().Forget();
+        }
+
+        public async UniTask LoadAvatar()
+        {
+            if (graph.IsValid())
+                graph.Destroy();
+            if (mixer.IsValid())
+                mixer.Destroy();
+            if (vrm != null)
+            {
+                vrm.Dispose();
+                vrm = null;
+            }
+
+            if (avatar != null)
+                Destroy(avatar);
+
+            Driver.expressions.Clear();
+            Animations.Clear();
+
+            foreach (var bundle in ApplicationState.AvatarBundles.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
+            {
+                DestroyImmediate(bundle.Value.Object, true);
+                await bundle.Value.Bundle.UnloadAsync(true);
+                ApplicationState.AvatarBundles.Remove(bundle.Key);
+            }
+
+            if (!ApplicationState.AvatarBundles.ContainsKey(ApplicationState.CurrentAvatar.Guid))
+                await AssetBundle.LoadFromFileAsync(ApplicationState.CurrentAvatar.Path).ToUniTask().ContinueWith(async (assetBundle) => await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask().ContinueWith((asset) => ApplicationState.AvatarBundles.Add(ApplicationState.CurrentAvatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject))));
+
             if (!ApplicationState.CurrentAvatar.Vrm)
             {
 
@@ -101,9 +125,13 @@ namespace AvatarViewer
             HeadTarget.position = head.position;
             HeadTarget.position += new Vector3(0, 0.1f, 0);
 
+            KinematicInterpolation.localRotation = Quaternion.identity;
+            KinematicInterpolation.localPosition = Vector3.zero;
+
             var ik = head.gameObject.AddComponent<FastIKFabric>();
             ik.ChainLength = 4;
             ik.Target = KinematicInterpolation;
+            ik.Init();
 
             if (!head.gameObject.TryGetComponent<SphereCollider>(out var _))
             {
@@ -246,6 +274,7 @@ namespace AvatarViewer
 
                 lipSync.onLipSyncUpdate.AddListener(lipSyncVRM.OnLipSyncUpdate);
             }
+            ranOnFirstFrame = false;
         }
 
         private void OnFirstFrame()
@@ -341,50 +370,6 @@ namespace AvatarViewer
         {
             if (!ranOnFirstFrame)
                 OnFirstFrame();
-#if UNITY_STANDALONE_WIN
-            /*
-            if (RawInput.PressedKeys.Count > 0 && !triggered)
-                foreach (var blendshape in ApplicationState.CurrentAvatar.Blendshapes)
-                {
-                    if (blendshape.Value.Hotkey.Count > 0 && RawInput.PressedKeys.Intersect(blendshape.Value.Hotkey).Count() == blendshape.Value.Hotkey.Count)
-                    {
-                        var anim = Animations.First(vp => vp.Key.Name == blendshape.Key).Key;
-                        if (activeBlendshapeKeys.Contains(anim))
-                            activeBlendshapeKeys.Remove(anim);
-                        else
-                            activeBlendshapeKeys.Add(anim);
-                        triggered = true;
-                    }
-                }
-
-            if (RawInput.PressedKeys.Count == 0 && triggered)
-            {
-                mixer.SetInputWeight(0, 1);
-                foreach (var shape in Animations)
-                {
-                    if (activeBlendshapeKeys.Contains(shape.Key))
-                    {
-                        proxy.ImmediatelySetValue(shape.Key, 1f);
-
-                        if (shape.Value.HasValue)
-                        {
-                            var animDetails = shape.Value.Value;
-                            mixer.SetInputWeight(animDetails.animId, 1f);
-                            mixer.GetInput(animDetails.animId).SetTime(0);
-                            if (animDetails.humanMotion)
-                                mixer.SetInputWeight(0, 0);
-                        }
-                    }
-                    else
-                    {
-                        proxy.ImmediatelySetValue(shape.Key, 0f);
-                        if (shape.Value.HasValue)
-                            mixer.SetInputWeight(shape.Value.Value.animId, 0);
-                    }
-                }
-                triggered = false;
-            }*/
-#endif
         }
 
         public void OnDestroy()
@@ -394,6 +379,8 @@ namespace AvatarViewer
 #endif
             if (graph.IsValid())
                 graph.Destroy();
+            if(mixer.IsValid())
+                mixer.Destroy();
             if (vrm != null)
             {
                 vrm.Dispose();
@@ -409,6 +396,8 @@ namespace AvatarViewer
 #endif
             if (graph.IsValid())
                 graph.Destroy();
+            if (mixer.IsValid())
+                mixer.Destroy();
             if (vrm != null)
             {
                 vrm.Dispose();

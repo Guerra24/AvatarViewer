@@ -7,12 +7,11 @@ namespace AvatarViewer.Ui
     public class RewardList : BaseSettingsPage
     {
 
-        [SerializeField]
-        private GameObject _templateRewardListItem;
-        [SerializeField]
-        private GameObject _templateItemRewardListItem;
-        [SerializeField]
-        private GameObject _templateCameraRewardListItem;
+        [SerializeField] private GameObject _templateRewardListItem;
+        [SerializeField] private GameObject _templateItemRewardListItem;
+        [SerializeField] private GameObject _templateCameraRewardListItem;
+        [SerializeField] private GameObject _templateAvatarRewardListItem;
+        [SerializeField] private GameObject _templatePickAvatarRewardListItem;
 
         void Start()
         {
@@ -32,6 +31,12 @@ namespace AvatarViewer.Ui
                         break;
                     case CameraReward cr:
                         CreateCameraReward(reward.Key, cr);
+                        break;
+                    case AvatarReward ar:
+                        CreateAvatarReward(reward.Key, ar);
+                        break;
+                    case PickAvatarReward par:
+                        CreatePickAvatarReward(reward.Key, par);
                         break;
                     default:
                         CreateReward(reward.Key, reward.Value);
@@ -60,6 +65,22 @@ namespace AvatarViewer.Ui
         {
             var item = Instantiate(_templateCameraRewardListItem, this.transform, false);
             var controller = item.GetComponent<CameraRewardListItem>();
+            controller.Reward = reward;
+            controller.LoadValues(id);
+        }
+
+        public void CreateAvatarReward(string id, AvatarReward reward)
+        {
+            var item = Instantiate(_templateAvatarRewardListItem, this.transform, false);
+            var controller = item.GetComponent<AvatarRewardListItem>();
+            controller.Reward = reward;
+            controller.LoadValues(id);
+        }
+
+        public void CreatePickAvatarReward(string id, PickAvatarReward reward)
+        {
+            var item = Instantiate(_templatePickAvatarRewardListItem, this.transform, false);
+            var controller = item.GetComponent<PickAvatarRewardListItem>();
             controller.Reward = reward;
             controller.LoadValues(id);
         }

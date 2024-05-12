@@ -48,15 +48,17 @@ namespace DitzelGames.FastIK
         protected Quaternion StartRotationTarget;
         protected Transform Root;
 
+        private bool init;
 
-        // Start is called before the first frame update
-        void Awake()
+        private void Start()
         {
-            Init();
+            if (!init)
+                Init();
         }
 
-        void Init()
+        public void Init()
         {
+            init = true;
             //initial array
             Bones = new Transform[ChainLength + 1];
             Positions = new Vector3[ChainLength + 1];

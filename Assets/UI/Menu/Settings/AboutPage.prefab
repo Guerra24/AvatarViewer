@@ -1061,10 +1061,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5486643303264885971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 251.5, y: 0}
+  m_SizeDelta: {x: 503, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3609818655139609264
 CanvasRenderer:
@@ -1305,7 +1305,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 25
+  m_ScrollSensitivity: 500
   m_Viewport: {fileID: 544654599992515497}
   m_HorizontalScrollbar: {fileID: 6791553630116627740}
   m_VerticalScrollbar: {fileID: 8837977361951142665}
@@ -2240,22 +2240,22 @@ PrefabInstance:
     - target: {fileID: 3662226460150115394, guid: c542ea40c26c002418950431297ec1f8,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3662226460150115394, guid: c542ea40c26c002418950431297ec1f8,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3662226460150115394, guid: c542ea40c26c002418950431297ec1f8,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 3662226460150115394, guid: c542ea40c26c002418950431297ec1f8,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3975927131565234776, guid: c542ea40c26c002418950431297ec1f8,
         type: 3}

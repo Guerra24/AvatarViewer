@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 25
+  m_ScrollSensitivity: 500
   m_Viewport: {fileID: 3151891425815034276}
   m_HorizontalScrollbar: {fileID: 1157242732622791101}
   m_VerticalScrollbar: {fileID: 5328900363198888176}
@@ -522,6 +522,10 @@ MonoBehaviour:
   _templateItemRewardListItem: {fileID: 8926520845915259311, guid: 906ced31b2235454d9434756eb9719b8,
     type: 3}
   _templateCameraRewardListItem: {fileID: 8926520845915259311, guid: 417a4ca0cf3cfcd4d9f160325105cc86,
+    type: 3}
+  _templateAvatarRewardListItem: {fileID: 8926520845915259311, guid: 93c5166c53eae9f428d71cb363e4c66b,
+    type: 3}
+  _templatePickAvatarRewardListItem: {fileID: 8926520845915259311, guid: 49eb771500dedb04cb6a8c19d28a237b,
     type: 3}
 --- !u!114 &708724749330520880
 MonoBehaviour:

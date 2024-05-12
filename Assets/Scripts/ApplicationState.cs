@@ -292,7 +292,6 @@ namespace AvatarViewer
     public class Reward
     {
         public string Title { get; set; }
-        public float Timeout { get; set; } = 15;
         [JsonIgnore]
         public Sprite TwitchImage { get; set; }
 
@@ -304,10 +303,10 @@ namespace AvatarViewer
         public ItemReward(Reward reward)
         {
             Title = reward.Title;
-            Timeout = reward.Timeout;
             TwitchImage = reward.TwitchImage;
         }
 
+        public float Timeout { get; set; } = 15;
         [JsonConverter(typeof(StringEnumConverter))]
         public ItemRewardAsset Asset { get; set; } = ItemRewardAsset.Box;
         public string AssetPath { get; set; } = "";
@@ -326,11 +325,48 @@ namespace AvatarViewer
         public CameraReward(Reward reward)
         {
             Title = reward.Title;
-            Timeout = reward.Timeout;
             TwitchImage = reward.TwitchImage;
         }
 
+        public float Timeout { get; set; } = 15;
         public Guid CameraPreset { get; set; }
+    }
+
+    public class AvatarReward : Reward
+    {
+        public AvatarReward() { }
+
+        public AvatarReward(Reward reward)
+        {
+            Title = reward.Title;
+            TwitchImage = reward.TwitchImage;
+        }
+
+        public Guid Avatar { get; set; }
+    }
+
+    public class PickAvatarReward : Reward
+    {
+        public PickAvatarReward() { }
+        public PickAvatarReward(Reward reward)
+        {
+            Title = reward.Title;
+            TwitchImage = reward.TwitchImage;
+        }
+
+        public List<ChoicePickAvatarReward> Choices { get; } = new();
+    }
+
+    public class ChoicePickAvatarReward
+    {
+        public string Text { get; set; }
+        public Guid Avatar { get; set; }
+
+        public ChoicePickAvatarReward(string text, Guid avatar)
+        {
+            Text = text;
+            Avatar = avatar;
+        }
     }
 
     public enum ItemRewardSpawnPoint

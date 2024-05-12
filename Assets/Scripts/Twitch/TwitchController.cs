@@ -66,6 +66,7 @@ namespace AvatarViewer.Twitch
             await UniTask.SwitchToThreadPool();
 
             PubSub.ListenToChannelPoints(UserId);
+            PubSub.ListenToRewards(UserId);
             PubSub.Connect();
             IsAccountConnected = true;
 

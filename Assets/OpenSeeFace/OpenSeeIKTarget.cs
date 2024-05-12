@@ -92,11 +92,6 @@ namespace OpenSee
 
         private Transform lastExternalTarget = null;
 
-        public void Calibrate()
-        {
-            calibrate = true;
-        }
-
         public static Vector3 PrettyEuler(Vector3 last, Vector3 current)
         {
             // Ew, but how would you do componentwise filtering/interpolation with quaternions?

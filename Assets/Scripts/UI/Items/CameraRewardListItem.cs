@@ -14,11 +14,12 @@ namespace AvatarViewer.Ui.Items
         protected override void Awake()
         {
             base.Awake();
-            CameraPreset.onValueChanged.AddListener(OnCameraPresetValueChanged);
-            Timeout.onEndEdit.AddListener(OnTimeoutEditEnd);
-
             foreach (var preset in ApplicationPersistence.AppSettings.CameraPresets)
                 CameraPreset.options.Add(new GuidDropdownData(preset.Value.Name, preset.Key));
+            CameraPreset.RefreshShownValue();
+
+            CameraPreset.onValueChanged.AddListener(OnCameraPresetValueChanged);
+            Timeout.onEndEdit.AddListener(OnTimeoutEditEnd);
         }
 
         private void OnCameraPresetValueChanged(int value)

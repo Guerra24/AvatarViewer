@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class SliderResetOnButtonUp : MonoBehaviour
@@ -16,7 +17,7 @@ public class SliderResetOnButtonUp : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetMouseButton(0))
+        if (!Mouse.current.leftButton.isPressed)
         {
             slider.value = ResetValue;
         }
