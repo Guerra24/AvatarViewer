@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using AvatarViewer.Ui.Components;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Newtonsoft.Json.Linq;
 using OpenSee;
 using TMPro;
 using UnityEngine;
@@ -13,8 +15,18 @@ namespace AvatarViewer.Ui
     public class MainController : MonoBehaviour
     {
 
+        private AppSettings AppSettings => ApplicationPersistence.AppSettings;
+
         [SerializeField] private OpenSeeIKTarget IKTarget;
         [SerializeField] private AvatarLoader AvatarLoader;
+
+        [SerializeField] private Light DirectionalLight;
+        [SerializeField] private VectorControl DirectionalLightRotation;
+
+        [SerializeField] private Slider DirectionalLightIntensity;
+        [SerializeField] private Slider DirectionalLightShadowStrength;
+
+        [SerializeField] private Slider AmbientIntensity;
 
         public TMP_Dropdown CameraPresets;
         public TMP_InputField PresetName;
@@ -59,7 +71,7 @@ namespace AvatarViewer.Ui
         {
             ReloadCameraPresets();
 
-            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars)
+            foreach (var avatar in AppSettings.Avatars)
                 OtherAvatars.options.Add(new GuidDropdownData(avatar.Title, avatar.Guid));
             OtherAvatars.RefreshShownValue();
 
@@ -93,12 +105,24 @@ namespace AvatarViewer.Ui
 
             ChangeAvatar.onClick.AddListener(OnChangeAvatarClick);
 
+            DirectionalLightRotation.ValueChanged += (rotation) => AppSettings.DirectionalLightRotation = DirectionalLight.transform.rotation = Quaternion.Euler(rotation);
+            DirectionalLightIntensity.onValueChanged.AddListener((value) => AppSettings.DirectionalLightIntensity = DirectionalLight.intensity = value);
+            DirectionalLightShadowStrength.onValueChanged.AddListener((value) => AppSettings.DirectionalLightShadowStrength = DirectionalLight.shadowStrength = value);
+
+            AmbientIntensity.onValueChanged.AddListener((value) => RenderSettings.ambientLight = AppSettings.AmbientColor * (AppSettings.AmbientIntensity = value));
         }
 
         private void Start()
         {
-            LoadPreset(ApplicationPersistence.AppSettings.DefaultCameraPreset);
+            LoadPreset(AppSettings.DefaultCameraPreset);
             Background.GetComponent<CanvasGroup>().DOFade(0.0f, 0.2f).SetEase(Ease.OutExpo).OnComplete(() => Background.SetActive(false));
+
+            var angles = AppSettings.DirectionalLightRotation.eulerAngles;
+            DirectionalLightRotation.LoadVector(new Vector3(angles.x > 180 ? angles.x - 360 : angles.x, angles.y > 180 ? angles.y - 360 : angles.y, angles.z > 180 ? angles.z - 360 : angles.z));
+            DirectionalLightIntensity.value = DirectionalLight.intensity = AppSettings.DirectionalLightIntensity;
+            DirectionalLightShadowStrength.value = DirectionalLight.shadowStrength = AppSettings.DirectionalLightShadowStrength;
+
+            RenderSettings.ambientLight = AppSettings.AmbientColor * (AmbientIntensity.value = AppSettings.AmbientIntensity);
         }
 
         private void Update()
@@ -126,7 +150,7 @@ namespace AvatarViewer.Ui
 
         private void OnCameraPresetChanged(int value)
         {
-            CurrentCameraPreset = ApplicationPersistence.AppSettings.CameraPresets[((GuidDropdownData)CameraPresets.options[value]).guid];
+            CurrentCameraPreset = AppSettings.CameraPresets[((GuidDropdownData)CameraPresets.options[value]).guid];
             if (CurrentCameraPreset.Absolute)
                 Camera.transform.position = CurrentCameraPreset.Position;
             else
@@ -143,7 +167,7 @@ namespace AvatarViewer.Ui
         private void OnAddPresetClick()
         {
             var preset = Guid.NewGuid();
-            ApplicationPersistence.AppSettings.CameraPresets.Add(preset, new CameraPreset { Name = "New preset" });
+            AppSettings.CameraPresets.Add(preset, new CameraPreset { Name = "New preset" });
             ReloadCameraPresets();
             LoadPreset(preset);
         }
@@ -155,12 +179,12 @@ namespace AvatarViewer.Ui
             var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
             var data = dialog.GetComponentInChildren<Dialog>();
             data.SetTitle("Delete camera preset");
-            data.SetContent($"{ApplicationPersistence.AppSettings.CameraPresets[preset].Name}");
+            data.SetContent($"{AppSettings.CameraPresets[preset].Name}");
             data.SetOnOkAction(() =>
             {
-                ApplicationPersistence.AppSettings.CameraPresets.Remove(preset);
+                AppSettings.CameraPresets.Remove(preset);
                 ReloadCameraPresets();
-                LoadPreset(ApplicationPersistence.AppSettings.DefaultCameraPreset);
+                LoadPreset(AppSettings.DefaultCameraPreset);
                 ApplicationPersistence.Save();
             });
         }
@@ -267,7 +291,7 @@ namespace AvatarViewer.Ui
         private void LoadPreset(Guid preset)
         {
             CameraPresets.value = CameraPresets.options.FindIndex(g => ((GuidDropdownData)g).guid == preset);
-            CurrentCameraPreset = ApplicationPersistence.AppSettings.CameraPresets[preset];
+            CurrentCameraPreset = AppSettings.CameraPresets[preset];
             LoadPreset();
         }
 
@@ -301,14 +325,14 @@ namespace AvatarViewer.Ui
         private void ReloadCameraPresets()
         {
             CameraPresets.ClearOptions();
-            foreach (var preset in ApplicationPersistence.AppSettings.CameraPresets)
+            foreach (var preset in AppSettings.CameraPresets)
                 CameraPresets.options.Add(new GuidDropdownData(preset.Value.Name, preset.Key));
             CameraPresets.RefreshShownValue();
         }
 
         private void OnChangeAvatarClick()
         {
-            ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == ((GuidDropdownData)OtherAvatars.options[OtherAvatars.value]).guid);
+            ApplicationState.CurrentAvatar = AppSettings.Avatars.First(a => a.Guid == ((GuidDropdownData)OtherAvatars.options[OtherAvatars.value]).guid);
             AvatarLoader.LoadAvatar().Forget();
         }
 

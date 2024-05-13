@@ -12,6 +12,7 @@ using UnityEngine.Playables;
 using UnityRawInput;
 #endif
 using VRM;
+using VRMShaders;
 using VSeeFace;
 
 namespace AvatarViewer
@@ -55,6 +56,8 @@ namespace AvatarViewer
 
         private RuntimeGltfInstance vrm;
 
+        private Guid LoadedAvatar;
+
         public void Awake()
         {
 #if UNITY_STANDALONE_WIN
@@ -71,6 +74,16 @@ namespace AvatarViewer
 
         public async UniTask LoadAvatar()
         {
+            if (LoadedAvatar == ApplicationState.CurrentAvatar.Guid)
+                return;
+            LoadedAvatar = ApplicationState.CurrentAvatar.Guid;
+
+            if (!ApplicationState.CurrentAvatar.Vrm && !ApplicationState.AvatarBundles.ContainsKey(ApplicationState.CurrentAvatar.Guid))
+                await AssetBundle.LoadFromFileAsync(ApplicationState.CurrentAvatar.Path).ToUniTask().ContinueWith(async (assetBundle) => await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask().ContinueWith((asset) => ApplicationState.AvatarBundles.Add(ApplicationState.CurrentAvatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject))));
+
+            if (ApplicationState.CurrentAvatar.Vrm && !ApplicationState.VrmData.ContainsKey(ApplicationState.CurrentAvatar.Guid))
+                ApplicationState.VrmData.Add(ApplicationState.CurrentAvatar.Guid, new VRMImporterContext(new VRMData(new AutoGltfFileParser(ApplicationState.CurrentAvatar.Path).Parse())));
+
             if (graph.IsValid())
                 graph.Destroy();
             if (mixer.IsValid())
@@ -79,6 +92,7 @@ namespace AvatarViewer
             {
                 vrm.Dispose();
                 vrm = null;
+                avatar = null;
             }
 
             if (avatar != null)
@@ -87,27 +101,15 @@ namespace AvatarViewer
             Driver.expressions.Clear();
             Animations.Clear();
 
-            foreach (var bundle in ApplicationState.AvatarBundles.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
-            {
-                DestroyImmediate(bundle.Value.Object, true);
-                await bundle.Value.Bundle.UnloadAsync(true);
-                ApplicationState.AvatarBundles.Remove(bundle.Key);
-            }
-
-            if (!ApplicationState.AvatarBundles.ContainsKey(ApplicationState.CurrentAvatar.Guid))
-                await AssetBundle.LoadFromFileAsync(ApplicationState.CurrentAvatar.Path).ToUniTask().ContinueWith(async (assetBundle) => await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask().ContinueWith((asset) => ApplicationState.AvatarBundles.Add(ApplicationState.CurrentAvatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject))));
-
             if (!ApplicationState.CurrentAvatar.Vrm)
             {
-
                 var prefab = ApplicationState.AvatarBundles[ApplicationState.CurrentAvatar.Guid].Object;
 
                 avatar = Instantiate(prefab);
             }
             else
             {
-
-                vrm = ApplicationState.VrmData[ApplicationState.CurrentAvatar.Guid].Load();
+                vrm = await ApplicationState.VrmData[ApplicationState.CurrentAvatar.Guid].LoadAsync(new RuntimeOnlyAwaitCaller());
                 vrm.ShowMeshes();
                 vrm.EnableUpdateWhenOffscreen();
 
@@ -275,6 +277,21 @@ namespace AvatarViewer
                 lipSync.onLipSyncUpdate.AddListener(lipSyncVRM.OnLipSyncUpdate);
             }
             ranOnFirstFrame = false;
+
+            foreach (var bundle in ApplicationState.AvatarBundles.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
+            {
+                DestroyImmediate(bundle.Value.Object, true);
+                await bundle.Value.Bundle.UnloadAsync(true);
+                ApplicationState.AvatarBundles.Remove(bundle.Key);
+            }
+
+            foreach (var vrm in ApplicationState.VrmData.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
+            {
+                vrm.Value.Dispose();
+                ApplicationState.VrmData.Remove(vrm.Key);
+            }
+
+            await Resources.UnloadUnusedAssets();
         }
 
         private void OnFirstFrame()
@@ -379,7 +396,7 @@ namespace AvatarViewer
 #endif
             if (graph.IsValid())
                 graph.Destroy();
-            if(mixer.IsValid())
+            if (mixer.IsValid())
                 mixer.Destroy();
             if (vrm != null)
             {

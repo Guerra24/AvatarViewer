@@ -1,6 +1,7 @@
 using AvatarViewer.Ui;
 using Klak.Spout;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AvatarViewer
 {
@@ -10,14 +11,16 @@ namespace AvatarViewer
         private RenderTexture RenderTexture;
         private SpoutSender SpoutSender;
 
-        public MainController MainController;
-        public CopyRTToCamera Final;
+        [SerializeField] private MainController MainController;
+        //[SerializeField] private CopyRTToCamera Final;
+        [SerializeField] private RawImage UITarget;
 
         private int Width, Height;
 
         private void Awake()
         {
             Camera = GetComponent<Camera>();
+            Camera.depthTextureMode = DepthTextureMode.Depth;
             SpoutSender = GetComponent<SpoutSender>();
             Width = ApplicationState.RuntimeWidth;
             Height = ApplicationState.RuntimeHeight;
@@ -47,7 +50,8 @@ namespace AvatarViewer
             if (RenderTexture != null)
                 Destroy(RenderTexture);
             RenderTexture = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGB32);
-            SpoutSender.sourceTexture = Final.Source = Camera.targetTexture = RenderTexture;
+            UITarget.texture = SpoutSender.sourceTexture /*= Final.Source*/ = Camera.targetTexture = RenderTexture;
+            UITarget.GetComponent<AspectRatioFitter>().aspectRatio = Camera.aspect;
 
             float _1OverAspect = 1f / Camera.aspect;
             Camera.fieldOfView = 2f * Mathf.Atan(Mathf.Tan(MainController.CurrentCameraPreset.FOV * Mathf.Deg2Rad * 0.5f) * _1OverAspect) * Mathf.Rad2Deg;
