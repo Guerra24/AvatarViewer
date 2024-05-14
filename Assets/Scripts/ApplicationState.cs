@@ -98,7 +98,7 @@ namespace AvatarViewer
         public Quaternion DirectionalLightRotation { get; set; } = Quaternion.Euler(170, 10, 0);
         public float DirectionalLightIntensity { get; set; } = 1f;
         public float DirectionalLightShadowStrength { get; set; } = 1f;
-        public float AmbientIntensity { get; set; }
+        public float AmbientIntensity { get; set; } = 0.3921569f;
         [JsonConverter(typeof(ColorJsonConverter))]
         public Color AmbientColor { get; set; } = Color.white;
     }
