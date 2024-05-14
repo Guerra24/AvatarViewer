@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "2e225fb8414e023df2aa3acae2ef225471981316"
     },
+    "com.dbrizov.naughtyattributes": {
+      "version": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8a8fa5a9659a6d63f196391c71e06c4286c8acd7"
+    },
     "com.hecomi.ulipsync": {
       "version": "3.1.1",
       "depth": 0,
@@ -16,6 +23,13 @@
         "com.unity.mathematics": "1.2.5"
       },
       "url": "https://registry.npmjs.com"
+    },
+    "com.jimmycushnie.jimmysunityutilities": {
+      "version": "https://github.com/JimmyCushnie/JimmysUnityUtilities.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "87eb64820ddd0968f24fbf6bcfae9368c72564f2"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -274,6 +288,12 @@
       "dependencies": {
         "com.unity.modules.imageconversion": "1.0.0"
       }
+    },
+    "com.unity.modules.terrain": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
     },
     "com.unity.modules.ui": {
       "version": "1.0.0",

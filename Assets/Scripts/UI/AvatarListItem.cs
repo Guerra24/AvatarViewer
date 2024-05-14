@@ -1,18 +1,64 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using VRM;
 
 namespace AvatarViewer.Ui
 {
-    public class AvatarListItem : Selectable
+    public class AvatarListItem : Button
     {
 
-        public Avatar Avatar { get; set; }
+        public Avatar Avatar { get; private set; }
 
-        public override void OnSelect(BaseEventData eventData)
+        [SerializeField] private Image Thumbnail;
+        [SerializeField] private TMP_Text Title;
+        [SerializeField] private TMP_Text Version;
+        [SerializeField] private TMP_Text Author;
+
+        [SerializeField] private GameObject _templatePage;
+
+        private PageViewer pageViewer;
+        private float lastClick;
+
+        protected override void Awake()
         {
-            Debug.Log(Avatar.Title);
+            pageViewer = GetComponentInParent<PageViewer>();
+            onClick.AddListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            if ((lastClick + 0.4f) > Time.time)
+                pageViewer.OpenPage(_templatePage);
             ApplicationState.CurrentAvatar = Avatar;
+            lastClick = Time.time;
+        }
+
+        public void Load(Avatar avatar)
+        {
+            Avatar = avatar;
+
+            VRMMetaObject meta;
+            if (!avatar.Vrm)
+            {
+                var bundle = ApplicationState.AvatarBundles[avatar.Guid];
+                meta = bundle.Object.GetComponent<VRMMeta>().Meta;
+            }
+            else
+            {
+                meta = ApplicationState.VrmData[avatar.Guid].ReadMeta(createThumbnail: true);
+            }
+
+            if (meta.Thumbnail != null)
+            {
+                var thumb = meta.Thumbnail;
+                Thumbnail.sprite = Sprite.Create(thumb, new Rect(0, 0, thumb.width, thumb.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
+                Thumbnail.GetComponent<AspectRatioFitter>().aspectRatio = (float)thumb.width / thumb.height;
+            }
+
+            Title.text = $"Title: {avatar.Title}";
+            Version.text = $"Version: {meta.Version}";
+            Author.text = $"Author: {meta.Author}";
         }
 
         public override bool Equals(object obj)
