@@ -25,22 +25,26 @@ public class AvatarRewardController : MonoBehaviour
         {
             if (running)
                 return;
-            running = true;
-            var text = e.Message.Trim();
-            var choice = pickAvatarReward.Choices.FirstOrDefault(c => c.Text == text);
-            if (choice != null)
+            try
             {
-                if (ApplicationState.CurrentAvatar.Guid == choice.Avatar)
+                running = true;
+                var text = e.Message.Trim();
+                var choice = pickAvatarReward.Choices.FirstOrDefault(c => c.Text == text);
+                if (choice != null)
                 {
-                    running = false;
-                    return;
+                    if (ApplicationState.CurrentAvatar.Guid == choice.Avatar)
+                        return;
+                    ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == choice.Avatar);
+                    MainThreadDispatcher.AddOnUpdate(() =>
+                    {
+                        AvatarLoader.LoadAvatar().Forget();
+                        running = false;
+                    });
                 }
-                ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == choice.Avatar);
-                MainThreadDispatcher.AddOnUpdate(() =>
-                {
-                    AvatarLoader.LoadAvatar().Forget();
-                    running = false;
-                });
+            }
+            finally
+            {
+                running = false;
             }
         }
     }

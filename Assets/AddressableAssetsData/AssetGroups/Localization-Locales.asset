@@ -27,6 +27,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4af9b8ad993a5bb498753bee1663bd2e
+    m_Address: Spanish (Argentina) (es-AR)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3485179865621d14c83eb22de7575aca, type: 2}
   m_SchemaSet:

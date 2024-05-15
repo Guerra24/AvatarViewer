@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bb1838fe8befb0429646b938e757ff3, type: 3}
-  m_Name: Spanish (es)
+  m_Name: Spanish (Argentina) (es-AR)
   m_EditorClassIdentifier: 
   m_Identifier:
-    m_Code: es
+    m_Code: es-AR
   m_Metadata:
     m_Items:
-    - rid: 8715951061230944313
-  m_LocaleName: Spanish (es)
+    - rid: 8715951061230944311
+  m_LocaleName: Spanish (Argentina) (es-AR)
   m_CustomFormatCultureCode: 
   m_UseCustomFormatter: 0
   m_SortOrder: 10000
   references:
     version: 2
     RefIds:
-    - rid: 8715951061230944313
+    - rid: 8715951061230944311
       type: {class: FallbackLocale, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Locale: {fileID: 11400000, guid: 4efac1f6ccc2f574d817d92c2115eeea, type: 2}
+        m_Locale: {fileID: 11400000, guid: 7de2800c0b2652646996e773fcaa1061, type: 2}
