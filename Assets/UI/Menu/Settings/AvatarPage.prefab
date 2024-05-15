@@ -1653,7 +1653,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e0eebf9b775e846a996209b35086ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:dbaa8c2a7e4bbc84ab2e47be00109d6a
+    m_TableEntryReference:
+      m_KeyId: 3796557979648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Title: Avatar
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1303587312093674364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8532,7 +8544,7 @@ PrefabInstance:
     - target: {fileID: 4213744415970196551, guid: 140fb93c0f759954ab4f2469c05eec41,
         type: 3}
       propertyPath: m_Size
-      value: 0.5773624
+      value: 0.596054
       objectReference: {fileID: 0}
     - target: {fileID: 4213744415970196551, guid: 140fb93c0f759954ab4f2469c05eec41,
         type: 3}

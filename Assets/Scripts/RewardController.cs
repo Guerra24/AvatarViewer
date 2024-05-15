@@ -16,7 +16,6 @@ namespace AvatarViewer
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log("Hit");
             //Rigidbody.isKinematic = true;
 
             AudioSource.Play();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AvatarViewer.Ui.Animations;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -65,7 +66,14 @@ namespace AvatarViewer.Ui
             else
             {
                 if (HideOnGoBackInitial)
+                {
+                    if (TryGetComponent<BaseAnimation>(out var anim))
+                    {
+                        anim.Easing = AnimationEasing.EaseOut;
+                        await anim.StartAnimation().ToUniTask();
+                    }
                     gameObject.SetActive(false);
+                }
             }
             GoBackInitial.Invoke();
             _working = false;
@@ -104,7 +112,7 @@ namespace AvatarViewer.Ui
             }
 
             var pageText = Instantiate(_headerPageText, _header.transform, false);
-            pageText.GetComponent<TMP_Text>().text = details.Title;
+            pageText.GetComponent<TMP_Text>().text = details.LocalizedTitle.IsEmpty ? details.Title : await details.LocalizedTitle.GetLocalizedStringAsync();
 
             pageStack.Push(template);
             _working = false;

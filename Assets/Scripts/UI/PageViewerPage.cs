@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace AvatarViewer.Ui
 {
     public class PageViewerPage : MonoBehaviour
     {
+        public LocalizedString LocalizedTitle;
+
         public string Title;
 
     }

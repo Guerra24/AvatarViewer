@@ -56,7 +56,7 @@ namespace AvatarViewer.Ui
                 Thumbnail.GetComponent<AspectRatioFitter>().aspectRatio = (float)thumb.width / thumb.height;
             }
 
-            Title.text = $"Title: {avatar.Title}";
+            Title.text = avatar.Title;
             Version.text = $"Version: {meta.Version}";
             Author.text = $"Author: {meta.Author}";
         }

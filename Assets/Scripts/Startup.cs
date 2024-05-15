@@ -5,6 +5,7 @@ using System.Linq;
 using AvatarViewer.Trackers;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using TMPro;
 using UniGLTF;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -16,6 +17,8 @@ namespace AvatarViewer
 {
     public class Startup : MonoBehaviour
     {
+
+        [SerializeField] private TMP_Text Status;
 
         private UIDocument _document;
 
@@ -36,13 +39,28 @@ namespace AvatarViewer
         async UniTaskVoid Load()
         {
             await UniTask.Delay(TimeSpan.FromMilliseconds(500));
-            _progressBar.visible = true;
 
             DOTween.Init();
 
             await ApplicationPersistence.Load();
 
             RuntimeSettings.Apply();
+
+            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.ToList())
+                if (!File.Exists(avatar.Path))
+                {
+                    Status.text = $"Avatar file \"{avatar.Path.Replace(@"\", @"\\")}\" was not found.\nPlease choose a new file";
+                    await UniTask.Delay(TimeSpan.FromSeconds(2));
+                    var dir = Path.GetDirectoryName(avatar.Path);
+                    var res = NativeFileDialogSharp.Dialog.FileOpen("vsfavatar,vrm", Directory.Exists(dir) ? dir : null);
+                    Status.text = "";
+
+                    if (res.IsOk)
+                        avatar.Path = res.Path;
+                    else
+                        ApplicationPersistence.AppSettings.Avatars.Remove(avatar);
+                }
+            ApplicationPersistence.Save();
 
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;
@@ -60,32 +78,19 @@ namespace AvatarViewer
                         _progressBar.value = baseProgress;
                     });
                 }));
+
+            _progressBar.visible = true;
             await UniTask.WhenAll(tasks);
 
             foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(a => a.Vrm).ToList())
             {
-                if (!avatar.Vrm)
-                {
-                    /*Debug.Log($"Loading Bundle {avatar.Path}");
-                    var assetBundle = await AssetBundle.LoadFromFileAsync(avatar.Path).ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
-                    baseProgress += percentPerStep;
-
-                    Debug.Log($"Loading Asset");
-                    var asset = await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar").ToUniTask(Progress.Create<float>(p => _progressBar.value = baseProgress + p * percentPerStep));
-                    baseProgress += percentPerStep;
-
-                    ApplicationState.AvatarBundles.Add(avatar.Guid, new LoadedAvatar(assetBundle, asset as GameObject));*/
-                }
-                else
-                {
-                    baseProgress += percentPerStep;
-                    _progressBar.value = baseProgress;
-                    await UniTask.Yield();
-                    await UniTask.NextFrame();
-                    ApplicationState.VrmData.Add(avatar.Guid, new VRMImporterContext(new VRMData(new AutoGltfFileParser(avatar.Path).Parse())));
-                    await UniTask.Yield();
-                    await UniTask.NextFrame();
-                }
+                baseProgress += percentPerStep;
+                _progressBar.value = baseProgress;
+                await UniTask.Yield();
+                await UniTask.NextFrame();
+                ApplicationState.VrmData.Add(avatar.Guid, new VRMImporterContext(new VRMData(new AutoGltfFileParser(avatar.Path).Parse())));
+                await UniTask.Yield();
+                await UniTask.NextFrame();
             }
 
             await UniTask.Yield();

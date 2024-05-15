@@ -287,6 +287,7 @@ namespace AvatarViewer
 
             foreach (var vrm in ApplicationState.VrmData.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
             {
+                vrm.Value.Data.Dispose();
                 vrm.Value.Dispose();
                 ApplicationState.VrmData.Remove(vrm.Key);
             }

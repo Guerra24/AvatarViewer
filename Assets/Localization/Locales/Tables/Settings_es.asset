@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Settings_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: dbaa8c2a7e4bbc84ab2e47be00109d6a, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 4143963791360
+    m_Localized: Acerca de
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4125987004416
+    m_Localized: Twitch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3961721282560
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4051949150208
+    m_Localized: Rastreo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3821149184000
+    m_Localized: Expresiones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3796557979648
+    m_Localized: Avatar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4100775043072
+    m_Localized: Captura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4526928912384
+    m_Localized: Volumen, antialiasing, calida de sombras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16055724236800
+    m_Localized: Ajustes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19376686063616
+    m_Localized: Enlaces
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19466624524288
+    m_Localized: Licencia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20061586546688
+    m_Localized: "Versi\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20153777348608
+    m_Localized: "Versi\xF3n de Unity"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20949021581312
+    m_Localized: "C\xF3digo fuente, sugerencias y soporte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21379076153344
+    m_Localized: Volumen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21420566208512
+    m_Localized: Calidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21525230870528
+    m_Localized: Antialiasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21837521969152
+    m_Localized: Nivel de MSAA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21969499938816
+    m_Localized: Calidad de sombras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23438991122432
+    m_Localized: Camara
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23737650733056
+    m_Localized: Formato
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24184348303360
+    m_Localized: "Micr\xF3fono"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24307497263104
+    m_Localized: Rastreador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24394306772992
+    m_Localized: "Proveedor de sincronizaci\xF3n de labios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24498711388160
+    m_Localized: "Perfil de sincronizaci\xF3n de labios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24603287969792
+    m_Localized: "Volumen m\xEDnimo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24727753940992
+    m_Localized: "Volumen m\xE1ximo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25162426441728
+    m_Localized: "Ganancia de micr\xF3fono"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26256351256576
+    m_Localized: Rastreadores
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -1,17 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonToggleAnimation : MonoBehaviour
+namespace AvatarViewer.Ui.Animations
 {
-    public AnimationEasing Easing;
-    public BaseAnimation Animation;
-
-    private void Awake()
+    public class ButtonToggleAnimation : MonoBehaviour
     {
-        GetComponent<Button>().onClick.AddListener(() =>
+        public AnimationEasing Easing;
+        public BaseAnimation Animation;
+
+        private void Awake()
         {
-            Animation.Easing = Easing;
-            Animation.StartAnimation();
-        });
+            GetComponent<Button>().onClick.AddListener(() =>
+            {
+                Animation.Easing = Easing;
+                Animation.StartAnimation();
+            });
+        }
     }
 }

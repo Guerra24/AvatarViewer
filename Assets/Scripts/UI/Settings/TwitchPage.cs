@@ -1,4 +1,5 @@
 using AvatarViewer.Twitch;
+using AvatarViewer.Ui.Animations;
 using AvatarViewer.Ui.Settings;
 using Cysharp.Threading.Tasks;
 using TMPro;

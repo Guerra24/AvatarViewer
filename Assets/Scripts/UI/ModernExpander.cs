@@ -1,3 +1,4 @@
+using AvatarViewer.Ui.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;

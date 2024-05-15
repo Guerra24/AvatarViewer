@@ -1,51 +1,54 @@
 using DG.Tweening;
 using UnityEngine;
 
-public abstract class BaseAnimation : MonoBehaviour
+namespace AvatarViewer.Ui.Animations
 {
-    public AnimationEasing Easing;
-    public bool AutoStart = true;
-
-    protected RectTransform rectTransform;
-    protected Sequence sequence;
-
-    protected virtual void Awake()
+    public abstract class BaseAnimation : MonoBehaviour
     {
-        rectTransform = GetComponent<RectTransform>();
-    }
+        public AnimationEasing Easing;
+        public bool AutoStart = true;
 
-    protected virtual void Start()
-    {
-        if (AutoStart)
+        protected RectTransform rectTransform;
+        protected Sequence sequence;
+
+        protected virtual void Awake()
         {
-            AutoStart = false;
-            StartAnimation();
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        protected virtual void Start()
+        {
+            if (AutoStart)
+            {
+                AutoStart = false;
+                StartAnimation();
+            }
+        }
+
+        protected virtual void Update()
+        {
+            if (AutoStart)
+            {
+                AutoStart = false;
+                StartAnimation();
+            }
+        }
+
+        public abstract Sequence StartAnimation();
+
+        protected virtual void OnDestroy()
+        {
+            sequence.Kill();
+        }
+
+        protected virtual void OnApplicationQuit()
+        {
+            sequence.Kill();
         }
     }
 
-    protected virtual void Update()
+    public enum AnimationEasing
     {
-        if (AutoStart)
-        {
-            AutoStart = false;
-            StartAnimation();
-        }
+        EaseIn, EaseOut
     }
-
-    public abstract Sequence StartAnimation();
-
-    protected virtual void OnDestroy()
-    {
-        sequence.Kill();
-    }
-
-    protected virtual void OnApplicationQuit()
-    {
-        sequence.Kill();
-    }
-}
-
-public enum AnimationEasing
-{
-    EaseIn, EaseOut
 }

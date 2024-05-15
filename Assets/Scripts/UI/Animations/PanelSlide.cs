@@ -1,23 +1,33 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class PanelSlide : BaseAnimation
+namespace AvatarViewer.Ui.Animations
 {
-
-    public override Sequence StartAnimation()
+    public class PanelSlide : BaseAnimation
     {
-        sequence = DOTween.Sequence();
-        switch (Easing)
-        {
-            case AnimationEasing.EaseIn:
-                rectTransform.anchoredPosition = new Vector2(rectTransform.rect.width, rectTransform.anchoredPosition.y);
-                sequence.Insert(0, rectTransform.DOAnchorPosX(0, 0.25f).SetEase(Ease.OutExpo));
-                break;
-            case AnimationEasing.EaseOut:
-                sequence.Insert(0, rectTransform.DOAnchorPosX(rectTransform.rect.width, 0.25f).SetEase(Ease.OutExpo));
-                break;
-        }
 
-        return sequence;
+        public PanelSlideMode Mode = PanelSlideMode.Left;
+
+        public override Sequence StartAnimation()
+        {
+            sequence = DOTween.Sequence();
+            switch (Easing)
+            {
+                case AnimationEasing.EaseIn:
+                    rectTransform.anchoredPosition = new Vector2(Mode == PanelSlideMode.Right ? rectTransform.rect.width : -rectTransform.rect.width, rectTransform.anchoredPosition.y);
+                    sequence.Insert(0, rectTransform.DOAnchorPosX(0, 0.25f).SetEase(Ease.OutExpo));
+                    break;
+                case AnimationEasing.EaseOut:
+                    sequence.Insert(0, rectTransform.DOAnchorPosX(Mode == PanelSlideMode.Right ? rectTransform.rect.width : -rectTransform.rect.width, 0.25f).SetEase(Ease.OutExpo));
+                    break;
+            }
+
+            return sequence;
+        }
+    }
+
+    public enum PanelSlideMode
+    {
+        Left, Right
     }
 }

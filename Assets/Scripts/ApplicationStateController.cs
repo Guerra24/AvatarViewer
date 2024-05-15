@@ -4,17 +4,24 @@ namespace AvatarViewer
 {
     public class ApplicationStateController : MonoBehaviour
     {
-        private void OnApplicationQuit()
+        private void OnDestroy() => DestroyData();
+
+        private void OnApplicationQuit() => DestroyData();
+
+        private void DestroyData()
         {
             foreach (var sound in ApplicationState.ExternalAudios)
                 Destroy(sound.Value);
+            ApplicationState.ExternalAudios.Clear();
             foreach (var avatar in ApplicationState.VrmData)
             {
-                avatar.Value.Dispose();
                 avatar.Value.Data.Dispose();
+                avatar.Value.Dispose();
             }
+            ApplicationState.VrmData.Clear();
             foreach (var avatar in ApplicationState.AvatarBundles)
                 avatar.Value.Bundle.Unload(true);
+            ApplicationState.AvatarBundles.Clear();
         }
     }
 }
