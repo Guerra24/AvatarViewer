@@ -17,7 +17,79 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8f98e4140837376408f0204522ece7ea, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 673562251673600
+    m_Localized: Regresar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673670431162368
+    m_Localized: Ajustes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673724130836480
+    m_Localized: Cambiar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673875524239360
+    m_Localized: "Reiniciar calibraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674456124964864
+    m_Localized: Luz direccional
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674636668780544
+    m_Localized: "Rotaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674711562272768
+    m_Localized: Intensidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674755560521728
+    m_Localized: Intensidad de la sombra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 675623575928832
+    m_Localized: "C\xE1mara"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676158966251520
+    m_Localized: Nombre...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676354567618560
+    m_Localized: Nuevo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676419201843200
+    m_Localized: Eliminar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676745963290624
+    m_Localized: Guardar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676940658688000
+    m_Localized: "Posici\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677525390802944
+    m_Localized: "Posici\xF3n absoluta"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677000654012416
+    m_Localized: "Rotaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677036783747072
+    m_Localized: "Angulo de visi\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 679416942215168
+    m_Localized: "Eliminar c\xE1mara"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

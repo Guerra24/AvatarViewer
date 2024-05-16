@@ -17,7 +17,79 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 8f98e4140837376408f0204522ece7ea, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 673562251673600
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673670431162368
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673724130836480
+    m_Localized: Change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673875524239360
+    m_Localized: Reset calibration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674456124964864
+    m_Localized: Directional light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674636668780544
+    m_Localized: Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674711562272768
+    m_Localized: Intensity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674755560521728
+    m_Localized: Shadow strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 675623575928832
+    m_Localized: Camera
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676158966251520
+    m_Localized: Name....
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676354567618560
+    m_Localized: New
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676419201843200
+    m_Localized: Delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676745963290624
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676940658688000
+    m_Localized: Position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677000654012416
+    m_Localized: Rotation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677036783747072
+    m_Localized: FOV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677525390802944
+    m_Localized: Absolute position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 679416942215168
+    m_Localized: Delete camera preset
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

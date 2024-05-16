@@ -39,6 +39,78 @@ MonoBehaviour:
     m_Key: ChoicePickAvatarReward.Input.Text
     m_Metadata:
       m_Items: []
+  - m_Id: 312260807278592
+    m_Key: CameraReward.Timeout.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 312499463176192
+    m_Key: CameraReward.CameraPreset.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 314806632366080
+    m_Key: ItemReward.SpawnPoint.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315002384728064
+    m_Key: ItemReward.Timeout.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315037126148096
+    m_Key: ItemReward.Sound.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315160052809728
+    m_Key: ItemReward.Volume.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315197210148864
+    m_Key: ItemReward.CustomSound.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315528040071168
+    m_Key: ItemReward.AssetType.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315575733501952
+    m_Key: ItemReward.CustomAsset.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318017950892032
+    m_Key: Blendshape.Enable.Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318127300591616
+    m_Key: Blendshape.Type.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318222553235456
+    m_Key: Blendshape.Mode.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318253746274304
+    m_Key: Blendshape.Hotkey.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318336525058048
+    m_Key: Blendshape.Transition.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320139450826752
+    m_Key: Blendshape.Type.Base.Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320235303256064
+    m_Key: Blendshape.Type.Additive.Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320411568881664
+    m_Key: Blendshape.Mode.Hold.Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320449661550592
+    m_Key: Blendshape.Mode.Toggle.Toggle
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

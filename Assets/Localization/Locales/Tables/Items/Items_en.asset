@@ -42,6 +42,78 @@ MonoBehaviour:
     m_Localized: Enter text...
     m_Metadata:
       m_Items: []
+  - m_Id: 312260807278592
+    m_Localized: Timeout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 312499463176192
+    m_Localized: Camera preset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 314806632366080
+    m_Localized: Spawn point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315002384728064
+    m_Localized: Timeout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315037126148096
+    m_Localized: Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315160052809728
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315197210148864
+    m_Localized: Custom sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315528040071168
+    m_Localized: Asset type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 315575733501952
+    m_Localized: Path
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318017950892032
+    m_Localized: Enable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318127300591616
+    m_Localized: Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318222553235456
+    m_Localized: Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318253746274304
+    m_Localized: Hoykey
+    m_Metadata:
+      m_Items: []
+  - m_Id: 318336525058048
+    m_Localized: Transition time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320139450826752
+    m_Localized: Base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320235303256064
+    m_Localized: Additive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320411568881664
+    m_Localized: Hold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320449661550592
+    m_Localized: Toggle
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

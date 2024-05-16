@@ -14,7 +14,79 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: Main
   m_TableCollectionNameGuidString: 8f98e4140837376408f0204522ece7ea
-  m_Entries: []
+  m_Entries:
+  - m_Id: 673562251673600
+    m_Key: LeftPanel.Actions.Back.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673670431162368
+    m_Key: LeftPanel.Actions.Settings.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673724130836480
+    m_Key: LeftPanel.Avatar.Change.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 673875524239360
+    m_Key: LeftPanel.Avatar.Reset.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674456124964864
+    m_Key: LeftPanel.DirectionalLight.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674636668780544
+    m_Key: LeftPanel.DirectionalLight.Rotation.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674711562272768
+    m_Key: LeftPanel.DirectionalLight.Intensity.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 674755560521728
+    m_Key: LeftPanel.DirectionalLight.ShadowStrength.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 675623575928832
+    m_Key: RightPanel.Presets.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676158966251520
+    m_Key: RightPanel.Presets.PresetName.Placeholder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676354567618560
+    m_Key: RightPanel.Presets.Add.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676419201843200
+    m_Key: RightPanel.Presets.Remove.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676745963290624
+    m_Key: RightPanel.Presets.Save.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 676940658688000
+    m_Key: RightPanel.Position.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677525390802944
+    m_Key: RightPanel.Position.Absolute.Toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677000654012416
+    m_Key: RightPanel.Rotation.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 677036783747072
+    m_Key: RightPanel.FOV.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 679416942215168
+    m_Key: RightPanel.Presets.Dialog.Title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using OpenSee;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -55,7 +56,8 @@ namespace AvatarViewer.Ui
 
         public Camera Camera;
 
-        public GameObject Dialog;
+        [SerializeField] private LocalizedString DialogTitle;
+        [SerializeField] private GameObject Dialog;
 
         [SerializeField] private TMP_Dropdown OtherAvatars;
         [SerializeField] private Button ChangeAvatar;
@@ -178,7 +180,7 @@ namespace AvatarViewer.Ui
 
             var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
             var data = dialog.GetComponentInChildren<Dialog>();
-            data.SetTitle("Delete camera preset");
+            data.SetTitle(DialogTitle.GetLocalizedString());
             data.SetContent($"{AppSettings.CameraPresets[preset].Name}");
             data.SetOnOkAction(() =>
             {
