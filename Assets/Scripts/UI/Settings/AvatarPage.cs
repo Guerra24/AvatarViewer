@@ -2,6 +2,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace AvatarViewer.Ui.Settings
@@ -31,6 +32,8 @@ namespace AvatarViewer.Ui.Settings
 
         [SerializeField] private TMP_Dropdown OtherAvatars;
 
+        [SerializeField] private LocalizedString DialogTitle;
+        [SerializeField] private LocalizedString DialogContent;
         [SerializeField] private GameObject Dialog;
 
         protected override void Awake()
@@ -79,8 +82,8 @@ namespace AvatarViewer.Ui.Settings
             var other = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == ((GuidDropdownData)OtherAvatars.options[OtherAvatars.value]).guid);
             var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
             var data = dialog.GetComponentInChildren<Dialog>();
-            data.SetTitle("Copy settings");
-            data.SetContent($"Settings from {other.Title} will be copied to {Avatar.Title}. Are you sure?");
+            data.SetTitle(DialogTitle.GetLocalizedString());
+            data.SetContent(DialogContent.GetLocalizedString().AsFormat(other.Title, Avatar.Title));
             data.SetOnOkAction(() =>
             {
                 Avatar.Settings = new AvatarSettings(other.Settings);

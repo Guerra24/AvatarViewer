@@ -134,6 +134,128 @@ MonoBehaviour:
     m_Localized: Rastreadores
     m_Metadata:
       m_Items: []
+  - m_Id: 356189153968128
+    m_Localized: "Direcci\xF3n de escucha"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356344766840832
+    m_Localized: Para escuchar conexiones remotas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357104720199680
+    m_Localized: Puerto de escucha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357202057412608
+    m_Localized: "Este es el puerto en el que el servidor escuchar\xE1 los paquetes
+      de seguimiento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357748852047872
+    m_Localized: Usar rastreador local
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358994908463104
+    m_Localized: Calidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360080893460480
+    m_Localized: Conectar cuenta de Twitch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360211550224384
+    m_Localized: Desconectar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364876425773056
+    m_Localized: Recompensas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366803251281920
+    m_Localized: "Copiar configuraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366853461295104
+    m_Localized: "Copiar la configuraci\xF3n de otro avatar a este"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366924135317504
+    m_Localized: Copiar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367959792861184
+    m_Localized: "La configuraci\xF3n de \"{0}\" se copiar\xE1 a \"{1}\". \xBFEst\xE1
+      seguro?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 369635861905408
+    m_Localized: "Copiar configuraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370006705487872
+    m_Localized: "Configuraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370267398258688
+    m_Localized: Invertir movimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370431890472960
+    m_Localized: Escala de movimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370476807274496
+    m_Localized: Suavizado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370514799280128
+    m_Localized: "Regresar a la posici\xF3n inicial"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371092896006144
+    m_Localized: "Parpadeo autom\xE1tico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371138643279872
+    m_Localized: Suavizado de parpadeo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371305484304384
+    m_Localized: Sensibilidad de los ojos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371528260567040
+    m_Localized: Ajuste de cejas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371773321166848
+    m_Localized: Sensibilidad de las cejas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372094839734272
+    m_Localized: Suavizado de la mirada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372184421679104
+    m_Localized: Sensibilidad de la mirada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372457688973312
+    m_Localized: Ajuste horizontal de la mirada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372532314030080
+    m_Localized: Ajuste vertical de la mirada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371363764158464
+    m_Localized: Movimiento de cejas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372384498368512
+    m_Localized: Movimiento de la mirada
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -666,7 +666,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e0eebf9b775e846a996209b35086ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LocalizedTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:9da5f674f257f1547bd98558fa127135
+    m_TableEntryReference:
+      m_KeyId: 4620193546240
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   Title: Avatars
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1345749335316372113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,7 +855,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8979411135640100683, guid: 5428eb2aacc40844c9707793b57865e2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7164435277232961037}
   m_SourcePrefab: {fileID: 100100000, guid: 5428eb2aacc40844c9707793b57865e2, type: 3}
 --- !u!224 &264891815507429491 stripped
 RectTransform:
@@ -851,6 +867,64 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 7123292776727006157}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2181505632218682502 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8979411135640100683, guid: 5428eb2aacc40844c9707793b57865e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7123292776727006157}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7164435277232961037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181505632218682502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69beb381e244f92449b8c4cf954630e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedObjects:
+  - rid: 8715951081192161417
+  references:
+    version: 2
+    RefIds:
+    - rid: 8715951081192161417
+      type: {class: TrackedUGuiGraphic, ns: UnityEngine.Localization.PropertyVariants.TrackedObjects,
+        asm: Unity.Localization}
+      data:
+        m_Target: {fileID: 4437518733338157933}
+        m_TrackedProperties:
+          items:
+          - rid: 8715951081192161418
+        m_UpdateType: 0
+    - rid: 8715951081192161418
+      type: {class: LocalizedStringProperty, ns: UnityEngine.Localization.PropertyVariants.TrackedProperties,
+        asm: Unity.Localization}
+      data:
+        m_Localized:
+          m_TableReference:
+            m_TableCollectionName: GUID:9da5f674f257f1547bd98558fa127135
+          m_TableEntryReference:
+            m_KeyId: 61773627392
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        m_PropertyPath: m_text
+--- !u!114 &4437518733338157933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6867495531089258656, guid: 5428eb2aacc40844c9707793b57865e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7123292776727006157}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181505632218682502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7545415242275950506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1178,11 +1252,73 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8979411135640100683, guid: 5428eb2aacc40844c9707793b57865e2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3733793952252207031}
   m_SourcePrefab: {fileID: 100100000, guid: 5428eb2aacc40844c9707793b57865e2, type: 3}
+--- !u!1 &145502282935235641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8979411135640100683, guid: 5428eb2aacc40844c9707793b57865e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 9122510899232320370}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3733793952252207031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145502282935235641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69beb381e244f92449b8c4cf954630e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedObjects:
+  - rid: 8715951081192161419
+  references:
+    version: 2
+    RefIds:
+    - rid: 8715951081192161419
+      type: {class: TrackedUGuiGraphic, ns: UnityEngine.Localization.PropertyVariants.TrackedObjects,
+        asm: Unity.Localization}
+      data:
+        m_Target: {fileID: 2438582206054482898}
+        m_TrackedProperties:
+          items:
+          - rid: 8715951081192161420
+        m_UpdateType: 0
+    - rid: 8715951081192161420
+      type: {class: LocalizedStringProperty, ns: UnityEngine.Localization.PropertyVariants.TrackedProperties,
+        asm: Unity.Localization}
+      data:
+        m_Localized:
+          m_TableReference:
+            m_TableCollectionName: GUID:9da5f674f257f1547bd98558fa127135
+          m_TableEntryReference:
+            m_KeyId: 142857912320
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        m_PropertyPath: m_text
 --- !u!224 &2301264564086302924 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7022819058987942846, guid: 5428eb2aacc40844c9707793b57865e2,
     type: 3}
   m_PrefabInstance: {fileID: 9122510899232320370}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2438582206054482898 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6867495531089258656, guid: 5428eb2aacc40844c9707793b57865e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 9122510899232320370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145502282935235641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

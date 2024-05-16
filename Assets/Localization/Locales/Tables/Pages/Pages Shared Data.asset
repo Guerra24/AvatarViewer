@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Pages Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Pages
+  m_TableCollectionNameGuidString: 9da5f674f257f1547bd98558fa127135
+  m_Entries:
+  - m_Id: 61773627392
+    m_Key: Avatars.Add.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142857912320
+    m_Key: Avatars.Remove.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 581141708800
+    m_Key: Startup.AvatarMissing.Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2683406565376
+    m_Key: Avatar.Version.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2779632287744
+    m_Key: Avatar.Author.Teg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2825262120960
+    m_Key: Avatar.Contact.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2864931848192
+    m_Key: Avatar.Allowed.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2890609377280
+    m_Key: Avatar.Violent.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2928802709504
+    m_Key: Avatar.Sexual.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2961853825024
+    m_Key: Avatar.Commercial.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3102597890048
+    m_Key: Avatar.OtherPermissions.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3150870134784
+    m_Key: Avatar.License.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3174488260608
+    m_Key: Avatar.OtherLicenses.Tag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4620193546240
+    m_Key: Avatars.Title
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8715951081192161416
+  references:
+    version: 2
+    RefIds:
+    - rid: 8715951081192161416
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1715822665870

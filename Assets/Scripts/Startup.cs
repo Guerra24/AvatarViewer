@@ -8,6 +8,7 @@ using DG.Tweening;
 using TMPro;
 using UniGLTF;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -19,6 +20,7 @@ namespace AvatarViewer
     {
 
         [SerializeField] private TMP_Text Status;
+        [SerializeField] private LocalizedString StatusText;
 
         private UIDocument _document;
 
@@ -46,10 +48,12 @@ namespace AvatarViewer
 
             RuntimeSettings.Apply();
 
+            var statusText = await StatusText.GetLocalizedStringAsync();
+
             foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.ToList())
                 if (!File.Exists(avatar.Path))
                 {
-                    Status.text = $"Avatar file \"{avatar.Path.Replace(@"\", @"\\")}\" was not found.\nPlease choose a new file";
+                    Status.text = statusText.AsFormat(avatar.Path.Replace(@"\", @"\\"));
                     await UniTask.Delay(TimeSpan.FromSeconds(2));
                     var dir = Path.GetDirectoryName(avatar.Path);
                     var res = NativeFileDialogSharp.Dialog.FileOpen("vsfavatar,vrm", Directory.Exists(dir) ? dir : null);

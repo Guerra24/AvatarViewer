@@ -134,6 +134,126 @@ MonoBehaviour:
     m_Localized: Trackers
     m_Metadata:
       m_Items: []
+  - m_Id: 356189153968128
+    m_Localized: Listen address
+    m_Metadata:
+      m_Items: []
+  - m_Id: 356344766840832
+    m_Localized: To listen for remote connections
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357104720199680
+    m_Localized: Listen port
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357202057412608
+    m_Localized: This is the port the server will listen for tracking packets on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 357748852047872
+    m_Localized: Use local tracker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 358994908463104
+    m_Localized: Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360080893460480
+    m_Localized: Connect Twitch account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 360211550224384
+    m_Localized: Disconnect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 364876425773056
+    m_Localized: Rewards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366803251281920
+    m_Localized: Copy settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366853461295104
+    m_Localized: Copy settings from another avatar to this one
+    m_Metadata:
+      m_Items: []
+  - m_Id: 366924135317504
+    m_Localized: Copy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 367959792861184
+    m_Localized: Settings from "{0}" will be copied to "{1}". Are you sure?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 369635861905408
+    m_Localized: Copy settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370006705487872
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370267398258688
+    m_Localized: Mirror motion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370431890472960
+    m_Localized: Translation scale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370476807274496
+    m_Localized: Smoothing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370514799280128
+    m_Localized: Drift back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371092896006144
+    m_Localized: Auto blink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371138643279872
+    m_Localized: Blink smoothing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371305484304384
+    m_Localized: Eye sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371363764158464
+    m_Localized: Eyebrow strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371528260567040
+    m_Localized: Eyebrow offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 371773321166848
+    m_Localized: Eyebrow sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372094839734272
+    m_Localized: Gaze smoothing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372184421679104
+    m_Localized: Gaze sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372384498368512
+    m_Localized: Gaze strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372457688973312
+    m_Localized: Gaze horizontal offset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 372532314030080
+    m_Localized: Gaze vertical offset
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
