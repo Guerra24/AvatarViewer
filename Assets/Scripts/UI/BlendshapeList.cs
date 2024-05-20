@@ -25,7 +25,10 @@ namespace AvatarViewer.Ui
 #if UNITY_STANDALONE_WIN
             rawInputAlreadyRunning = RawInput.IsRunning;
             if (!rawInputAlreadyRunning)
+            {
+                RawInput.WorkInBackground = true;
                 RawInput.Start();
+            }
 #endif
         }
 

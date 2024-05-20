@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 500
+  m_ScrollSensitivity: 25
   m_Viewport: {fileID: 3151891425815034276}
   m_HorizontalScrollbar: {fileID: 1157242732622791101}
   m_VerticalScrollbar: {fileID: 5328900363198888176}
@@ -867,6 +867,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6398557052978745193, guid: 16dbcc835d2ab5c439b3602b99be6430,
         type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398557052978745193, guid: 16dbcc835d2ab5c439b3602b99be6430,
+        type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1109,6 +1114,11 @@ PrefabInstance:
     - target: {fileID: 5396859408325934621, guid: adf8ad31abbd8d742834c7a426520334,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5396859408325934621, guid: adf8ad31abbd8d742834c7a426520334,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5430989283552079599, guid: adf8ad31abbd8d742834c7a426520334,
@@ -1384,6 +1394,11 @@ PrefabInstance:
     - target: {fileID: 7531192027864933759, guid: b179182cd519e8d4b83ffbd7f235527d,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531192027864933759, guid: b179182cd519e8d4b83ffbd7f235527d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8466977154089630675, guid: b179182cd519e8d4b83ffbd7f235527d,
