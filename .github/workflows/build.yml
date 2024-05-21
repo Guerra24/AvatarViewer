@@ -34,6 +34,7 @@ jobs:
           buildName: AvatarViewer
           customParameters: -CompressWithLz4HC
           customImage: game-ci:latest
+          buildMethod: UnityBuilderAction.Builder.BuildProject
       - uses: actions/upload-artifact@v4
         with:
           name: AvatarViewer-${{ matrix.build.target-platform }}

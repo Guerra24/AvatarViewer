@@ -9,11 +9,6 @@ namespace AvatarViewer.Editor
         static EditorInitializer()
         {
             EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>("Assets/Scenes/Startup.unity");
-            BuildPlayerWindow.RegisterBuildPlayerHandler((options) =>
-            {
-                Actions.BuildRewards();
-                BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
-            });
         }
     }
 }
