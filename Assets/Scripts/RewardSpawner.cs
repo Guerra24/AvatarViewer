@@ -2,7 +2,6 @@ using System;
 using AvatarViewer.Twitch;
 using TwitchLib.PubSub.Events;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace AvatarViewer
 {
@@ -15,10 +14,6 @@ namespace AvatarViewer
         public Transform Front;
         public Transform Left;
         public Transform Right;
-
-        public GameObject Box;
-
-        public AudioResource Cardboard;
 
         void Start()
         {
@@ -34,39 +29,31 @@ namespace AvatarViewer
                 {
                     var itemReward = reward;
                     var spawnPoint = GetSpawn(itemReward.SpawnPoint);
-                    var gameObject = GetBasebject(itemReward.Asset);
-
-                    SetupReward(Instantiate(gameObject, spawnPoint.position, spawnPoint.rotation * gameObject.transform.rotation), spawnPoint, reward);
+                    if (ApplicationState.RewardAssets.TryGetValue(reward.RewardAsset, out var asset))
+                    {
+                        var gameObject = asset.Object;
+                        SetupReward(Instantiate(gameObject, spawnPoint.position, spawnPoint.rotation * gameObject.transform.rotation), spawnPoint, reward);
+                    }
                 });
             }
         }
 
         private void SetupReward(GameObject gameObject, Transform spawnPoint, ItemReward reward)
         {
-            gameObject.AddComponent<RewardController>();
-            var @as = gameObject.AddComponent<AudioSource>();
-            if (reward.Sound == ItemRewardSound.Custom)
+            if (!gameObject.TryGetComponent<AudioSource>(out var @as))
             {
-                if (ApplicationState.ExternalAudios.TryGetValue(reward.SoundPath, out var clip))
-                    @as.clip = clip;
+                @as = gameObject.AddComponent<AudioSource>();
+                @as.playOnAwake = false;
             }
-            else
-                @as.resource = GetAudio(reward.Sound);
+
+            if (ApplicationState.ExternalAudios.TryGetValue(reward.SoundPath, out var clip))
+                @as.clip = clip;
+
             @as.volume = reward.Volume * ApplicationPersistence.AppSettings.Volume;
 
             gameObject.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
             var rigidbody = gameObject.GetComponent<Rigidbody>();
             rigidbody.linearVelocity = spawnPoint.forward.normalized * 5;
-        }
-
-        private GameObject GetBasebject(ItemRewardAsset assetType)
-        {
-            switch (assetType)
-            {
-                case ItemRewardAsset.Box:
-                    return Box;
-            }
-            throw new Exception();
         }
 
         private Transform GetSpawn(ItemRewardSpawnPoint spawnPoint)
@@ -94,16 +81,6 @@ namespace AvatarViewer
                             return Right;
                     }
                     break;
-            }
-            throw new Exception();
-        }
-
-        private AudioResource GetAudio(ItemRewardSound sound)
-        {
-            switch (sound)
-            {
-                case ItemRewardSound.Cardboard:
-                    return Cardboard;
             }
             throw new Exception();
         }

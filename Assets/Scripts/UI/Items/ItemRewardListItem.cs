@@ -10,42 +10,28 @@ namespace AvatarViewer.Ui.Items
 {
     public class ItemRewardListItem : RewardListItem<ItemReward>
     {
-        [SerializeField]
-        private TMP_Dropdown SpawnPoint;
-        [SerializeField]
-        private TMP_InputField Timeout;
-        [SerializeField]
-        private TMP_Dropdown Sound;
-        [SerializeField]
-        private GameObject Volume;
-        [SerializeField]
-        private Button PickSound;
-        [SerializeField]
-        private TMP_Text SoundPath;
-        [SerializeField]
-        private GameObject CustomSound;
-        [SerializeField]
-        private TMP_Dropdown Type;
-        [SerializeField]
-        private Button PickAsset;
-        [SerializeField]
-        private TMP_Text AssetPath;
-        [SerializeField]
-        private GameObject Asset;
+        [SerializeField] private TMP_Dropdown SpawnPoint;
+        [SerializeField] private TMP_InputField Timeout;
+        [SerializeField] private GameObject Volume;
+        [SerializeField] private Button PickSound;
+        [SerializeField] private TMP_Text SoundPath;
+        [SerializeField] private Button ClearSound;
+        [SerializeField] private TMP_Dropdown RewardAsset;
 
         protected override void Awake()
         {
             base.Awake();
+            SpawnPoint.AddOptions(Enum.GetNames(typeof(ItemRewardSpawnPoint)).ToList());
+            foreach (var rewardAsset in ApplicationState.RewardAssets)
+                RewardAsset.options.Add(new GuidDropdownData(rewardAsset.Value.RewardAsset.Name, rewardAsset.Key));
+            RewardAsset.RefreshShownValue();
+
+            Volume.SetupSlider((value) => Reward.Volume = value);
             SpawnPoint.onValueChanged.AddListener(OnSpawnPointChanged);
             Timeout.onEndEdit.AddListener(OnTimeoutEditEnd);
-            Sound.onValueChanged.AddListener(OnSoundChanged);
             PickSound.onClick.AddListener(OnPickSoundClick);
-            Type.onValueChanged.AddListener(OnAssetTypeChanged);
-            PickAsset.onClick.AddListener(OnPickAssetClick);
-            SpawnPoint.AddOptions(Enum.GetNames(typeof(ItemRewardSpawnPoint)).ToList());
-            Sound.AddOptions(Enum.GetNames(typeof(ItemRewardSound)).ToList());
-            Type.AddOptions(Enum.GetNames(typeof(ItemRewardAsset)).ToList());
-            Volume.SetupSlider((value) => Reward.Volume = value);
+            ClearSound.onClick.AddListener(() => SoundPath.text = Reward.SoundPath = "");
+            RewardAsset.onValueChanged.AddListener(OnRewardAssetChanged);
         }
 
         private void OnSpawnPointChanged(int item)
@@ -58,23 +44,9 @@ namespace AvatarViewer.Ui.Items
             Reward.Timeout = float.Parse(value);
         }
 
-        private void OnSoundChanged(int item)
+        private void OnRewardAssetChanged(int item)
         {
-            Reward.Sound = (ItemRewardSound)item;
-            CustomSound.SetActive(Reward.Sound == ItemRewardSound.Custom);
-        }
-
-        private void OnAssetTypeChanged(int item)
-        {
-            Reward.Asset = (ItemRewardAsset)item;
-            Asset.SetActive(Reward.Asset == ItemRewardAsset.Custom);
-        }
-
-        private void OnPickAssetClick()
-        {
-            var result = NativeFileDialogSharp.Dialog.FileOpen();
-            if (result.IsOk)
-                AssetPath.text = Reward.AssetPath = result.Path;
+            Reward.RewardAsset = ((GuidDropdownData)RewardAsset.options[item]).guid;
         }
 
         private void OnPickSoundClick()
@@ -82,7 +54,6 @@ namespace AvatarViewer.Ui.Items
             var result = NativeFileDialogSharp.Dialog.FileOpen("wav");
             if (result.IsOk)
                 SoundFilePickedAsync(result.Path).Forget();
-
         }
 
         private async UniTaskVoid SoundFilePickedAsync(string file)
@@ -103,19 +74,13 @@ namespace AvatarViewer.Ui.Items
             }
         }
 
-        private void FileCancelled() { }
-
         public override void LoadValues(string id)
         {
             base.LoadValues(id);
             SpawnPoint.value = (int)Reward.SpawnPoint;
             Timeout.text = Reward.Timeout.ToString();
-            Sound.value = (int)Reward.Sound;
             SoundPath.text = Reward.SoundPath;
-            CustomSound.SetActive(Reward.Sound == ItemRewardSound.Custom);
-            Type.value = (int)Reward.Asset;
-            AssetPath.text = Reward.AssetPath;
-            Asset.SetActive(Reward.Asset == ItemRewardAsset.Custom);
+            RewardAsset.value = RewardAsset.options.FindIndex(g => ((GuidDropdownData)g).guid == Reward.RewardAsset);
             Volume.LoadSlider(Reward.Volume);
         }
     }

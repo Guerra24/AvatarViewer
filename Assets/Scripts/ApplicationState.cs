@@ -6,6 +6,8 @@ using Newtonsoft.Json.Converters;
 using AvatarViewer.Trackers;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using AvatarViewer.SDK;
+
 
 #if UNITY_STANDALONE_WIN
 using UnityRawInput;
@@ -25,6 +27,11 @@ namespace AvatarViewer
         public static Dictionary<Guid, VRMImporterContext> VrmData { get; } = new();
 
         public static Dictionary<string, AudioClip> ExternalAudios { get; } = new();
+
+        public static Dictionary<Guid, LoadedRewardAsset> RewardAssets { get; } = new();
+
+        public static List<AssetBundle> RewardBundles { get; } = new();
+
     }
 
     public static class ApplicationPersistence
@@ -296,6 +303,18 @@ namespace AvatarViewer
         }
     }
 
+    public class LoadedRewardAsset
+    {
+        public GameObject Object { get; }
+        public RewardAsset RewardAsset { get; }
+
+        public LoadedRewardAsset(GameObject @object, RewardAsset rewardAsset)
+        {
+            Object = @object;
+            RewardAsset = rewardAsset;
+        }
+    }
+
     public class Reward
     {
         public string Title { get; set; }
@@ -314,12 +333,8 @@ namespace AvatarViewer
         }
 
         public float Timeout { get; set; } = 15;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ItemRewardAsset Asset { get; set; } = ItemRewardAsset.Box;
-        public string AssetPath { get; set; } = "";
+        public Guid RewardAsset { get; set; }
         public float Volume { get; set; } = 1.0f;
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ItemRewardSound Sound { get; set; } = ItemRewardSound.Cardboard;
         public string SoundPath { get; set; } = "";
         [JsonConverter(typeof(StringEnumConverter))]
         public ItemRewardSpawnPoint SpawnPoint { get; set; } = ItemRewardSpawnPoint.Above;
@@ -381,13 +396,4 @@ namespace AvatarViewer
         Above, Front, Left, Right, Random
     }
 
-    public enum ItemRewardAsset
-    {
-        Custom, Box
-    }
-
-    public enum ItemRewardSound
-    {
-        Custom, Cardboard
-    }
 }

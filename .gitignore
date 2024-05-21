@@ -75,3 +75,4 @@ crashlytics-build.properties
 
 *.blend1
 *.blend1.meta
+/[Aa]ssets/[Ss]treamingAssets/

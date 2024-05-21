@@ -1,11 +1,19 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-[InitializeOnLoad]
-public static class EditorInitializer
+namespace AvatarViewer.Editor
 {
-    static EditorInitializer()
+    [InitializeOnLoad]
+    public static class EditorInitializer
     {
-        EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>("Assets/Scenes/Startup.unity");
+        static EditorInitializer()
+        {
+            EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>("Assets/Scenes/Startup.unity");
+            BuildPlayerWindow.RegisterBuildPlayerHandler((options) =>
+            {
+                Actions.BuildRewards();
+                BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
+            });
+        }
     }
 }

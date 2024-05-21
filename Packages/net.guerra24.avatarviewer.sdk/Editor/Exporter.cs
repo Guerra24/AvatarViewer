@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
+using VSeeFace;
 
-namespace VSeeFace
+namespace AvatarViewer.SDK.Editor
 {
-    public class ExportAvatar : MonoBehaviour
+    public static class ExportAvatar
     {
         [MenuItem("Avatar Viewer/Export bundle")]
         public static void ExportAvatarBundle()

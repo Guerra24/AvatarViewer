@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AvatarViewer.SDK;
 using AvatarViewer.Trackers;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -116,9 +117,24 @@ namespace AvatarViewer
             await UniTask.Yield();
             await UniTask.NextFrame();
             {
+                var bundle = await AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, "builtin-rewards"));
+                var request = bundle.LoadAllAssetsAsync<GameObject>();
+                await request;
+                foreach (var @object in request.allAssets)
+                {
+                    var reward = @object as GameObject;
+                    var rewardAsset = reward.GetComponent<RewardAsset>();
+                    ApplicationState.RewardAssets.Add(rewardAsset.Guid, new LoadedRewardAsset(reward, rewardAsset));
+                }
+                ApplicationState.RewardBundles.Add(bundle);
+            }
+
+            await UniTask.Yield();
+            await UniTask.NextFrame();
+            {
                 foreach (var kvp in ApplicationPersistence.AppSettings.Rewards)
                 {
-                    if (kvp.Value is ItemReward reward && reward.Sound == ItemRewardSound.Custom && !ApplicationState.ExternalAudios.ContainsKey(reward.SoundPath))
+                    if (kvp.Value is ItemReward reward && !string.IsNullOrEmpty(reward.SoundPath) && File.Exists(reward.SoundPath) && !ApplicationState.ExternalAudios.ContainsKey(reward.SoundPath))
                     {
                         Debug.Log($"Loading sound {reward.SoundPath}");
                         if (File.Exists(reward.SoundPath))

@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
 
-namespace AvatarViewer
+namespace AvatarViewer.SDK
 {
-    public class RewardController : MonoBehaviour
+    public class RewardAsset : MonoBehaviour
     {
+        public SerializableGuid Guid;
+
+        public string Name;
 
         private Rigidbody Rigidbody;
         private AudioSource AudioSource;
