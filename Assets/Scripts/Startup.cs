@@ -56,7 +56,7 @@ namespace AvatarViewer
                     Status.text = statusText.AsFormat(avatar.Path.Replace(@"\", @"\\"));
                     await UniTask.Delay(TimeSpan.FromSeconds(2));
                     var dir = Path.GetDirectoryName(avatar.Path);
-                    var res = NativeFileDialogSharp.Dialog.FileOpen("vsfavatar,vrm", Directory.Exists(dir) ? dir : null);
+                    var res = NativeFileDialogSharp.Dialog.FileOpen("ava,vsfavatar,vrm", Directory.Exists(dir) ? dir : null);
                     Status.text = "";
 
                     if (res.IsOk)

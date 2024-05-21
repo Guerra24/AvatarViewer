@@ -1,0 +1,15 @@
+{
+  "name": "net.guerra24.avatarviewer.sdk",
+  "version": "1.0.0",
+  "displayName": "Avatar Viewer SDK",
+  "description": "Avatar Viewer SDK",
+  "dependencies": {
+    "com.vrmc.univrm": "0.122.0"
+  },
+  "unity": "2021.3",
+  "documentationUrl": "https://github.com/Guerra24/AvatarViewer",
+  "author": {
+    "name": "Guerra24",
+    "url": "https://guerra24.net/"
+  }
+}

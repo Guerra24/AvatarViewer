@@ -22,7 +22,7 @@ namespace AvatarViewer.Ui
 
         public void AddAvatar()
         {
-            var result = NativeFileDialogSharp.Dialog.FileOpen("vsfavatar,vrm");
+            var result = NativeFileDialogSharp.Dialog.FileOpen("ava,vsfavatar,vrm");
             if (result.IsOk)
                 StartCoroutine(AddAvatar(result.Path));
         }

@@ -1,41 +1,40 @@
-﻿// Adapted from TWSDK
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.IO;
 using UnityEditor;
-using VRM;
+using UnityEngine;
 
 namespace VSeeFace
 {
     public class ExportAvatar : MonoBehaviour
     {
-        [MenuItem("VSF SDK/Export avatar bundle")]
+        [MenuItem("Avatar Viewer/Export bundle")]
         public static void ExportAvatarBundle()
         {
             GameObject obj = Selection.activeGameObject;
             string error;
-            if (!AvatarCheck.CheckAvatar(obj, out error)) {
+            if (!AvatarCheck.CheckAvatar(obj, out error))
+            {
                 EditorUtility.DisplayDialog("Export Avatar Bundle", error, "OK");
                 return;
             }
-            
-            string fullpath = EditorUtility.SaveFilePanel("Export Avatar Bundle", ".", obj.name, "vsfavatar");
+
+            string fullpath = EditorUtility.SaveFilePanel("Export Avatar Bundle", ".", obj.name, "ava");
             if (fullpath == null || fullpath == "")
                 return;
 
             string filename = Path.GetFileName(fullpath);
 
             bool complete = false;
-            string prefabPath = "Assets/VSFAvatarTemporary.prefab";
-            try {
+            string prefabPath = "Assets/AvATemporary.prefab";
+            try
+            {
                 AssetDatabase.DeleteAsset(prefabPath);
                 if (File.Exists(prefabPath))
                     File.Delete(prefabPath);
 
                 bool succeededPack = false;
                 PrefabUtility.SaveAsPrefabAsset(obj, prefabPath, out succeededPack);
-                if (!succeededPack) {
+                if (!succeededPack)
+                {
                     Debug.Log("Prefab creation failed");
                     return;
                 }
@@ -46,26 +45,30 @@ namespace VSeeFace
                 bundleBuild.assetNames = new string[] { prefabPath };
                 bundleBuild.addressableNames = new string[] { "VSFAvatar" };
 
-                BuildAssetBundleOptions options = BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.DeterministicAssetBundle | BuildAssetBundleOptions.StrictMode;
-                if (obj.GetComponentsInChildren<UnityEngine.Video.VideoPlayer>(true).Length > 0) {
+                BuildAssetBundleOptions options = BuildAssetBundleOptions.ForceRebuildAssetBundle | BuildAssetBundleOptions.StrictMode | BuildAssetBundleOptions.ChunkBasedCompression;
+                if (obj.GetComponentsInChildren<UnityEngine.Video.VideoPlayer>(true).Length > 0)
+                {
                     Debug.Log("VideoPlayer detected, using uncompressed asset bundle.");
                     options = options | BuildAssetBundleOptions.UncompressedAssetBundle;
                 }
-                BuildPipeline.BuildAssetBundles(Application.temporaryCachePath, new AssetBundleBuild[] { bundleBuild }, options, BuildTarget.StandaloneWindows);
+                BuildPipeline.BuildAssetBundles(Application.temporaryCachePath, new AssetBundleBuild[] { bundleBuild }, options, EditorUserBuildSettings.activeBuildTarget);
                 if (File.Exists(fullpath))
                     File.Delete(fullpath);
-                File.Move(Application.temporaryCachePath + "/" + filename, fullpath);
+
+                File.Move(Path.Combine(Application.temporaryCachePath, filename), fullpath);
 
                 EditorUtility.DisplayDialog("Export", "Export complete!", "OK");
                 complete = true;
             }
             finally
             {
-                try {
+                try
+                {
                     AssetDatabase.DeleteAsset(prefabPath);
                     if (File.Exists(prefabPath))
                         File.Delete(prefabPath);
-                } catch {}
+                }
+                catch { }
 
                 if (!complete)
                     EditorUtility.DisplayDialog("Export", "Export failed! See the console for details.", "OK");

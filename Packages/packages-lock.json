@@ -228,6 +228,14 @@
       },
       "url": "https://registry.npmjs.com"
     },
+    "net.guerra24.avatarviewer.sdk": {
+      "version": "file:net.guerra24.avatarviewer.sdk",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.vrmc.univrm": "0.122.0"
+      }
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,
