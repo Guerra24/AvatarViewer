@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.IO;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UniGLTF;
 using UnityEngine;
 using VRM;
@@ -24,7 +24,7 @@ namespace AvatarViewer.Ui
         {
             var result = NativeFileDialogSharp.Dialog.FileOpen("ava,vsfavatar,vrm");
             if (result.IsOk)
-                StartCoroutine(AddAvatar(result.Path));
+                AddAvatar(result.Path).Forget();
         }
 
         public void RemoveAvatar()
@@ -42,25 +42,17 @@ namespace AvatarViewer.Ui
             ApplicationPersistence.Save();
         }
 
-        IEnumerator AddAvatar(string path)
+        private async UniTaskVoid AddAvatar(string path)
         {
-            yield return null;
 
-            if (string.Equals(Path.GetExtension(path), ".vsfavatar", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Path.GetExtension(path), ".vsfavatar", StringComparison.OrdinalIgnoreCase) || string.Equals(Path.GetExtension(path), ".ava", StringComparison.OrdinalIgnoreCase))
             {
-                var bundleOp = AssetBundle.LoadFromFileAsync(path);
                 Debug.Log($"Loading bundle {path}");
 
-                yield return bundleOp;
+                var assetBundle = await AssetBundle.LoadFromFileAsync(path);
 
-                var assetBundle = bundleOp.assetBundle;
-
-                var assetOp = assetBundle.LoadAssetAsync<GameObject>("VSFAvatar");
                 Debug.Log($"Loading asset");
-
-                yield return assetOp;
-
-                var prefab = assetOp.asset as GameObject;
+                var prefab = (await assetBundle.LoadAssetAsync<GameObject>("VSFAvatar")) as GameObject;
 
                 string error;
                 if (VSeeFace.AvatarCheck.CheckAvatar(prefab, out error))
@@ -78,7 +70,7 @@ namespace AvatarViewer.Ui
                 }
                 else
                 {
-                    yield return assetBundle.UnloadAsync(true);
+                    await assetBundle.UnloadAsync(true);
                 }
             }
             else
