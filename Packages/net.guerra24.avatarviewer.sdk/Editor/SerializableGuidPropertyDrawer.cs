@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace AvatarViewer.SDK
+namespace AvatarViewer.SDK.Editor
 {
     [CustomPropertyDrawer(typeof(SerializableGuid))]
     public class SerializableGuidPropertyDrawer : PropertyDrawer

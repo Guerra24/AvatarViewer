@@ -5,9 +5,9 @@ using VSeeFace;
 
 namespace AvatarViewer.SDK.Editor
 {
-    public static class ExportAvatar
+    public static class Exporter
     {
-        [MenuItem("Avatar Viewer/Export bundle")]
+        [MenuItem("Avatar Viewer/Export avatar bundle")]
         public static void ExportAvatarBundle()
         {
             GameObject obj = Selection.activeGameObject;
@@ -19,7 +19,7 @@ namespace AvatarViewer.SDK.Editor
             }
 
             string fullpath = EditorUtility.SaveFilePanel("Export Avatar Bundle", ".", obj.name, "ava");
-            if (fullpath == null || fullpath == "")
+            if (string.IsNullOrEmpty(fullpath))
                 return;
 
             string filename = Path.GetFileName(fullpath);
@@ -75,5 +75,6 @@ namespace AvatarViewer.SDK.Editor
                     EditorUtility.DisplayDialog("Export", "Export failed! See the console for details.", "OK");
             }
         }
+
     }
 }
