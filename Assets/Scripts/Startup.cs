@@ -117,16 +117,21 @@ namespace AvatarViewer
             await UniTask.Yield();
             await UniTask.NextFrame();
             {
-                var bundle = await AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, "builtin-rewards"));
-                var request = bundle.LoadAllAssetsAsync<GameObject>();
-                await request;
-                foreach (var @object in request.allAssets)
+                var bundles = ApplicationPersistence.AppSettings.RewardBundles.ToList();
+                bundles.Add(Path.Combine(Application.streamingAssetsPath, "builtin-rewards"));
+                foreach (var bundlePath in bundles)
                 {
-                    var reward = @object as GameObject;
-                    var rewardAsset = reward.GetComponent<RewardAsset>();
-                    ApplicationState.RewardAssets.Add(rewardAsset.Guid, new LoadedRewardAsset(reward, rewardAsset));
+                    var bundle = await AssetBundle.LoadFromFileAsync(bundlePath);
+                    var request = bundle.LoadAllAssetsAsync<GameObject>();
+                    await request;
+                    foreach (var @object in request.allAssets)
+                    {
+                        var reward = @object as GameObject;
+                        var rewardAsset = reward.GetComponent<RewardAsset>();
+                        ApplicationState.RewardAssets.Add(rewardAsset.Guid, new LoadedRewardAsset(reward, rewardAsset));
+                    }
+                    ApplicationState.RewardBundles.Add(bundlePath, bundle);
                 }
-                ApplicationState.RewardBundles.Add(bundle);
             }
 
             await UniTask.Yield();

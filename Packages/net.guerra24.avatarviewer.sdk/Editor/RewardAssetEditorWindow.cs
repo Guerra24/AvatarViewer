@@ -33,8 +33,9 @@ namespace AvatarViewer.SDK.Editor
             }
 
             var bundleIndex = EditorGUILayout.Popup(0, bundles);
+            var bundle = bundles[bundleIndex];
 
-            var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[bundleIndex]);
+            var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundle);
 
             GUILayout.Label("Assets", EditorStyles.boldLabel);
             bool valid = true;
@@ -87,7 +88,7 @@ namespace AvatarViewer.SDK.Editor
                 }
 
                 if (showExport && GUILayout.Button("Export"))
-                    Export(assets);
+                    Export(bundle, assets);
                 if (!showExport)
                 {
                     GUILayout.Label(errors);
@@ -107,9 +108,9 @@ namespace AvatarViewer.SDK.Editor
             }
         }
 
-        private void Export(string[] assets)
+        private void Export(string bundle, string[] assets)
         {
-            var filepath = EditorUtility.SaveFilePanel("Export Reward Bundle", ".", "rewards", "avr");
+            var filepath = EditorUtility.SaveFilePanel("Export Reward Bundle", ".", bundle, "avr");
             if (string.IsNullOrEmpty(filepath))
                 return;
 
