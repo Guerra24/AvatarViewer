@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace AvatarViewer.SDK.Editor
 {
@@ -25,6 +26,12 @@ namespace AvatarViewer.SDK.Editor
 
             var bundles = AssetDatabase.GetAllAssetBundleNames();
 
+            if (bundles.Length == 0)
+            {
+                GUILayout.Label("No asset bundles found");
+                return;
+            }
+
             var bundleIndex = EditorGUILayout.Popup(0, bundles);
 
             var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundles[bundleIndex]);
@@ -48,7 +55,7 @@ namespace AvatarViewer.SDK.Editor
                     EditorGUILayout.ObjectField(gameObject, typeof(GameObject), false);
                     if (!hasRewardAsset)
                         GUILayout.Label("Missing RewardAsset component");
-                    if(!hasRigidBody)
+                    if (!hasRigidBody)
                         GUILayout.Label("Missing RigidBody component");
                     if (hasComponents)
                         GUILayout.Label("Reward valid");
@@ -57,11 +64,42 @@ namespace AvatarViewer.SDK.Editor
                 }
             }
 
-            GUILayout.Label("Export settings", EditorStyles.boldLabel);
+            GUILayout.Label("Export", EditorStyles.boldLabel);
             if (valid)
             {
-                if (GUILayout.Button("Export"))
+                bool showExport = true;
+                string errors = "";
+
+                if (PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64))
+                {
+                    errors += "Using Auto Graphics for Windows\n";
+                    showExport = false;
+                }
+                if (PlayerSettings.GetUseDefaultGraphicsAPIs(BuildTarget.StandaloneLinux64))
+                {
+                    errors += "Using Auto Graphics for Linux\n";
+                    showExport = false;
+                }
+                if (PlayerSettings.colorSpace != ColorSpace.Linear)
+                {
+                    errors += "Using non linear color space\n";
+                    showExport = false;
+                }
+
+                if (showExport && GUILayout.Button("Export"))
                     Export(assets);
+                if (!showExport)
+                {
+                    GUILayout.Label(errors);
+                    if (GUILayout.Button("Fix errors"))
+                    {
+                        PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
+                        PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneLinux64, false);
+                        PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new GraphicsDeviceType[] { GraphicsDeviceType.Direct3D11, GraphicsDeviceType.Direct3D12 });
+                        PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneLinux64, new GraphicsDeviceType[] { GraphicsDeviceType.Vulkan, GraphicsDeviceType.OpenGLCore });
+                        PlayerSettings.colorSpace = ColorSpace.Linear;
+                    }
+                }
             }
             else
             {
