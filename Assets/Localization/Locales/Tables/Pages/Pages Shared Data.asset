@@ -71,6 +71,10 @@ MonoBehaviour:
     m_Key: Avatars.Title
     m_Metadata:
       m_Items: []
+  - m_Id: 2529792431669248
+    m_Key: Startup.RewardAssetBundleMissing.Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

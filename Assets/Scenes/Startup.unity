@@ -612,11 +612,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Status: {fileID: 1307567428}
-  StatusText:
+  MissingAvatar:
     m_TableReference:
       m_TableCollectionName: GUID:9da5f674f257f1547bd98558fa127135
     m_TableEntryReference:
       m_KeyId: 581141708800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  MissingRewardBundle:
+    m_TableReference:
+      m_TableCollectionName: GUID:9da5f674f257f1547bd98558fa127135
+    m_TableEntryReference:
+      m_KeyId: 2529792431669248
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

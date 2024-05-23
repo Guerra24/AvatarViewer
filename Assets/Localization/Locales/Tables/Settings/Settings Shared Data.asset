@@ -251,6 +251,30 @@ MonoBehaviour:
     m_Key: Avatar.Settings.GazeVerticalOffset.Title
     m_Metadata:
       m_Items: []
+  - m_Id: 2900653940588544
+    m_Key: Twitch.RewardAssetBundles.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901165767311360
+    m_Key: RewardAssetBundles.Add.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901211963375616
+    m_Key: RewardAssetBundles.Add.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2902103064231936
+    m_Key: RewardAssetBundles.Dialog.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2902120357347328
+    m_Key: RewardAssetBundles.Dialog.Content
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2905186355822592
+    m_Key: RewardAssetBundle.Remove.Button
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

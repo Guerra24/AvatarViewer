@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TwitchLib.Api;
@@ -149,6 +150,11 @@ namespace AvatarViewer.Twitch
                     reward.TwitchImage = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100, 1, SpriteMeshType.FullRect);
                 }
             }
+
+            foreach (var missmatch in ApplicationPersistence.AppSettings.Rewards.Keys.Except(rewards.Data.Select(d => d.Id).ToList()).ToList())
+                ApplicationPersistence.AppSettings.Rewards.Remove(missmatch);
+
+            ApplicationPersistence.Save();
         }
 
         public void Disconnect()

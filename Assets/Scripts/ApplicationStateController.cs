@@ -23,7 +23,7 @@ namespace AvatarViewer
                 avatar.Value.Bundle.Unload(true);
             ApplicationState.AvatarBundles.Clear();
             foreach (var bundle in ApplicationState.RewardBundles)
-                bundle.Value.Unload(true);
+                bundle.Value.Bundle.Unload(true);
             ApplicationState.RewardBundles.Clear();
         }
     }

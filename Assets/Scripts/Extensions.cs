@@ -36,4 +36,17 @@ namespace AvatarViewer
     {
         public static string AsFormat(this string format, params object[] args) => string.Format(format, args);
     }
+
+    public static class DialogExtensions
+    {
+        public static void CreateDialog(this GameObject _dialog, string title, string content, UnityAction onOK = null, UnityAction onCancel = null)
+        {
+            var dialog = GameObject.Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
+            var data = dialog.GetComponentInChildren<Dialog>();
+            data.SetTitle(title);
+            data.SetContent(content);
+            data.SetOnOkAction(onOK);
+            data.SetOnCancelAction(onCancel);
+        }
+    }
 }

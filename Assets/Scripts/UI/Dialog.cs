@@ -53,12 +53,14 @@ public class Dialog : MonoBehaviour
 
     public void SetOnOkAction(UnityAction action)
     {
-        Ok.onClick.AddListener(action);
+        if (action != null)
+            Ok.onClick.AddListener(action);
     }
 
     public void SetOnCancelAction(UnityAction action)
     {
-        Cancel.onClick.AddListener(action);
+        if (action != null)
+            Cancel.onClick.AddListener(action);
     }
 
     private void Hide()

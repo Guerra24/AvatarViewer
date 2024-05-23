@@ -76,6 +76,13 @@ MonoBehaviour:
     m_Localized: Avatars
     m_Metadata:
       m_Items: []
+  - m_Id: 2529792431669248
+    m_Localized: 'Reward asset bundle "{0}" was not found.
+
+      Please choose a
+      new file'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

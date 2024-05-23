@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 581141708800
-    m_Localized: "No se encontr\xF3 el archivo del avatar \"{0}\".\r\nPor favor elija
+    m_Localized: "No se encontr\xF3 el archivo del avatar \"{0}\".\nPor favor elija
       un nuevo archivo"
     m_Metadata:
       m_Items: []
@@ -73,6 +73,11 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4620193546240
     m_Localized: Avatares
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2529792431669248
+    m_Localized: "No se encontr\xF3 el paquetes de objetos para recompensas \"{0}\".\nPor
+      favor elija un nuevo archivo"
     m_Metadata:
       m_Items: []
   references:

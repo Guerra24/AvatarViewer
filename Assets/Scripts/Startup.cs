@@ -21,7 +21,8 @@ namespace AvatarViewer
     {
 
         [SerializeField] private TMP_Text Status;
-        [SerializeField] private LocalizedString StatusText;
+        [SerializeField] private LocalizedString MissingAvatar;
+        [SerializeField] private LocalizedString MissingRewardBundle;
 
         private UIDocument _document;
 
@@ -48,27 +49,29 @@ namespace AvatarViewer
             await ApplicationPersistence.Load();
 
             RuntimeSettings.Apply();
+            {
+                var statusText = await MissingAvatar.GetLocalizedStringAsync();
 
-            var statusText = await StatusText.GetLocalizedStringAsync();
+                foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.ToList())
+                    if (!File.Exists(avatar.Path))
+                    {
+                        Status.text = statusText.AsFormat(avatar.Path.Replace(@"\", @"\\"));
+                        await UniTask.Delay(TimeSpan.FromSeconds(2));
+                        var dir = Path.GetDirectoryName(avatar.Path);
+                        var res = NativeFileDialogSharp.Dialog.FileOpen("ava,vsfavatar,vrm", Directory.Exists(dir) ? dir : null);
+                        Status.text = "";
 
-            foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.ToList())
-                if (!File.Exists(avatar.Path))
-                {
-                    Status.text = statusText.AsFormat(avatar.Path.Replace(@"\", @"\\"));
-                    await UniTask.Delay(TimeSpan.FromSeconds(2));
-                    var dir = Path.GetDirectoryName(avatar.Path);
-                    var res = NativeFileDialogSharp.Dialog.FileOpen("ava,vsfavatar,vrm", Directory.Exists(dir) ? dir : null);
-                    Status.text = "";
-
-                    if (res.IsOk)
-                        avatar.Path = res.Path;
-                    else
-                        ApplicationPersistence.AppSettings.Avatars.Remove(avatar);
-                }
-            ApplicationPersistence.Save();
+                        if (res.IsOk)
+                            avatar.Path = res.Path;
+                        else
+                            ApplicationPersistence.AppSettings.Avatars.Remove(avatar);
+                    }
+                ApplicationPersistence.Save();
+            }
 
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;
+            _progressBar.visible = true;
 
             var tasks = new List<UniTask>();
             foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(v => !v.Vrm).ToList())
@@ -84,7 +87,6 @@ namespace AvatarViewer
                     });
                 }));
 
-            _progressBar.visible = true;
             await UniTask.WhenAll(tasks);
 
             foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(a => a.Vrm).ToList())
@@ -117,20 +119,41 @@ namespace AvatarViewer
             await UniTask.Yield();
             await UniTask.NextFrame();
             {
-                var bundles = ApplicationPersistence.AppSettings.RewardBundles.ToList();
-                bundles.Add(Path.Combine(Application.streamingAssetsPath, "builtin-rewards"));
-                foreach (var bundlePath in bundles)
+                var bundles = ApplicationPersistence.AppSettings.RewardAssetsBundles;
+                var statusText = await MissingRewardBundle.GetLocalizedStringAsync();
+
+                foreach (var kvp in bundles.ToList())
                 {
-                    var bundle = await AssetBundle.LoadFromFileAsync(bundlePath);
+                    if (!File.Exists(kvp.Value.Path))
+                    {
+                        Status.text = statusText.AsFormat(kvp.Value.Path.Replace(@"\", @"\\"));
+                        await UniTask.Delay(TimeSpan.FromSeconds(2));
+                        var dir = Path.GetDirectoryName(kvp.Value.Path);
+                        var res = NativeFileDialogSharp.Dialog.FileOpen("avr", Directory.Exists(dir) ? dir : null);
+                        Status.text = "";
+
+                        if (res.IsOk)
+                            kvp.Value.Path = res.Path;
+                        else
+                            ApplicationPersistence.AppSettings.RewardAssetsBundles.Remove(kvp.Key);
+                    }
+                }
+
+                foreach (var kvp in bundles.Union(new Dictionary<Guid, RewardAssetsBundle>() { { Guid.Empty, new RewardAssetsBundle(Path.Combine(Application.streamingAssetsPath, "builtin-rewards")) } }).ToDictionary(k => k.Key, v => v.Value))
+                {
+                    var bundle = await AssetBundle.LoadFromFileAsync(kvp.Value.Path);
                     var request = bundle.LoadAllAssetsAsync<GameObject>();
                     await request;
+                    var rewardAssets = new Dictionary<Guid, LoadedRewardAsset>();
                     foreach (var @object in request.allAssets)
                     {
                         var reward = @object as GameObject;
                         var rewardAsset = reward.GetComponent<RewardAsset>();
-                        ApplicationState.RewardAssets.Add(rewardAsset.Guid, new LoadedRewardAsset(reward, rewardAsset));
+                        var lra = new LoadedRewardAsset(reward, rewardAsset);
+                        ApplicationState.RewardAssets.Add(rewardAsset.Guid, lra);
+                        rewardAssets.Add(rewardAsset.Guid, lra);
                     }
-                    ApplicationState.RewardBundles.Add(bundlePath, bundle);
+                    ApplicationState.RewardBundles.Add(kvp.Key, new LoadedRewardAssetsBundle(bundle, rewardAssets));
                 }
             }
 

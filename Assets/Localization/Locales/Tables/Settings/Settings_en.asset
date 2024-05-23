@@ -254,6 +254,33 @@ MonoBehaviour:
     m_Localized: Gaze vertical offset
     m_Metadata:
       m_Items: []
+  - m_Id: 2900653940588544
+    m_Localized: Reward asset bundles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901165767311360
+    m_Localized: Add reward asset bundle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901211963375616
+    m_Localized: Add bundle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2902103064231936
+    m_Localized: Remove reward bundle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2902120357347328
+    m_Localized: 'Unable to remove reward bundle because reward asset "{0}" is being
+      used in "{1}".
+
+      Reset Item reward to default?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2905186355822592
+    m_Localized: Remove
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

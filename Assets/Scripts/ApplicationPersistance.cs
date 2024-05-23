@@ -88,7 +88,7 @@ namespace AvatarViewer
         public float AmbientIntensity { get; set; } = 0.3921569f;
         [JsonConverter(typeof(ColorJsonConverter))]
         public Color AmbientColor { get; set; } = Color.white;
-        public List<string> RewardBundles { get; } = new();
+        public Dictionary<Guid, RewardAssetsBundle> RewardAssetsBundles { get; } = new();
     }
 
     public enum LipSyncProfile
@@ -271,30 +271,16 @@ namespace AvatarViewer
         Hold, Toggle
     }
 
-    public class LoadedAvatar
+    public class RewardAssetsBundle
     {
+        public string Path { get; set; }
 
-        public AssetBundle Bundle { get; }
-        public GameObject Object { get; }
-
-        public LoadedAvatar(AssetBundle bundle, GameObject @object)
+        public RewardAssetsBundle(string path)
         {
-            Bundle = bundle;
-            Object = @object;
+            Path = path;
         }
     }
 
-    public class LoadedRewardAsset
-    {
-        public GameObject Object { get; }
-        public RewardAsset RewardAsset { get; }
-
-        public LoadedRewardAsset(GameObject @object, RewardAsset rewardAsset)
-        {
-            Object = @object;
-            RewardAsset = rewardAsset;
-        }
-    }
 
     public class Reward
     {
