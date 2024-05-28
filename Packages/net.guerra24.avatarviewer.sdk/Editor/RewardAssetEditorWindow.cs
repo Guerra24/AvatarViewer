@@ -38,45 +38,55 @@ namespace AvatarViewer.SDK.Editor
             var assets = AssetDatabase.GetAssetPathsFromAssetBundle(bundle);
 
             GUILayout.Label("Assets", EditorStyles.boldLabel);
-            bool valid = true;
+            bool valid = true, updatedAssets = false;
             foreach (var asset in assets)
             {
                 var rewardAssetInfo = AssetDatabase.LoadAssetAtPath<RewardAssetInfo>(asset);
-                if (EditorGUILayout.Foldout(true, rewardAssetInfo.AssetName))
+                if (rewardAssetInfo != null)
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(16f);
-                    EditorGUILayout.BeginVertical();
-                    if (rewardAssetInfo.Prefab != null)
+                    if (EditorGUILayout.Foldout(true, rewardAssetInfo.AssetName))
                     {
-                        var hasRewardAsset = rewardAssetInfo.Prefab.TryGetComponent<RewardAsset>(out var rewardAsset);
-                        var hasRigidBody = rewardAssetInfo.Prefab.TryGetComponent<Rigidbody>(out var rigidbody);
-                        var hasComponents = hasRewardAsset && hasRigidBody;
-                        if (!hasComponents)
-                            valid = false;
-
-                        if (rewardAsset.Info != rewardAssetInfo)
+                        EditorGUILayout.BeginHorizontal();
+                        GUILayout.Space(16f);
+                        EditorGUILayout.BeginVertical();
+                        if (rewardAssetInfo.Prefab != null)
                         {
-                            rewardAsset.Info = rewardAssetInfo;
-                            AssetDatabase.SaveAssets();
-                        }
+                            var hasRewardAsset = rewardAssetInfo.Prefab.TryGetComponent<RewardAsset>(out var rewardAsset);
+                            var hasRigidBody = rewardAssetInfo.Prefab.TryGetComponent<Rigidbody>(out var rigidbody);
+                            var hasComponents = hasRewardAsset && hasRigidBody;
+                            if (!hasComponents)
+                                valid = false;
 
-                        UnityEditor.Editor.CreateEditor(rewardAssetInfo).OnInspectorGUI();
-                        if (!hasRewardAsset)
-                            GUILayout.Label("Missing RewardAsset component");
-                        if (!hasRigidBody)
-                            GUILayout.Label("Missing RigidBody component");
-                        if (hasComponents)
-                            GUILayout.Label("Reward valid");
+                            if (rewardAsset.Info != rewardAssetInfo)
+                            {
+                                rewardAsset.Info = rewardAssetInfo;
+                                EditorUtility.SetDirty(rewardAsset);
+                                updatedAssets = true;
+                            }
+
+                            UnityEditor.Editor.CreateEditor(rewardAssetInfo).OnInspectorGUI();
+                            if (!hasRewardAsset)
+                                GUILayout.Label("Missing RewardAsset component");
+                            if (!hasRigidBody)
+                                GUILayout.Label("Missing RigidBody component");
+                            if (hasComponents)
+                                GUILayout.Label("Reward valid");
+                        }
+                        else
+                        {
+                            valid = false;
+                            GUILayout.Label("Missing Prefab");
+                        }
+                        EditorGUILayout.EndVertical();
+                        EditorGUILayout.EndHorizontal();
                     }
-                    else
-                    {
-                        valid = false;
-                        GUILayout.Label("Missing Prefab");
-                    }
-                    EditorGUILayout.EndVertical();
-                    EditorGUILayout.EndHorizontal();
                 }
+            }
+
+            if (updatedAssets)
+            {
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
             }
 
             GUILayout.Label("Export", EditorStyles.boldLabel);

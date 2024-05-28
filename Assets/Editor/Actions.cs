@@ -11,9 +11,12 @@ namespace AvatarViewer.Editor
             foreach (var asset in AssetDatabase.GetAssetPathsFromAssetBundle("builtin-rewards"))
             {
                 var rewardAssetInfo = AssetDatabase.LoadAssetAtPath<RewardAssetInfo>(asset);
-                rewardAssetInfo.Prefab.GetComponent<RewardAsset>().Info = rewardAssetInfo;
+                var rewardAsset = rewardAssetInfo.Prefab.GetComponent<RewardAsset>();
+                rewardAsset.Info = rewardAssetInfo;
+                EditorUtility.SetDirty(rewardAsset);
             }
             AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
 
             BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", BuildAssetBundleOptions.StrictMode | BuildAssetBundleOptions.ChunkBasedCompression, EditorUserBuildSettings.activeBuildTarget);
         }

@@ -4,8 +4,7 @@ namespace AvatarViewer.SDK
 {
     public class RewardAsset : MonoBehaviour
     {
-        [HideInInspector]
-        public RewardAssetInfo Info;
+        [HideInInspector] public RewardAssetInfo Info;
 
         private Rigidbody Rigidbody;
         private AudioSource AudioSource;
