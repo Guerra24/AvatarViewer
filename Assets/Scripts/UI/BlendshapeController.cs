@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityRawInput;
 #endif
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class BlendshapeController : MonoBehaviour
     {

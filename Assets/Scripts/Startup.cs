@@ -71,7 +71,9 @@ namespace AvatarViewer
 
             float percentPerStep = 1f / (ApplicationPersistence.AppSettings.Avatars.Count * 2 + 2);
             float baseProgress = 0;
+
             _progressBar.visible = true;
+            await UniTask.Delay(TimeSpan.FromMilliseconds(500));
 
             var tasks = new List<UniTask>();
             foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(v => !v.Vrm).ToList())

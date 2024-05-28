@@ -1,8 +1,8 @@
-using AvatarViewer.Ui.Items;
-using AvatarViewer.Ui.Settings;
+using AvatarViewer.UI.Items;
+using AvatarViewer.UI.Settings;
 using UnityEngine;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class RewardList : BaseSettingsPage
     {

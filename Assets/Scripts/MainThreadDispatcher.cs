@@ -6,15 +6,24 @@ namespace AvatarViewer
 {
     public class MainThreadDispatcher : MonoBehaviour
     {
+        public static MainThreadDispatcher Instance { get; private set; }
 
-        private static ConcurrentQueue<Action> updateActions = new();
+        private ConcurrentQueue<Action> updateActions = new();
 
-        void Update()
+        private void Awake()
+        {
+            if (Instance != null && Instance == this)
+                Destroy(gameObject);
+            else
+                Instance = this;
+        }
+
+        private void Update()
         {
             if (updateActions.TryDequeue(out var action))
                 action.Invoke();
         }
 
-        public static void AddOnUpdate(Action action) => updateActions.Enqueue(action);
+        public void AddOnUpdate(Action action) => updateActions.Enqueue(action);
     }
 }

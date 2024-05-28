@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class GeneralPage : BaseSettingsPage
     {

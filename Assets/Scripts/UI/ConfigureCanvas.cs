@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class ConfigureCanvas : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VRM;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class AvatarListItem : Button
     {

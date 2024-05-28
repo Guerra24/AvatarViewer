@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AvatarViewer.SDK;
-using AvatarViewer.Ui.Items;
+using AvatarViewer.UI.Items;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class RewardAssetBundlesPage : BaseSettingsPage
     {

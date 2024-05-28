@@ -7,7 +7,7 @@ using TMPro;
 using uLipSync;
 using UnityEngine;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class TrackersPage : BaseSettingsPage
     {

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using AvatarViewer.Ui.Animations;
+using AvatarViewer.UI.Animations;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class PageViewer : MonoBehaviour
     {

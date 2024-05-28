@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityRawInput;
 #endif
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class BlendshapeList : MonoBehaviour
     {

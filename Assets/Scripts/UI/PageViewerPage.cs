@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Localization;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class PageViewerPage : MonoBehaviour
     {

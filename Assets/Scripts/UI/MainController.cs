@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using AvatarViewer.Ui.Components;
+using AvatarViewer.UI.Components;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Newtonsoft.Json.Linq;
@@ -11,7 +11,7 @@ using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class MainController : MonoBehaviour
     {

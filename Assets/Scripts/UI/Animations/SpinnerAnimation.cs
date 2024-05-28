@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace AvatarViewer.Ui.Animations
+namespace AvatarViewer.UI.Animations
 {
     public class SpinnerAnimation : MonoBehaviour
     {

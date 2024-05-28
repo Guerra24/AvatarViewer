@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Items
+namespace AvatarViewer.UI.Items
 {
     public abstract class RewardListItem<T> : MonoBehaviour where T : Reward
     {

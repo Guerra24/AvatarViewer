@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class AvatarPage : BaseSettingsPage
     {

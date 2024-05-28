@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using AvatarViewer.Twitch;
+using Cysharp.Threading.Tasks;
 using TwitchLib.PubSub.Events;
 using UnityEngine;
 
@@ -8,41 +10,50 @@ namespace AvatarViewer
     public class RewardSpawner : MonoBehaviour
     {
 
-        private TwitchController TwitchController;
+        [SerializeField] private Transform Above;
+        [SerializeField] private Transform Front;
+        [SerializeField] private Transform Left;
+        [SerializeField] private Transform Right;
 
-        public Transform Above;
-        public Transform Front;
-        public Transform Left;
-        public Transform Right;
+        private ConcurrentQueue<ItemReward> Rewards = new();
+        private bool _processingRewards;
 
-        void Start()
+        private void Start()
         {
-            TwitchController = GameObject.Find("TwitchController").GetComponent<TwitchController>();
-            TwitchController.PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
+        }
+
+        private void Update()
+        {
+            if (_processingRewards)
+                return;
+            _processingRewards = true;
+            UpdateAsync().Forget();
+        }
+
+        private async UniTaskVoid UpdateAsync()
+        {
+            while (Rewards.TryDequeue(out var reward))
+            {
+                var spawnPoint = GetSpawn(reward.SpawnPoint);
+                if (ApplicationState.RewardAssets.TryGetValue(reward.RewardAsset, out var asset))
+                    SetupReward(Instantiate(asset.Object, spawnPoint.position, spawnPoint.rotation * asset.Object.transform.rotation), spawnPoint, reward);
+                await UniTask.Delay(200);
+            }
+            _processingRewards = false;
         }
 
         private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
         {
             if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var r) && r is ItemReward reward)
-            {
-                MainThreadDispatcher.AddOnUpdate(() =>
-                {
-                    var itemReward = reward;
-                    var spawnPoint = GetSpawn(itemReward.SpawnPoint);
-                    if (ApplicationState.RewardAssets.TryGetValue(reward.RewardAsset, out var asset))
-                    {
-                        var gameObject = asset.Object;
-                        SetupReward(Instantiate(gameObject, spawnPoint.position, spawnPoint.rotation * gameObject.transform.rotation), spawnPoint, reward);
-                    }
-                });
-            }
+                Rewards.Enqueue(reward);
         }
 
-        private void SetupReward(GameObject gameObject, Transform spawnPoint, ItemReward reward)
+        private void SetupReward(GameObject asset, Transform spawnPoint, ItemReward reward)
         {
-            if (!gameObject.TryGetComponent<AudioSource>(out var @as))
+            if (!asset.TryGetComponent<AudioSource>(out var @as))
             {
-                @as = gameObject.AddComponent<AudioSource>();
+                @as = asset.AddComponent<AudioSource>();
                 @as.playOnAwake = false;
             }
 
@@ -51,8 +62,8 @@ namespace AvatarViewer
 
             @as.volume = reward.Volume * ApplicationPersistence.AppSettings.Volume;
 
-            gameObject.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
-            var rigidbody = gameObject.GetComponent<Rigidbody>();
+            asset.AddComponent<DestoyOnTimeout>().Seconds = reward.Timeout;
+            var rigidbody = asset.GetComponent<Rigidbody>();
             rigidbody.linearVelocity = spawnPoint.forward.normalized * 5;
         }
 
@@ -87,12 +98,12 @@ namespace AvatarViewer
 
         private void OnDestroy()
         {
-            TwitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
         }
 
         private void OnApplicationQuit()
         {
-            TwitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
         }
 
     }

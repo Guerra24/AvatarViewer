@@ -2,7 +2,7 @@ using AvatarViewer.Trackers;
 using TMPro;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class TrackerPageBase<T> : BaseSettingsPage where T : TrackerSettings
     {

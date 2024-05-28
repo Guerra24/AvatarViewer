@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
 
     public class IdDropdownData : TMP_Dropdown.OptionData

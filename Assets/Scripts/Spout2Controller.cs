@@ -1,4 +1,4 @@
-using AvatarViewer.Ui;
+using AvatarViewer.UI;
 using Klak.Spout;
 using UnityEngine;
 using UnityEngine.UI;

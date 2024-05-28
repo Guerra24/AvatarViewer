@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Items
+namespace AvatarViewer.UI.Items
 {
     public class ItemRewardListItem : RewardListItem<ItemReward>
     {

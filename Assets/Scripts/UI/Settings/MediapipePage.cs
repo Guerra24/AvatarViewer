@@ -1,6 +1,6 @@
 using AvatarViewer.Trackers;
 
-namespace AvatarViewer.Ui.Settings
+namespace AvatarViewer.UI.Settings
 {
     public class MediapipePage : TrackerPageBase<MediapipeTrackerSettings>
     {

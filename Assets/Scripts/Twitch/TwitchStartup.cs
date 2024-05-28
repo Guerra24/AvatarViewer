@@ -1,5 +1,5 @@
 using System;
-using AvatarViewer.Ui.Animations;
+using AvatarViewer.UI.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,19 +9,12 @@ namespace AvatarViewer.Twitch
     public class TwitchStartup : MonoBehaviour
     {
 
-        private TwitchController TwitchController;
-
         public GameObject Content;
         public GameObject Startup;
         public GameObject Buttons;
         public GameObject Placeholder;
 
         public PageDrillIn PageDrillIn;
-
-        private void Awake()
-        {
-            TwitchController = GameObject.Find("TwitchController").GetComponent<TwitchController>();
-        }
 
         private void Start()
         {
@@ -32,14 +25,14 @@ namespace AvatarViewer.Twitch
         {
             if (PlayerPrefs.GetInt("SkipTwitchAccount", 0) == 0)
             {
-                if (!await TwitchController.Manager.ValidateToken())
+                if (!await TwitchManager.Instance.Auth.ValidateToken())
                 {
                     Startup.SetActive(false);
                     Content.SetActive(true);
                     return;
                 }
                 else
-                    await TwitchController.Init();
+                    await TwitchManager.Instance.Init();
             }
 
             await UniTask.Yield();
@@ -60,8 +53,8 @@ namespace AvatarViewer.Twitch
             await UniTask.Yield();
             await UniTask.NextFrame();
 
-            await TwitchController.Manager.GenerateClientSecret();
-            if (await TwitchController.Manager.ValidateToken()) await TwitchController.Init();
+            await TwitchManager.Instance.Auth.GenerateClientSecret();
+            if (await TwitchManager.Instance.Auth.ValidateToken()) await TwitchManager.Instance.Init();
             else
             {
                 Buttons.SetActive(true);

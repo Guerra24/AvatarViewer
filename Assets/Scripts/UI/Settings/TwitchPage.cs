@@ -1,6 +1,6 @@
 using AvatarViewer.Twitch;
-using AvatarViewer.Ui.Animations;
-using AvatarViewer.Ui.Settings;
+using AvatarViewer.UI.Animations;
+using AvatarViewer.UI.Settings;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -17,27 +17,19 @@ public class TwitchPage : BaseSettingsPage
     public TMP_Text DisplayName;
     public Image ProfileImage;
 
-    private TwitchController twitchController;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        twitchController = GameObject.Find("TwitchController").GetComponent<TwitchController>();
-    }
-
     private void Start()
     {
-        ConnectAccount.SetActive(!twitchController.IsAccountConnected);
-        CurrentAccount.SetActive(twitchController.IsAccountConnected);
-        if (twitchController.IsAccountConnected)
+        ConnectAccount.SetActive(!TwitchManager.Instance.IsAccountConnected);
+        CurrentAccount.SetActive(TwitchManager.Instance.IsAccountConnected);
+        if (TwitchManager.Instance.IsAccountConnected)
             LoadTwitchAccount();
     }
 
     private void LoadTwitchAccount()
     {
-        var user = twitchController.User;
+        var user = TwitchManager.Instance.User;
         DisplayName.text = user.DisplayName;
-        ProfileImage.sprite = twitchController.ProfileImage;
+        ProfileImage.sprite = TwitchManager.Instance.ProfileImage;
     }
 
     public void ConnectAccountOnClick()
@@ -64,9 +56,9 @@ public class TwitchPage : BaseSettingsPage
         data.SetContent("Are you sure you want to disconnect your account?");
         data.SetOnOkAction(() =>
         {
-            twitchController.Disconnect();
-            ConnectAccount.SetActive(!twitchController.IsAccountConnected);
-            CurrentAccount.SetActive(twitchController.IsAccountConnected);
+            TwitchManager.Instance.Disconnect();
+            ConnectAccount.SetActive(!TwitchManager.Instance.IsAccountConnected);
+            CurrentAccount.SetActive(TwitchManager.Instance.IsAccountConnected);
         });
     }
 }

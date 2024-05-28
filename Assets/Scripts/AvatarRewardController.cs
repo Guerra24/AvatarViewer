@@ -1,79 +1,79 @@
 using System.Linq;
-using AvatarViewer;
 using AvatarViewer.Twitch;
 using Cysharp.Threading.Tasks;
 using TwitchLib.PubSub.Events;
 using UnityEngine;
 
-public class AvatarRewardController : MonoBehaviour
+namespace AvatarViewer
 {
-    [SerializeField] private AvatarLoader AvatarLoader;
-
-    private TwitchController twitchController;
-    private bool running;
-
-    private void Awake()
+    public class AvatarRewardController : MonoBehaviour
     {
-        twitchController = GameObject.Find("TwitchController").GetComponent<TwitchController>();
-        twitchController.PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
-        twitchController.PubSub.OnRewardRedeemed += PubSub_OnRewardRedeemed;
-    }
+        [SerializeField] private AvatarLoader AvatarLoader;
 
-    private void PubSub_OnRewardRedeemed(object sender, OnRewardRedeemedArgs e)
-    {
-        if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardId.ToString(), out var r2) && r2 is PickAvatarReward pickAvatarReward)
+        private bool running;
+
+        private void Awake()
         {
-            if (running)
-                return;
-            try
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed += PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnRewardRedeemed += PubSub_OnRewardRedeemed;
+        }
+
+        private void PubSub_OnRewardRedeemed(object sender, OnRewardRedeemedArgs e)
+        {
+            if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardId.ToString(), out var r2) && r2 is PickAvatarReward pickAvatarReward)
             {
-                running = true;
-                var text = e.Message.Trim();
-                var choice = pickAvatarReward.Choices.FirstOrDefault(c => c.Text == text);
-                if (choice != null)
+                if (running)
+                    return;
+                try
                 {
-                    if (ApplicationState.CurrentAvatar.Guid == choice.Avatar)
-                        return;
-                    ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == choice.Avatar);
-                    MainThreadDispatcher.AddOnUpdate(() =>
+                    running = true;
+                    var text = e.Message.Trim();
+                    var choice = pickAvatarReward.Choices.FirstOrDefault(c => c.Text == text);
+                    if (choice != null)
                     {
-                        AvatarLoader.LoadAvatar().Forget();
-                        running = false;
-                    });
+                        if (ApplicationState.CurrentAvatar.Guid == choice.Avatar)
+                            return;
+                        ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == choice.Avatar);
+                        MainThreadDispatcher.Instance.AddOnUpdate(() =>
+                        {
+                            AvatarLoader.LoadAvatar().Forget();
+                            running = false;
+                        });
+                    }
+                }
+                finally
+                {
+                    running = false;
                 }
             }
-            finally
+        }
+
+        private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
+        {
+            if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var r1) && r1 is AvatarReward avatarReward)
             {
-                running = false;
+                if (ApplicationState.CurrentAvatar.Guid == avatarReward.Avatar || running)
+                    return;
+                running = true;
+                ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == avatarReward.Avatar);
+                MainThreadDispatcher.Instance.AddOnUpdate(() =>
+                {
+                    AvatarLoader.LoadAvatar().Forget();
+                    running = false;
+                });
             }
         }
-    }
 
-    private void PubSub_OnChannelPointsRewardRedeemed(object sender, OnChannelPointsRewardRedeemedArgs e)
-    {
-        if (ApplicationPersistence.AppSettings.Rewards.TryGetValue(e.RewardRedeemed.Redemption.Reward.Id, out var r1) && r1 is AvatarReward avatarReward)
+        private void OnDestroy()
         {
-            if (ApplicationState.CurrentAvatar.Guid == avatarReward.Avatar || running)
-                return;
-            running = true;
-            ApplicationState.CurrentAvatar = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == avatarReward.Avatar);
-            MainThreadDispatcher.AddOnUpdate(() =>
-            {
-                AvatarLoader.LoadAvatar().Forget();
-                running = false;
-            });
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnRewardRedeemed -= PubSub_OnRewardRedeemed;
         }
-    }
 
-    private void OnDestroy()
-    {
-        twitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
-        twitchController.PubSub.OnRewardRedeemed -= PubSub_OnRewardRedeemed;
-    }
-
-    private void OnApplicationQuit()
-    {
-        twitchController.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
-        twitchController.PubSub.OnRewardRedeemed -= PubSub_OnRewardRedeemed;
+        private void OnApplicationQuit()
+        {
+            TwitchManager.Instance.PubSub.OnChannelPointsRewardRedeemed -= PubSub_OnChannelPointsRewardRedeemed;
+            TwitchManager.Instance.PubSub.OnRewardRedeemed -= PubSub_OnRewardRedeemed;
+        }
     }
 }

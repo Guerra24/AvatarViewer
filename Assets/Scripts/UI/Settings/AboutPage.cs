@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class AboutPage : MonoBehaviour
     {

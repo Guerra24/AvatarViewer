@@ -370,3 +370,4 @@ MonoBehaviour:
   Guid:
     serializedGuid: 158dcd30-65e2-4947-84b1-6776a712a052
   Name: Box
+  DisablePhysicsOnCollision: 0

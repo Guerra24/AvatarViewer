@@ -1,9 +1,9 @@
-using AvatarViewer.Ui.Animations;
+using AvatarViewer.UI.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class ModernExpander : MonoBehaviour
     {

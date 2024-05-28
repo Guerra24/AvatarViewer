@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace AvatarViewer.SDK
@@ -8,6 +7,8 @@ namespace AvatarViewer.SDK
         public SerializableGuid Guid;
 
         public string Name;
+
+        public bool DisablePhysicsOnCollision;
 
         private Rigidbody Rigidbody;
         private AudioSource AudioSource;
@@ -20,7 +21,12 @@ namespace AvatarViewer.SDK
 
         private void OnCollisionEnter(Collision collision)
         {
-            //Rigidbody.isKinematic = true;
+            if (DisablePhysicsOnCollision)
+            {
+                Rigidbody.isKinematic = true;
+                Rigidbody.detectCollisions = false;
+                transform.parent = collision.transform;
+            }
 
             AudioSource.Play();
         }

@@ -6,7 +6,7 @@ using UniGLTF;
 using UnityEngine;
 using VRM;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class AvatarsPage : MonoBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Items
+namespace AvatarViewer.UI.Items
 {
     public class RewardAssetBundleListItem : MonoBehaviour
     {

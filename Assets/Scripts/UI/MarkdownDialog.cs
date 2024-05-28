@@ -4,7 +4,7 @@ using LogicUI.FancyTextRendering;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class MarkdownDialog : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Animations
+namespace AvatarViewer.UI.Animations
 {
     public class ExpanderAnimation : BaseAnimation
     {

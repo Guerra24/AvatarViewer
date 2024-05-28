@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace AvatarViewer.Ui.Items
+namespace AvatarViewer.UI.Items
 {
     public class CameraRewardListItem : RewardListItem<CameraReward>
     {

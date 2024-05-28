@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Items
+namespace AvatarViewer.UI.Items
 {
     public class PickAvatarRewardListItem : RewardListItem<PickAvatarReward>
     {

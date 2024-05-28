@@ -1,8 +1,8 @@
-using AvatarViewer.Ui.Animations;
+using AvatarViewer.UI.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui
+namespace AvatarViewer.UI
 {
     public class ToggleUiElement : MonoBehaviour
     {

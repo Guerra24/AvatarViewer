@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AvatarViewer.Ui.Components
+namespace AvatarViewer.UI.Components
 {
     public class VectorControl : MonoBehaviour
     {
