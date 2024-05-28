@@ -37,7 +37,7 @@ namespace AvatarViewer
             {
                 var spawnPoint = GetSpawn(reward.SpawnPoint);
                 if (ApplicationState.RewardAssets.TryGetValue(reward.RewardAsset, out var asset))
-                    SetupReward(Instantiate(asset.Object, spawnPoint.position, spawnPoint.rotation * asset.Object.transform.rotation), spawnPoint, reward);
+                    SetupReward(Instantiate(asset.Prefab, spawnPoint.position, spawnPoint.rotation * asset.Prefab.transform.rotation), spawnPoint, reward);
                 await UniTask.Delay(200);
             }
             _processingRewards = false;

@@ -44,7 +44,7 @@ namespace AvatarViewer.UI.Items
                     var tcs = new UniTaskCompletionSource<bool>();
                     _dialog.CreateDialog(
                         title,
-                        content.AsFormat(rewardAsset.RewardAsset.Name, itemReward.Title),
+                        content.AsFormat(rewardAsset.AssetName, itemReward.Title),
                         () => { itemReward.RewardAsset = Guid.Parse("158dcd30-65e2-4947-84b1-6776a712a052"); tcs.TrySetResult(false); },
                         () => tcs.TrySetResult(true));
                     if (await tcs.Task)

@@ -144,16 +144,14 @@ namespace AvatarViewer
                 foreach (var kvp in bundles.Union(new Dictionary<Guid, RewardAssetsBundle>() { { Guid.Empty, new RewardAssetsBundle(Path.Combine(Application.streamingAssetsPath, "builtin-rewards")) } }).ToDictionary(k => k.Key, v => v.Value))
                 {
                     var bundle = await AssetBundle.LoadFromFileAsync(kvp.Value.Path);
-                    var request = bundle.LoadAllAssetsAsync<GameObject>();
+                    var request = bundle.LoadAllAssetsAsync<RewardAssetInfo>();
                     await request;
-                    var rewardAssets = new Dictionary<Guid, LoadedRewardAsset>();
+                    var rewardAssets = new Dictionary<Guid, RewardAssetInfo>();
                     foreach (var @object in request.allAssets)
                     {
-                        var reward = @object as GameObject;
-                        var rewardAsset = reward.GetComponent<RewardAsset>();
-                        var lra = new LoadedRewardAsset(reward, rewardAsset);
-                        ApplicationState.RewardAssets.Add(rewardAsset.Guid, lra);
-                        rewardAssets.Add(rewardAsset.Guid, lra);
+                        var reward = @object as RewardAssetInfo;
+                        ApplicationState.RewardAssets.Add(reward.Guid, reward);
+                        rewardAssets.Add(reward.Guid, reward);
                     }
                     ApplicationState.RewardBundles.Add(kvp.Key, new LoadedRewardAssetsBundle(bundle, rewardAssets));
                 }

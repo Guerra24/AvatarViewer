@@ -40,14 +40,12 @@ namespace AvatarViewer.UI.Settings
             var bundle = await AssetBundle.LoadFromFileAsync(path);
             var request = bundle.LoadAllAssetsAsync<GameObject>();
             await request;
-            var rewardAssets = new Dictionary<Guid, LoadedRewardAsset>();
+            var rewardAssets = new Dictionary<Guid, RewardAssetInfo>();
             foreach (var @object in request.allAssets)
             {
-                var reward = @object as GameObject;
-                var rewardAsset = reward.GetComponent<RewardAsset>();
-                var lra = new LoadedRewardAsset(reward, rewardAsset);
-                ApplicationState.RewardAssets.Add(rewardAsset.Guid, lra);
-                rewardAssets.Add(rewardAsset.Guid, lra);
+                var reward = @object as RewardAssetInfo;
+                ApplicationState.RewardAssets.Add(reward.Guid, reward);
+                rewardAssets.Add(reward.Guid, reward);
             }
             var rab = new RewardAssetsBundle(path);
             var guid = Guid.NewGuid();

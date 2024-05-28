@@ -4,11 +4,8 @@ namespace AvatarViewer.SDK
 {
     public class RewardAsset : MonoBehaviour
     {
-        public SerializableGuid Guid;
-
-        public string Name;
-
-        public bool DisablePhysicsOnCollision;
+        [HideInInspector]
+        public RewardAssetInfo Info;
 
         private Rigidbody Rigidbody;
         private AudioSource AudioSource;
@@ -21,7 +18,7 @@ namespace AvatarViewer.SDK
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (DisablePhysicsOnCollision)
+            if (Info.DisablePhysicsOnCollision)
             {
                 Rigidbody.isKinematic = true;
                 Rigidbody.detectCollisions = false;

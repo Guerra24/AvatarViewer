@@ -41,25 +41,39 @@ namespace AvatarViewer.SDK.Editor
             bool valid = true;
             foreach (var asset in assets)
             {
-                var gameObject = AssetDatabase.LoadAssetAtPath<GameObject>(asset);
-                var hasRewardAsset = gameObject.TryGetComponent<RewardAsset>(out var rewardAsset);
-                var hasRigidBody = gameObject.TryGetComponent<Rigidbody>(out var rigidbody);
-                var hasComponents = hasRewardAsset && hasRigidBody;
-                if (!hasComponents)
-                    valid = false;
-
-                if (EditorGUILayout.Foldout(true, hasRewardAsset ? rewardAsset.Name : gameObject.name))
+                var rewardAssetInfo = AssetDatabase.LoadAssetAtPath<RewardAssetInfo>(asset);
+                if (EditorGUILayout.Foldout(true, rewardAssetInfo.AssetName))
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(16f);
                     EditorGUILayout.BeginVertical();
-                    EditorGUILayout.ObjectField(gameObject, typeof(GameObject), false);
-                    if (!hasRewardAsset)
-                        GUILayout.Label("Missing RewardAsset component");
-                    if (!hasRigidBody)
-                        GUILayout.Label("Missing RigidBody component");
-                    if (hasComponents)
-                        GUILayout.Label("Reward valid");
+                    if (rewardAssetInfo.Prefab != null)
+                    {
+                        var hasRewardAsset = rewardAssetInfo.Prefab.TryGetComponent<RewardAsset>(out var rewardAsset);
+                        var hasRigidBody = rewardAssetInfo.Prefab.TryGetComponent<Rigidbody>(out var rigidbody);
+                        var hasComponents = hasRewardAsset && hasRigidBody;
+                        if (!hasComponents)
+                            valid = false;
+
+                        if (rewardAsset.Info != rewardAssetInfo)
+                        {
+                            rewardAsset.Info = rewardAssetInfo;
+                            AssetDatabase.SaveAssets();
+                        }
+
+                        UnityEditor.Editor.CreateEditor(rewardAssetInfo).OnInspectorGUI();
+                        if (!hasRewardAsset)
+                            GUILayout.Label("Missing RewardAsset component");
+                        if (!hasRigidBody)
+                            GUILayout.Label("Missing RigidBody component");
+                        if (hasComponents)
+                            GUILayout.Label("Reward valid");
+                    }
+                    else
+                    {
+                        valid = false;
+                        GUILayout.Label("Missing Prefab");
+                    }
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
                 }

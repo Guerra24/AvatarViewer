@@ -18,7 +18,7 @@ namespace AvatarViewer
 
         public static Dictionary<string, AudioClip> ExternalAudios { get; } = new();
 
-        public static Dictionary<Guid, LoadedRewardAsset> RewardAssets { get; } = new();
+        public static Dictionary<Guid, RewardAssetInfo> RewardAssets { get; } = new();
 
         public static Dictionary<Guid, LoadedRewardAssetsBundle> RewardBundles { get; } = new();
 
@@ -38,25 +38,13 @@ namespace AvatarViewer
         }
     }
 
-    public class LoadedRewardAsset
-    {
-        public GameObject Object { get; }
-        public RewardAsset RewardAsset { get; }
-
-        public LoadedRewardAsset(GameObject @object, RewardAsset rewardAsset)
-        {
-            Object = @object;
-            RewardAsset = rewardAsset;
-        }
-    }
-
     public class LoadedRewardAssetsBundle
     {
         public AssetBundle Bundle { get; }
 
-        public Dictionary<Guid, LoadedRewardAsset> RewardAssets { get; }
+        public Dictionary<Guid, RewardAssetInfo> RewardAssets { get; }
 
-        public LoadedRewardAssetsBundle(AssetBundle bundle, Dictionary<Guid, LoadedRewardAsset> rewardAssets)
+        public LoadedRewardAssetsBundle(AssetBundle bundle, Dictionary<Guid, RewardAssetInfo> rewardAssets)
         {
             Bundle = bundle;
             RewardAssets = rewardAssets;

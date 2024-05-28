@@ -23,7 +23,7 @@ namespace AvatarViewer.UI.Items
             base.Awake();
             SpawnPoint.AddOptions(Enum.GetNames(typeof(ItemRewardSpawnPoint)).ToList());
             foreach (var rewardAsset in ApplicationState.RewardAssets)
-                RewardAsset.options.Add(new GuidDropdownData(rewardAsset.Value.RewardAsset.Name, rewardAsset.Key));
+                RewardAsset.options.Add(new GuidDropdownData(rewardAsset.Value.AssetName, rewardAsset.Key));
             RewardAsset.RefreshShownValue();
 
             Volume.SetupSlider((value) => Reward.Volume = value);
