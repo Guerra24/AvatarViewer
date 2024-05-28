@@ -57,20 +57,18 @@ namespace AvatarViewer.SDK.Editor
                             if (!hasComponents)
                                 valid = false;
 
-                            if (rewardAsset.Info != rewardAssetInfo)
-                            {
-                                rewardAsset.Info = rewardAssetInfo;
-                                EditorUtility.SetDirty(rewardAsset);
-                                updatedAssets = true;
-                            }
-
                             UnityEditor.Editor.CreateEditor(rewardAssetInfo).OnInspectorGUI();
                             if (!hasRewardAsset)
                                 GUILayout.Label("Missing RewardAsset component");
                             if (!hasRigidBody)
                                 GUILayout.Label("Missing RigidBody component");
-                            if (hasComponents)
-                                GUILayout.Label("Reward valid");
+
+                            if (hasRewardAsset && rewardAsset.Info != rewardAssetInfo)
+                            {
+                                rewardAsset.Info = rewardAssetInfo;
+                                EditorUtility.SetDirty(rewardAsset);
+                                updatedAssets = true;
+                            }
                         }
                         else
                         {

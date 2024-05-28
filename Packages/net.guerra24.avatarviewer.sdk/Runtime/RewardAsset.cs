@@ -17,10 +17,9 @@ namespace AvatarViewer.SDK
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (Info.DisablePhysicsOnCollision)
+            if (Info.DisablePhysicsOnCollision && transform.parent == null)
             {
                 Rigidbody.isKinematic = true;
-                Rigidbody.detectCollisions = false;
                 transform.parent = collision.transform;
             }
 
