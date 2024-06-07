@@ -1,16 +1,15 @@
+using AvatarViewer.UI.Settings;
 using UnityEngine;
 #if UNITY_STANDALONE_WIN
 using UnityRawInput;
 #endif
 
-namespace AvatarViewer.UI
+namespace AvatarViewer.UI.Setting
 {
-    public class BlendshapeList : MonoBehaviour
+    public class BlendshapeList : BaseSettingsPage
     {
 
-        public GameObject _template;
-
-        private PageViewer _pageViewer;
+        [SerializeField] private BlendshapeController _template;
 
         private bool rawInputAlreadyRunning;
 
@@ -20,8 +19,6 @@ namespace AvatarViewer.UI
             {
                 CreateItem(anim.Key, anim.Value);
             }
-            _pageViewer = GetComponentInParent<PageViewer>();
-            _pageViewer.GoBackInitial.AddListener(SaveChanges);
 #if UNITY_STANDALONE_WIN
             rawInputAlreadyRunning = RawInput.IsRunning;
             if (!rawInputAlreadyRunning)
@@ -35,15 +32,8 @@ namespace AvatarViewer.UI
         public void CreateItem(string name, AvatarBlendshape avatarBlendshape)
         {
             var item = Instantiate(_template, this.transform, false);
-            var controller = item.GetComponent<BlendshapeController>();
-            controller.AvatarBlendshape = avatarBlendshape;
-            controller.LoadValues(name);
-        }
-
-        private void SaveChanges()
-        {
-            _pageViewer.GoBackInitial.RemoveListener(SaveChanges);
-            ApplicationPersistence.Save();
+            item.AvatarBlendshape = avatarBlendshape;
+            item.LoadValues(name);
         }
 
 

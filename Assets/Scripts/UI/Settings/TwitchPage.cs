@@ -1,64 +1,65 @@
 using AvatarViewer.Twitch;
 using AvatarViewer.UI.Animations;
-using AvatarViewer.UI.Settings;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TwitchPage : BaseSettingsPage
+namespace AvatarViewer.UI.Settings
 {
-    public GameObject Dialog;
-
-    public GameObject ConnectAccount;
-    public GameObject CurrentAccount;
-
-    public TMP_Text DisplayName;
-    public Image ProfileImage;
-
-    private void Start()
+    public class TwitchPage : BaseSettingsPage
     {
-        ConnectAccount.SetActive(!TwitchManager.Instance.IsAccountConnected);
-        CurrentAccount.SetActive(TwitchManager.Instance.IsAccountConnected);
-        if (TwitchManager.Instance.IsAccountConnected)
-            LoadTwitchAccount();
-    }
+        [SerializeField] private Dialog _dialog;
 
-    private void LoadTwitchAccount()
-    {
-        var user = TwitchManager.Instance.User;
-        DisplayName.text = user.DisplayName;
-        ProfileImage.sprite = TwitchManager.Instance.ProfileImage;
-    }
+        [SerializeField] private GameObject ConnectAccount;
+        [SerializeField] private GameObject CurrentAccount;
 
-    public void ConnectAccountOnClick()
-    {
-        ConnectAccountOnClickAsync().Forget();
-    }
+        [SerializeField] private TMP_Text DisplayName;
+        [SerializeField] private Image ProfileImage;
 
-    private async UniTaskVoid ConnectAccountOnClickAsync()
-    {
-        PlayerPrefs.SetInt("SkipTwitchAccount", 0);
-        PlayerPrefs.Save();
-
-        var anim = GetComponentInParent<PageDrillIn>();
-        anim.Easing = AnimationEasing.EaseOut;
-        await anim.StartAnimation();
-        await SceneManager.LoadSceneAsync("Scenes/TwitchAuth");
-    }
-
-    public void Disconnect()
-    {
-        var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
-        var data = dialog.GetComponentInChildren<Dialog>();
-        data.SetTitle("Disconnect account");
-        data.SetContent("Are you sure you want to disconnect your account?");
-        data.SetOnOkAction(() =>
+        private void Start()
         {
-            TwitchManager.Instance.Disconnect();
             ConnectAccount.SetActive(!TwitchManager.Instance.IsAccountConnected);
             CurrentAccount.SetActive(TwitchManager.Instance.IsAccountConnected);
-        });
+            if (TwitchManager.Instance.IsAccountConnected)
+                LoadTwitchAccount();
+        }
+
+        private void LoadTwitchAccount()
+        {
+            var user = TwitchManager.Instance.User;
+            DisplayName.text = user.DisplayName;
+            ProfileImage.sprite = TwitchManager.Instance.ProfileImage;
+        }
+
+        public void ConnectAccountOnClick()
+        {
+            ConnectAccountOnClickAsync().Forget();
+        }
+
+        private async UniTaskVoid ConnectAccountOnClickAsync()
+        {
+            PlayerPrefs.SetInt("SkipTwitchAccount", 0);
+            PlayerPrefs.Save();
+
+            var anim = GetComponentInParent<PageDrillIn>();
+            anim.Easing = AnimationEasing.EaseOut;
+            await anim.StartAnimation();
+            await SceneManager.LoadSceneAsync("Scenes/TwitchAuth");
+        }
+
+        public void Disconnect()
+        {
+            var dialog = Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
+            dialog.SetTitle("Disconnect account");
+            dialog.SetContent("Are you sure you want to disconnect your account?");
+            dialog.SetOnOkAction(() =>
+            {
+                TwitchManager.Instance.Disconnect();
+                ConnectAccount.SetActive(!TwitchManager.Instance.IsAccountConnected);
+                CurrentAccount.SetActive(TwitchManager.Instance.IsAccountConnected);
+            });
+        }
     }
 }

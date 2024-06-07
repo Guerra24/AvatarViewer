@@ -1713,7 +1713,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  Dialog: {fileID: 5870148006066236234, guid: 929a948e7e667ca4abbe0284823e3ed5, type: 3}
+  _dialog: {fileID: 6331452096440303288, guid: 929a948e7e667ca4abbe0284823e3ed5, type: 3}
   references:
     version: 2
     RefIds: []

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AvatarViewer.UI;
 using Cysharp.Threading.Tasks;
 using TwitchLib.Api;
 using TwitchLib.Api.Helix.Models.Users.GetUsers;
@@ -26,7 +27,7 @@ namespace AvatarViewer.Twitch
 
         public Sprite ProfileImage { get; private set; }
 
-        public GameObject Dialog;
+        [SerializeField] private Dialog _dialog;
 
         private TwitchAPI TwitchAPI;
         private Texture2D ProfileImageTexture;
@@ -122,11 +123,10 @@ namespace AvatarViewer.Twitch
                     Debug.Log("Invalid token");
                     Disconnect();
 
-                    var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
-                    var data = dialog.GetComponentInChildren<Dialog>();
-                    data.SetTitle("Authenticate");
-                    data.SetContent("Twitch token became invalid; please authenticate again.\nThis will open the main menu.");
-                    data.SetOnOkAction(() => SceneManager.LoadScene("Scenes/TwitchAuth", LoadSceneMode.Single));
+                    var dialog = Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
+                    dialog.SetTitle("Authenticate");
+                    dialog.SetContent("Twitch token became invalid; please authenticate again.\nThis will open the main menu.");
+                    dialog.SetOnOkAction(() => SceneManager.LoadScene("Scenes/TwitchAuth", LoadSceneMode.Single));
                     return;
                 }
             }

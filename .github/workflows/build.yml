@@ -9,8 +9,8 @@ jobs:
     strategy:
       matrix:
         build:
-         - { target-platform: StandaloneWindows64, image: 'unityci/editor:ubuntu-6000.0.2f1-windows-mono-3' }
-         - { target-platform: StandaloneLinux64, image: 'unityci/editor:ubuntu-6000.0.2f1-linux-il2cpp-3' }
+         - { target-platform: StandaloneWindows64, image: 'unityci/editor:ubuntu-6000.0.4f1-windows-mono-3' }
+         - { target-platform: StandaloneLinux64, image: 'unityci/editor:ubuntu-6000.0.4f1-linux-il2cpp-3' }
     steps:
       - name: Checkout
         uses: actions/checkout@v4

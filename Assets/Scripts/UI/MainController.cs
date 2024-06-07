@@ -3,7 +3,6 @@ using System.Linq;
 using AvatarViewer.UI.Components;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Newtonsoft.Json.Linq;
 using OpenSee;
 using TMPro;
 using UnityEngine;
@@ -57,13 +56,12 @@ namespace AvatarViewer.UI
         public Camera Camera;
 
         [SerializeField] private LocalizedString DialogTitle;
-        [SerializeField] private GameObject Dialog;
+        [SerializeField] private Dialog _dialog;
 
         [SerializeField] private TMP_Dropdown OtherAvatars;
         [SerializeField] private Button ChangeAvatar;
 
-        [SerializeField]
-        private GameObject Background;
+        [SerializeField] private GameObject Background;
 
         private float RotX, RotY, RotZ, PosX, PosY, PosZ, FOV;
 
@@ -178,11 +176,10 @@ namespace AvatarViewer.UI
         {
             var preset = ((GuidDropdownData)CameraPresets.options[CameraPresets.value]).guid;
 
-            var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
-            var data = dialog.GetComponentInChildren<Dialog>();
-            data.SetTitle(DialogTitle.GetLocalizedString());
-            data.SetContent($"{AppSettings.CameraPresets[preset].Name}");
-            data.SetOnOkAction(() =>
+            var dialog = Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
+            dialog.SetTitle(DialogTitle.GetLocalizedString());
+            dialog.SetContent($"{AppSettings.CameraPresets[preset].Name}");
+            dialog.SetOnOkAction(() =>
             {
                 AppSettings.CameraPresets.Remove(preset);
                 ReloadCameraPresets();

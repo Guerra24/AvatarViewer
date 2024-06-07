@@ -50,7 +50,7 @@ namespace AvatarViewer.SDK.Editor
                 if (obj.GetComponentsInChildren<UnityEngine.Video.VideoPlayer>(true).Length > 0)
                 {
                     Debug.Log("VideoPlayer detected, using uncompressed asset bundle.");
-                    options = options | BuildAssetBundleOptions.UncompressedAssetBundle;
+                    options |= BuildAssetBundleOptions.UncompressedAssetBundle;
                 }
                 BuildPipeline.BuildAssetBundles(Application.temporaryCachePath, new AssetBundleBuild[] { bundleBuild }, options, EditorUserBuildSettings.activeBuildTarget);
                 if (File.Exists(fullpath))

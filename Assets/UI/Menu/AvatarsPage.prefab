@@ -692,7 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   List: {fileID: 7753341314818229869}
-  _template: {fileID: 159916739031686071, guid: 65875f184c02c86478fcc0569b1c64f1,
+  _template: {fileID: 1327358927499120442, guid: 65875f184c02c86478fcc0569b1c64f1,
     type: 3}
 --- !u!1001 &7123292776727006157
 PrefabInstance:

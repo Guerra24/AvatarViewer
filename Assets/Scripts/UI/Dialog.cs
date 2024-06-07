@@ -5,87 +5,85 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Dialog : MonoBehaviour
+namespace AvatarViewer.UI
 {
-    private TMP_Text Title;
-    private TMP_Text Content;
-    private Button Ok;
-    private Button Cancel;
-
-    private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
-    private Sequence sequence;
-
-    private void Awake()
+    public class Dialog : MonoBehaviour
     {
-        Title = transform.Find("Title").GetComponent<TMP_Text>();
-        Content = transform.Find("Content").GetComponent<TMP_Text>();
-        Ok = transform.Find("Actions/Ok").GetComponent<Button>();
-        Cancel = transform.Find("Actions/Cancel").GetComponent<Button>();
+        [SerializeField] private TMP_Text Title;
+        [SerializeField] private TMP_Text Content;
+        [SerializeField] private Button Ok;
+        [SerializeField] private Button Cancel;
+        [SerializeField] private RectTransform dialogContent;
 
-        Ok.onClick.AddListener(() => Hide());
-        Cancel.onClick.AddListener(() => Hide());
+        private CanvasGroup canvasGroup;
+        private Sequence sequence;
 
-        canvasGroup = GetComponentInParent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
+        private void Awake()
+        {
+            Ok.onClick.AddListener(() => Hide());
+            Cancel.onClick.AddListener(() => Hide());
 
-        canvasGroup.alpha = 0;
-    }
+            canvasGroup = GetComponent<CanvasGroup>();
+            dialogContent = GetComponent<RectTransform>();
 
-    private void Start()
-    {
-        sequence = DOTween.Sequence();
+            canvasGroup.alpha = 0;
+        }
 
-        rectTransform.localScale = new Vector3(1.05f, 1.05f, 1.05f);
-        sequence.Insert(0, canvasGroup.DOFade(1, 0.3f).SetEase(Ease.OutExpo));
-        sequence.Insert(0, rectTransform.DOScale(1, 0.3f).SetEase(Ease.OutExpo));
-    }
+        private void Start()
+        {
+            sequence = DOTween.Sequence();
 
-    public void SetTitle(string title)
-    {
-        Title.text = title;
-    }
+            dialogContent.localScale = new Vector3(1.05f, 1.05f, 1.05f);
+            sequence.Insert(0, canvasGroup.DOFade(1, 0.3f).SetEase(Ease.OutExpo));
+            sequence.Insert(0, dialogContent.DOScale(1, 0.3f).SetEase(Ease.OutExpo));
+        }
 
-    public void SetContent(string content)
-    {
-        Content.text = content;
-    }
+        public void SetTitle(string title)
+        {
+            Title.text = title;
+        }
 
-    public void SetOnOkAction(UnityAction action)
-    {
-        if (action != null)
-            Ok.onClick.AddListener(action);
-    }
+        public void SetContent(string content)
+        {
+            Content.text = content;
+        }
 
-    public void SetOnCancelAction(UnityAction action)
-    {
-        if (action != null)
-            Cancel.onClick.AddListener(action);
-    }
+        public void SetOnOkAction(UnityAction action)
+        {
+            if (action != null)
+                Ok.onClick.AddListener(action);
+        }
 
-    private void Hide()
-    {
-        sequence = DOTween.Sequence();
+        public void SetOnCancelAction(UnityAction action)
+        {
+            if (action != null)
+                Cancel.onClick.AddListener(action);
+        }
 
-        sequence.Insert(0, canvasGroup.DOFade(0, 0.3f).SetEase(Ease.OutExpo));
-        sequence.Insert(0, rectTransform.DOScale(1.05f, 0.3f).SetEase(Ease.OutExpo));
+        private void Hide()
+        {
+            sequence = DOTween.Sequence();
 
-        HideAsync().Forget();
-    }
+            sequence.Insert(0, canvasGroup.DOFade(0, 0.3f).SetEase(Ease.OutExpo));
+            sequence.Insert(0, dialogContent.DOScale(1.05f, 0.3f).SetEase(Ease.OutExpo));
 
-    private async UniTaskVoid HideAsync()
-    {
-        await sequence.ToUniTask();
-        Destroy(gameObject.transform.parent.gameObject);
-    }
+            HideAsync().Forget();
+        }
 
-    private void OnDestroy()
-    {
-        sequence.Kill();
-    }
+        private async UniTaskVoid HideAsync()
+        {
+            await sequence.ToUniTask();
+            Destroy(gameObject);
+        }
 
-    private void OnApplicationQuit()
-    {
-        sequence.Kill();
+        private void OnDestroy()
+        {
+            sequence.Kill();
+        }
+
+        private void OnApplicationQuit()
+        {
+            sequence.Kill();
+        }
     }
 }

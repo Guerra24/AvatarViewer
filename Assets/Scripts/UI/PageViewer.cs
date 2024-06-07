@@ -11,12 +11,12 @@ namespace AvatarViewer.UI
     public class PageViewer : MonoBehaviour
     {
 
-        public GameObject _headerPageSeparator;
-        public GameObject _headerPageText;
-        public GameObject _headerBackButton;
-        public GameObject _header;
-        public GameObject _content;
-        public GameObject _initialPage;
+        [SerializeField] private GameObject _headerPageSeparator;
+        [SerializeField] private TMP_Text _headerPageText;
+        [SerializeField] private Button _headerBackButton;
+        [SerializeField] private GameObject _header;
+        [SerializeField] private GameObject _content;
+        [SerializeField] private GameObject _initialPage;
 
         public UnityEvent GoBackInitial;
 
@@ -28,7 +28,7 @@ namespace AvatarViewer.UI
 
         void Awake()
         {
-            _headerBackButton.GetComponent<Button>().onClick.AddListener(GoBack);
+            _headerBackButton.onClick.AddListener(GoBack);
 
             OpenPage(_initialPage, false);
         }
@@ -112,7 +112,7 @@ namespace AvatarViewer.UI
             }
 
             var pageText = Instantiate(_headerPageText, _header.transform, false);
-            pageText.GetComponent<TMP_Text>().text = details.LocalizedTitle.IsEmpty ? details.Title : await details.LocalizedTitle.GetLocalizedStringAsync();
+            pageText.text = details.LocalizedTitle.IsEmpty ? details.Title : await details.LocalizedTitle.GetLocalizedStringAsync();
 
             pageStack.Push(template);
             _working = false;

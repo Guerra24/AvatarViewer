@@ -17,7 +17,7 @@ namespace AvatarViewer.UI.Items
         [SerializeField] private Button Remove;
         [SerializeField] private LocalizedString DialogTitle;
         [SerializeField] private LocalizedString DialogContent;
-        [SerializeField] private GameObject _dialog;
+        [SerializeField] private Dialog _dialog;
 
         private void Awake()
         {

@@ -376,9 +376,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _headerPageSeparator: {fileID: 1901324468307813387, guid: 4a2c8c36345964443b3086787862e66f,
     type: 3}
-  _headerPageText: {fileID: 3856458549143368194, guid: 091fb0e3e9679a540a772df56c1870ba,
+  _headerPageText: {fileID: 4825655575795080813, guid: 091fb0e3e9679a540a772df56c1870ba,
     type: 3}
-  _headerBackButton: {fileID: 2482544602296016767}
+  _headerBackButton: {fileID: 2867499591859839400}
   _header: {fileID: 5939357358215706798}
   _content: {fileID: 659189432845562666}
   _initialPage: {fileID: 0}

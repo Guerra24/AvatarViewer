@@ -12,7 +12,7 @@ namespace AvatarViewer.UI
     {
 
         [SerializeField] private RectTransform List;
-        [SerializeField] private GameObject _template;
+        [SerializeField] private AvatarListItem _template;
 
         void Awake()
         {
@@ -94,7 +94,7 @@ namespace AvatarViewer.UI
         private void CreateItem(Avatar avatar)
         {
             var item = Instantiate(_template, List, false);
-            item.GetComponent<AvatarListItem>().Load(avatar);
+            item.Load(avatar);
         }
 
         private void RemoveItem(Avatar avatar)

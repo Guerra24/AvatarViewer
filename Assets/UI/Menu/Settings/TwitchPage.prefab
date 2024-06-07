@@ -518,15 +518,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e99371babc021e4428907945e902b27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _templateRewardListItem: {fileID: 577451871631834696, guid: 214983abc8228b54dba8c8696c762b1c,
+  _templateRewardListItem: {fileID: 7461587903450886016, guid: 214983abc8228b54dba8c8696c762b1c,
     type: 3}
-  _templateItemRewardListItem: {fileID: 8926520845915259311, guid: 906ced31b2235454d9434756eb9719b8,
+  _templateItemRewardListItem: {fileID: 7317560283872258896, guid: 906ced31b2235454d9434756eb9719b8,
     type: 3}
-  _templateCameraRewardListItem: {fileID: 8926520845915259311, guid: 417a4ca0cf3cfcd4d9f160325105cc86,
+  _templateCameraRewardListItem: {fileID: 5860518620976047700, guid: 417a4ca0cf3cfcd4d9f160325105cc86,
     type: 3}
-  _templateAvatarRewardListItem: {fileID: 8926520845915259311, guid: 93c5166c53eae9f428d71cb363e4c66b,
+  _templateAvatarRewardListItem: {fileID: 6279204123131880571, guid: 93c5166c53eae9f428d71cb363e4c66b,
     type: 3}
-  _templatePickAvatarRewardListItem: {fileID: 8926520845915259311, guid: 49eb771500dedb04cb6a8c19d28a237b,
+  _templatePickAvatarRewardListItem: {fileID: -2628854189501738936, guid: 49eb771500dedb04cb6a8c19d28a237b,
     type: 3}
 --- !u!114 &708724749330520880
 MonoBehaviour:
@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4add4a75c709f42b23ace4f049c966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dialog: {fileID: 5870148006066236234, guid: 929a948e7e667ca4abbe0284823e3ed5, type: 3}
+  _dialog: {fileID: 6331452096440303288, guid: 929a948e7e667ca4abbe0284823e3ed5, type: 3}
   ConnectAccount: {fileID: 1974543738275861086}
   CurrentAccount: {fileID: 4538474988293742513}
   DisplayName: {fileID: 2026258687328152253}

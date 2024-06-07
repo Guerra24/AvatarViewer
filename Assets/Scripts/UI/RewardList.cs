@@ -7,11 +7,11 @@ namespace AvatarViewer.UI
     public class RewardList : BaseSettingsPage
     {
 
-        [SerializeField] private GameObject _templateRewardListItem;
-        [SerializeField] private GameObject _templateItemRewardListItem;
-        [SerializeField] private GameObject _templateCameraRewardListItem;
-        [SerializeField] private GameObject _templateAvatarRewardListItem;
-        [SerializeField] private GameObject _templatePickAvatarRewardListItem;
+        [SerializeField] private InitialRewardListItem _templateRewardListItem;
+        [SerializeField] private ItemRewardListItem _templateItemRewardListItem;
+        [SerializeField] private CameraRewardListItem _templateCameraRewardListItem;
+        [SerializeField] private AvatarRewardListItem _templateAvatarRewardListItem;
+        [SerializeField] private PickAvatarRewardListItem _templatePickAvatarRewardListItem;
 
         void Start()
         {
@@ -48,41 +48,36 @@ namespace AvatarViewer.UI
         public void CreateReward(string id, Reward reward)
         {
             var item = Instantiate(_templateRewardListItem, this.transform, false);
-            var controller = item.GetComponent<InitialRewardListItem>();
-            controller.Reward = reward;
-            controller.LoadValues(id);
+            item.Reward = reward;
+            item.LoadValues(id);
         }
 
         public void CreateItemReward(string id, ItemReward reward)
         {
             var item = Instantiate(_templateItemRewardListItem, this.transform, false);
-            var controller = item.GetComponent<ItemRewardListItem>();
-            controller.Reward = reward;
-            controller.LoadValues(id);
+            item.Reward = reward;
+            item.LoadValues(id);
         }
 
         public void CreateCameraReward(string id, CameraReward reward)
         {
             var item = Instantiate(_templateCameraRewardListItem, this.transform, false);
-            var controller = item.GetComponent<CameraRewardListItem>();
-            controller.Reward = reward;
-            controller.LoadValues(id);
+            item.Reward = reward;
+            item.LoadValues(id);
         }
 
         public void CreateAvatarReward(string id, AvatarReward reward)
         {
             var item = Instantiate(_templateAvatarRewardListItem, this.transform, false);
-            var controller = item.GetComponent<AvatarRewardListItem>();
-            controller.Reward = reward;
-            controller.LoadValues(id);
+            item.Reward = reward;
+            item.LoadValues(id);
         }
 
         public void CreatePickAvatarReward(string id, PickAvatarReward reward)
         {
             var item = Instantiate(_templatePickAvatarRewardListItem, this.transform, false);
-            var controller = item.GetComponent<PickAvatarRewardListItem>();
-            controller.Reward = reward;
-            controller.LoadValues(id);
+            item.Reward = reward;
+            item.LoadValues(id);
         }
 
     }

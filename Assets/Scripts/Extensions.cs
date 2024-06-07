@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using AvatarViewer.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -39,14 +40,13 @@ namespace AvatarViewer
 
     public static class DialogExtensions
     {
-        public static void CreateDialog(this GameObject _dialog, string title, string content, UnityAction onOK = null, UnityAction onCancel = null)
+        public static void CreateDialog(this Dialog _dialog, string title, string content, UnityAction onOK = null, UnityAction onCancel = null)
         {
             var dialog = GameObject.Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
-            var data = dialog.GetComponentInChildren<Dialog>();
-            data.SetTitle(title);
-            data.SetContent(content);
-            data.SetOnOkAction(onOK);
-            data.SetOnCancelAction(onCancel);
+            dialog.SetTitle(title);
+            dialog.SetContent(content);
+            dialog.SetOnOkAction(onOK);
+            dialog.SetOnCancelAction(onCancel);
         }
     }
 }

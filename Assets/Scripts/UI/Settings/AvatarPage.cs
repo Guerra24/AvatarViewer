@@ -34,7 +34,7 @@ namespace AvatarViewer.UI.Settings
 
         [SerializeField] private LocalizedString DialogTitle;
         [SerializeField] private LocalizedString DialogContent;
-        [SerializeField] private GameObject Dialog;
+        [SerializeField] private Dialog _dialog;
 
         protected override void Awake()
         {
@@ -80,11 +80,10 @@ namespace AvatarViewer.UI.Settings
         public void CopySettingsOnClick()
         {
             var other = ApplicationPersistence.AppSettings.Avatars.First(a => a.Guid == ((GuidDropdownData)OtherAvatars.options[OtherAvatars.value]).guid);
-            var dialog = Instantiate(Dialog, GameObject.Find("Canvas").transform, false);
-            var data = dialog.GetComponentInChildren<Dialog>();
-            data.SetTitle(DialogTitle.GetLocalizedString());
-            data.SetContent(DialogContent.GetLocalizedString().AsFormat(other.Title, Avatar.Title));
-            data.SetOnOkAction(() =>
+            var dialog = Instantiate(_dialog, GameObject.Find("Canvas").transform, false);
+            dialog.SetTitle(DialogTitle.GetLocalizedString());
+            dialog.SetContent(DialogContent.GetLocalizedString().AsFormat(other.Title, Avatar.Title));
+            dialog.SetOnOkAction(() =>
             {
                 Avatar.Settings = new AvatarSettings(other.Settings);
                 Load();
