@@ -7,10 +7,10 @@ namespace AvatarViewer
 {
     public class MainSceneLoader : MonoBehaviour
     {
-        public PostProcessLayer PostProcessLayer;
-        public SpoutSender SpoutSender;
-        public OpenSeeIKTarget IKTarget;
-        public OpenSeeVRMDriver Driver;
+        [SerializeField] private PostProcessLayer PostProcessLayer;
+        [SerializeField] private SpoutSender SpoutSender;
+        [SerializeField] private OpenSeeIKTarget IKTarget;
+        [SerializeField] private OpenSeeVRMDriver Driver;
 
         private void Start()
         {

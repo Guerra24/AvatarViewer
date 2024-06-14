@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if UNITY_STANDALONE_WIN
+using AvatarViewer.Native.Win;
+#endif
 using Klak.Spout;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace AvatarViewer.UI.Settings
@@ -13,13 +17,13 @@ namespace AvatarViewer.UI.Settings
     {
         private AppSettings Settings => ApplicationPersistence.AppSettings;
 
-        public TMP_Dropdown Mode;
-        public TMP_Dropdown Preset;
-        public TMP_InputField Width;
-        public TMP_InputField Height;
-        public TMP_Dropdown VSync;
-        public TMP_InputField FrameRate;
-        public Toggle IncreasedPriority;
+        [SerializeField] private TMP_Dropdown Mode;
+        [SerializeField] private TMP_Dropdown Preset;
+        [SerializeField] private TMP_InputField Width;
+        [SerializeField] private TMP_InputField Height;
+        [SerializeField] private TMP_Dropdown VSync;
+        [SerializeField] private TMP_InputField FrameRate;
+        [SerializeField] private Toggle IncreasedPriority;
 
         private SpoutSender SpoutSender;
 
@@ -122,6 +126,13 @@ namespace AvatarViewer.UI.Settings
 #if UNITY_STANDALONE_WIN
             using (var p = Process.GetCurrentProcess())
                 p.PriorityClass = state ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
+            if (SceneManager.GetActiveScene().buildIndex == 5)
+            {
+                if (state)
+                    GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH, 6);
+                else
+                    GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_NORMAL, 0);
+            }
 #endif
         }
     }

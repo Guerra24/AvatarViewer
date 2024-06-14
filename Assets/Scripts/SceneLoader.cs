@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_STANDALONE_WIN
+using AvatarViewer.Native.Win;
+#endif
 using Cysharp.Threading.Tasks;
 using UniGLTF;
 using UnityEngine;
@@ -55,7 +58,10 @@ namespace AvatarViewer
 
                         foreach (var avatar in ApplicationPersistence.AppSettings.Avatars.Where(v => !ApplicationState.VrmData.ContainsKey(v.Guid) && v.Vrm).ToList())
                             ApplicationState.VrmData.Add(avatar.Guid, new VRMImporterContext(new VRMData(new AutoGltfFileParser(avatar.Path).Parse())));
-
+#if UNITY_STANDALONE_WIN
+                        if (ApplicationPersistence.AppSettings.IncreasedPriority)
+                            GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_NORMAL, 0);
+#endif
                         break;
                     case Scene.Main:
                         scene = "Scenes/Main";
@@ -73,6 +79,11 @@ namespace AvatarViewer
                             vrm.Value.Dispose();
                             ApplicationState.VrmData.Remove(vrm.Key);
                         }
+
+#if UNITY_STANDALONE_WIN
+                        if (ApplicationPersistence.AppSettings.IncreasedPriority)
+                            GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH, 6);
+#endif
 
                         break;
                 }

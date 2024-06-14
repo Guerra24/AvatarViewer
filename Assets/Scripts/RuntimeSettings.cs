@@ -91,7 +91,7 @@ namespace AvatarViewer
                 driver.gazeCenter.y = settings.GazeVerticalOffset;
                 driver.gain = ((OculusLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.OculusLipSync]).Gain;
             }
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE_WIN
             using (var p = Process.GetCurrentProcess())
                 p.PriorityClass = Settings.IncreasedPriority ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;
 #endif
