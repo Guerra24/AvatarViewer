@@ -319,6 +319,8 @@ namespace AvatarViewer
             }
             ApplicationPersistence.Save();
             Driver.InitExpressionMap();
+            LeftWristTarget.rotation = Quaternion.Euler(0, 0, 65);
+            RightWristTarget.rotation = Quaternion.Euler(0, 0, -65);
         }
 
         public void BuildAnimationMapping(GameObject avatar)
