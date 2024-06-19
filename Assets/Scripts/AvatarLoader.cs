@@ -116,6 +116,9 @@ namespace AvatarViewer
                 avatar = vrm.gameObject;
             }
 
+            LeftWristTarget.rotation = Quaternion.Euler(0, 0, 0);
+            RightWristTarget.rotation = Quaternion.Euler(0, 0, 0);
+
             var animator = avatar.GetComponent<Animator>();
 
             Driver.vrmBlendShapeProxy = avatar.GetComponent<VRMBlendShapeProxy>();
@@ -319,8 +322,11 @@ namespace AvatarViewer
             }
             ApplicationPersistence.Save();
             Driver.InitExpressionMap();
-            LeftWristTarget.rotation = Quaternion.Euler(0, 0, 65);
-            RightWristTarget.rotation = Quaternion.Euler(0, 0, -65);
+            MainThreadDispatcher.Instance.AddOnUpdate(() =>
+            {
+                LeftWristTarget.rotation = Quaternion.Euler(0, 0, 65);
+                RightWristTarget.rotation = Quaternion.Euler(0, 0, -65);
+            });
         }
 
         public void BuildAnimationMapping(GameObject avatar)
