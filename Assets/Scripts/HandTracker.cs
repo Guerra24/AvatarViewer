@@ -115,9 +115,9 @@ public class HandTracker : MonoBehaviour
                 AvatarLeftThumbPole.position = Vector3.Lerp(AvatarLeftThumbPole.position, referenceThumb + data.Left.ThumbMcp * Scale, 0.2f);
                 Debug.DrawLine(AvatarLeftThumbTarget.position, AvatarLeftThumbPole.position);*/
 
-                Debug.DrawLine(referenceThumb + data.Left.ThumbCmc, referenceThumb + data.Left.ThumbMcp, Color.blue);
+                /*Debug.DrawLine(referenceThumb + data.Left.ThumbCmc, referenceThumb + data.Left.ThumbMcp, Color.blue);
                 Debug.DrawLine(referenceThumb + data.Left.ThumbMcp, referenceThumb + data.Left.ThumbIp, Color.blue);
-                Debug.DrawLine(referenceThumb + data.Left.ThumbIp, referenceThumb + data.Left.ThumbTip, Color.blue);
+                Debug.DrawLine(referenceThumb + data.Left.ThumbIp, referenceThumb + data.Left.ThumbTip, Color.blue);*/
 
                 /*var referenceIndex = AvatarLeftIndexMcp.position - data.Left.IndexMcp * Scale;
 

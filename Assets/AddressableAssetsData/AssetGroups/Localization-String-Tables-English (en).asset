@@ -15,8 +15,8 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-English (en)
   m_GUID: e6c6543cccbd1d04e93c157dd98f33c0
   m_SerializeEntries:
-  - m_GUID: a1ce16698c573cf40959b87a3168780f
-    m_Address: Settings_en
+  - m_GUID: 5b8863f57beeb1b478083656358ba55b
+    m_Address: Generic_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
@@ -29,15 +29,8 @@ MonoBehaviour:
     - Locale-en
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5b8863f57beeb1b478083656358ba55b
-    m_Address: Generic_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fdc69e2648a48b348b4d37cca3a26bf2
-    m_Address: Pages_en
+  - m_GUID: a1ce16698c573cf40959b87a3168780f
+    m_Address: Settings_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
@@ -45,6 +38,13 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eeb14d2f60bfaaa4bab98626155ed063
     m_Address: Items_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdc69e2648a48b348b4d37cca3a26bf2
+    m_Address: Pages_en
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en

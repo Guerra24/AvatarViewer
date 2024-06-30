@@ -82,7 +82,7 @@ namespace AvatarViewer
 
 #if UNITY_STANDALONE_WIN
                         if (ApplicationPersistence.AppSettings.IncreasedPriority)
-                            GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH, 6);
+                            GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH, 7);
 #endif
 
                         break;

@@ -29,6 +29,13 @@ MonoBehaviour:
     - Locale-es-AR
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76986e7736e1b5e43bb696435515db47
+    m_Address: Items_es-AR
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es-AR
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8997b04f518835e4c8b986e7fbaed9c9
     m_Address: Generic_es-AR
     m_ReadOnly: 1
@@ -38,13 +45,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e1dd454f67ed5bc4b82d7bed509c40cc
     m_Address: Pages_es-AR
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-es-AR
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 76986e7736e1b5e43bb696435515db47
-    m_Address: Items_es-AR
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es-AR

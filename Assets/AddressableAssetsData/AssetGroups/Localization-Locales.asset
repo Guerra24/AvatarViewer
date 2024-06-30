@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Localization-Locales
   m_GUID: 64259643793742e4fb3026ec63664c30
   m_SerializeEntries:
+  - m_GUID: 4af9b8ad993a5bb498753bee1663bd2e
+    m_Address: Spanish (Argentina) (es-AR)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4efac1f6ccc2f574d817d92c2115eeea
     m_Address: English (en)
     m_ReadOnly: 1
@@ -23,12 +29,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7de2800c0b2652646996e773fcaa1061
     m_Address: Spanish (es)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4af9b8ad993a5bb498753bee1663bd2e
-    m_Address: Spanish (Argentina) (es-AR)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
