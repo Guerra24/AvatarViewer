@@ -12,7 +12,6 @@ using UnityEngine.Playables;
 using UnityRawInput;
 #endif
 using VRM;
-using VRMShaders;
 using VSeeFace;
 
 namespace AvatarViewer

@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f057abff0f4ea52e4c9699c2831808d6c0a27bcc"
+      "hash": "9057452c86079e4265228480b1439442894d5078"
     },
     "com.dbrizov.naughtyattributes": {
       "version": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
@@ -29,7 +29,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "475d9b06c0cbd40bd52ac827ad54e852a91792e0"
+      "hash": "6a774c4d799cf442303ebfa07060a3be3b4bae61"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -42,13 +42,13 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.scriptablebuildpipeline": "2.1.4",
+        "com.unity.profiling.core": "1.0.2",
         "com.unity.modules.assetbundle": "1.0.0",
-        "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
-        "com.unity.profiling.core": "1.0.2"
+        "com.unity.scriptablebuildpipeline": "2.1.4",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -164,9 +164,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
@@ -181,34 +181,23 @@
       }
     },
     "com.vrmc.gltf": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.124.2",
+      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.125.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.vrmc.vrmshaders": "0.124.2",
         "com.unity.modules.animation": "1.0.0"
       },
-      "hash": "dd50635bedc540517d5d112e2061b2cfd15fb0f3"
+      "hash": "f8120fb22dade99ea8a9e03b77a3bbc2a4c79806"
     },
     "com.vrmc.univrm": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM#v0.124.2",
+      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM#v0.125.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.vrmc.vrmshaders": "0.124.2",
-        "com.vrmc.gltf": "0.124.2",
+        "com.vrmc.gltf": "0.125.0",
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "dd50635bedc540517d5d112e2061b2cfd15fb0f3"
-    },
-    "com.vrmc.vrmshaders": {
-      "version": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.124.2",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.modules.imageconversion": "1.0.0"
-      },
-      "hash": "dd50635bedc540517d5d112e2061b2cfd15fb0f3"
+      "hash": "f8120fb22dade99ea8a9e03b77a3bbc2a4c79806"
     },
     "jp.keijiro.klak.spout": {
       "version": "2.0.3",
