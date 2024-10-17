@@ -1,4 +1,4 @@
-ARG GAMECI_IMAGE=unityci/editor:ubuntu-6000.0.13f1-windows-mono-3
+ARG GAMECI_IMAGE=unityci/editor:ubuntu-6000.0.23f1-windows-mono-3
 FROM $GAMECI_IMAGE
 
 ARG BLENDER_SHORT_VERSION=3.5

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DitzelGames.FastIK;
+using OpenSee;
 using uLipSync;
 using UniGLTF;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace AvatarViewer
 
         [Header("Driver")]
         public OpenSeeVRMDriver Driver;
+        [Header("IK Target")]
+        [SerializeField] private OpenSeeIKTarget IKTarget;
         [Header("IK Target at Head")]
         [SerializeField] private Transform HeadTarget;
         [Header("Kinematic target")]
@@ -48,8 +51,6 @@ namespace AvatarViewer
 
         private PlayableGraph graph;
         private AnimationMixerPlayable mixer;
-
-        private bool ranOnFirstFrame = true;
 
         private Dictionary<BlendShapeKey, VsfAnimationDetails?> Animations = new();
 
@@ -245,8 +246,8 @@ namespace AvatarViewer
             {
                 var lipSync = avatar.AddComponent<uLipSync.uLipSync>();
                 lipSync.outputSoundGain = 0;
-                var settings = (uLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.uLipSync];
-                switch (settings.Profile)
+                var lipSyncSettings = (uLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.uLipSync];
+                switch (lipSyncSettings.Profile)
                 {
                     case LipSyncProfile.Default:
                         lipSync.profile = ProfileDefault;
@@ -267,18 +268,18 @@ namespace AvatarViewer
 
                 var lipSyncVRM = avatar.AddComponent<uLipSyncBlendShapeVRM>();
                 lipSyncVRM.usePhonemeBlend = true;
-                lipSyncVRM.minVolume = settings.MinVolume;
-                lipSyncVRM.maxVolume = settings.MaxVolume;
+                lipSyncVRM.minVolume = lipSyncSettings.MinVolume;
+                lipSyncVRM.maxVolume = lipSyncSettings.MaxVolume;
                 lipSyncVRM.AddBlendShape("A", "A");
                 lipSyncVRM.AddBlendShape("I", "I");
                 lipSyncVRM.AddBlendShape("U", "U");
                 lipSyncVRM.AddBlendShape("E", "E");
                 lipSyncVRM.AddBlendShape("O", "O");
+                lipSyncVRM.AddBlendShape("N", "N");
                 //lipSyncVRM.AddBlendShape("-", "Neutral");
 
                 lipSync.onLipSyncUpdate.AddListener(lipSyncVRM.OnLipSyncUpdate);
             }
-            ranOnFirstFrame = false;
 
             foreach (var bundle in ApplicationState.AvatarBundles.Where(kp => kp.Key != ApplicationState.CurrentAvatar.Guid).ToList())
             {
@@ -295,11 +296,10 @@ namespace AvatarViewer
             }
 
             await Resources.UnloadUnusedAssets();
-        }
 
-        private void OnFirstFrame()
-        {
-            ranOnFirstFrame = true;
+            await UniTask.Yield();
+            await UniTask.NextFrame();
+
             BuildAnimationMapping(avatar);
             foreach (var anim in Animations)
             {
@@ -321,11 +321,30 @@ namespace AvatarViewer
             }
             ApplicationPersistence.Save();
             Driver.InitExpressionMap();
-            MainThreadDispatcher.Instance.AddOnUpdate(() =>
-            {
-                LeftWristTarget.rotation = Quaternion.Euler(0, 0, 65);
-                RightWristTarget.rotation = Quaternion.Euler(0, 0, -65);
-            });
+
+            await UniTask.Yield();
+            await UniTask.NextFrame();
+
+            LeftWristTarget.rotation = Quaternion.Euler(0, 0, 65);
+            RightWristTarget.rotation = Quaternion.Euler(0, 0, -65);
+
+            var settings = ApplicationState.CurrentAvatar.Settings;
+            IKTarget.mirrorMotion = settings.Mirror;
+            IKTarget.smooth = settings.Smoothing;
+            IKTarget.driftBack = settings.DriftBack;
+            Driver.autoBlink = settings.AutoBlink;
+            Driver.blinkSmoothing = settings.BlinkSmoothing;
+            Driver.eyeClosedThreshold = settings.EyeCloseThreshold;
+            Driver.eyeOpenedThreshold = settings.EyeOpenThreshold;
+            Driver.eyebrowStrength = settings.EyebrowStrength;
+            Driver.eyebrowZero = settings.EyebrowZero;
+            Driver.eyebrowSensitivity = settings.EyebrowSensitivity;
+            Driver.gazeSmoothing = settings.GazeSmoothing;
+            Driver.gazeStabilizer = 1.0f - settings.GazeSensitivity;
+            Driver.gazeStrength = settings.GazeStrength;
+            Driver.gazeCenter.x = settings.GazeHorizontalOffset;
+            Driver.gazeCenter.y = settings.GazeVerticalOffset;
+            Driver.gain = ((OculusLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.OculusLipSync]).Gain;
         }
 
         public void BuildAnimationMapping(GameObject avatar)
@@ -389,12 +408,6 @@ namespace AvatarViewer
 
             graph.Play();
             Driver.mixer = mixer;
-        }
-
-        public void Update()
-        {
-            if (!ranOnFirstFrame)
-                OnFirstFrame();
         }
 
         public void OnDestroy()

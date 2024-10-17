@@ -129,7 +129,7 @@ namespace AvatarViewer.UI.Settings
             if (SceneManager.GetActiveScene().buildIndex == 5)
             {
                 if (state)
-                    GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH, 7);
+                    GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_REALTIME, 7);
                 else
                     GPUPriority.ChangePriority(_D3DKMT_SCHEDULINGPRIORITYCLASS.D3DKMT_SCHEDULINGPRIORITYCLASS_NORMAL, 0);
             }

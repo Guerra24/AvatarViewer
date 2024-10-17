@@ -9,6 +9,7 @@ using System.Threading;
 using AvatarViewer;
 using AvatarViewer.Trackers;
 using UnityEngine;
+using ThreadPriority = System.Threading.ThreadPriority;
 
 namespace OpenSee
 {
@@ -445,6 +446,10 @@ namespace OpenSee
                     receiveThread = new Thread(() => performReceptionMediapipe());
                     break;
             }
+#if UNITY_STANDALONE_WIN
+            if (ApplicationPersistence.AppSettings.IncreasedPriority)
+                receiveThread.Priority = ThreadPriority.Highest;
+#endif
             receiveThread.Start();
         }
 

@@ -36,24 +36,6 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH
-        passType: 4
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SHADOWS_SCREEN
-        passType: 4
-      - keywords: DIRECTIONAL
-        passType: 5
-      - keywords: 
-        passType: 8
-      - keywords: SHADOWS_DEPTH
-        passType: 8
-  - first: {fileID: 6, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: 
-        passType: 8
   - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -102,7 +84,7 @@ ShaderVariantCollection:
   - first: {fileID: 9103, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: 
+      - keywords: UIE_FORCE_GAMMA
         passType: 0
   - first: {fileID: 19011, guid: 0000000000000000f000000000000000, type: 0}
     second:
@@ -146,6 +128,11 @@ ShaderVariantCollection:
         passType: 0
       - keywords: UNITY_UI_CLIP_RECT
         passType: 0
+  - first: {fileID: 4800000, guid: c1e1d3119c6fd4646aea0b4b74cacc1a, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
   - first: {fileID: 4800000, guid: cdbdb71de5f9c454b980f6d0e87f0afb, type: 3}
     second:
       variants:
@@ -163,6 +150,8 @@ ShaderVariantCollection:
         passType: 0
       - keywords: FXAA
         passType: 0
+      - keywords: FXAA FXAA_KEEP_ALPHA
+        passType: 0
   - first: {fileID: 4800000, guid: 51bcf79c50dc92e47ba87821b61100c3, type: 3}
     second:
       variants:
@@ -178,6 +167,10 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+      - keywords: BLOOM
+        passType: 0
+      - keywords: BLOOM FINALPASS
+        passType: 0
       - keywords: FINALPASS
         passType: 0
   - first: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
@@ -186,9 +179,4 @@ ShaderVariantCollection:
       - keywords: 
         passType: 0
       - keywords: UNITY_UI_CLIP_RECT
-        passType: 0
-  - first: {fileID: 4800000, guid: ca31b1ea41c42bd4e9e6798f4d31014f, type: 3}
-    second:
-      variants:
-      - keywords: 
         passType: 0

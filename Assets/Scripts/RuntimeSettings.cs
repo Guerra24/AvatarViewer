@@ -1,7 +1,6 @@
 #nullable enable
 using System.Diagnostics;
 using Klak.Spout;
-using OpenSee;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
@@ -11,8 +10,14 @@ namespace AvatarViewer
     {
         private static AppSettings Settings => ApplicationPersistence.AppSettings;
 
-        public static void Apply(PostProcessLayer? PostProcessLayer = null, SpoutSender? SpoutSender = null, OpenSeeIKTarget? iKTarget = null, OpenSeeVRMDriver? driver = null)
+        public static void Apply(PostProcessLayer? PostProcessLayer = null, SpoutSender? SpoutSender = null, PostProcessVolume? volume = null)
         {
+            if (volume != null)
+            {
+                volume.profile.GetSetting<Bloom>().enabled.value = false;
+                //volume.profile.GetSetting<Bloom>().intensity.value = 20;
+                //volume.profile.GetSetting<Bloom>().threshold.value = 0.2f;
+            }
             switch (Settings.AntiAliasing)
             {
                 case AntiAliasing.Disabled:
@@ -67,30 +72,6 @@ namespace AvatarViewer
             }
             if (Settings.CaptureMode == CaptureMode.GameWindow)
                 Screen.SetResolution(ApplicationState.RuntimeWidth, ApplicationState.RuntimeHeight, false);
-            if (iKTarget != null)
-            {
-                var settings = ApplicationState.CurrentAvatar.Settings;
-                iKTarget.mirrorMotion = settings.Mirror;
-                iKTarget.smooth = settings.Smoothing;
-                iKTarget.driftBack = settings.DriftBack;
-            }
-            if (driver != null)
-            {
-                var settings = ApplicationState.CurrentAvatar.Settings;
-                driver.autoBlink = settings.AutoBlink;
-                driver.blinkSmoothing = settings.BlinkSmoothing;
-                driver.eyeClosedThreshold = settings.EyeCloseThreshold;
-                driver.eyeOpenedThreshold = settings.EyeOpenThreshold;
-                driver.eyebrowStrength = settings.EyebrowStrength;
-                driver.eyebrowZero = settings.EyebrowZero;
-                driver.eyebrowSensitivity = settings.EyebrowSensitivity;
-                driver.gazeSmoothing = settings.GazeSmoothing;
-                driver.gazeStabilizer = 1.0f - settings.GazeSensitivity;
-                driver.gazeStrength = settings.GazeStrength;
-                driver.gazeCenter.x = settings.GazeHorizontalOffset;
-                driver.gazeCenter.y = settings.GazeVerticalOffset;
-                driver.gain = ((OculusLipSyncSettings)ApplicationPersistence.AppSettings.LipSyncSettings[LipSyncProvider.OculusLipSync]).Gain;
-            }
 #if UNITY_STANDALONE_WIN
             using (var p = Process.GetCurrentProcess())
                 p.PriorityClass = Settings.IncreasedPriority ? ProcessPriorityClass.AboveNormal : ProcessPriorityClass.Normal;

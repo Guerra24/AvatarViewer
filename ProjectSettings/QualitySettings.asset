@@ -304,7 +304,7 @@ QualitySettings:
     streamingMipmapsActive: 1
     streamingMipmapsAddAllCameras: 0
     streamingMipmapsMemoryBudget: 256
-    streamingMipmapsRenderersPerFrame: 512
+    streamingMipmapsRenderersPerFrame: 64
     streamingMipmapsMaxLevelReduction: 2
     streamingMipmapsMaxFileIORequests: 1024
     particleRaycastBudget: 4096

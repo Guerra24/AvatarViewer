@@ -20,8 +20,10 @@ namespace AvatarViewer.UI
 
         private void Awake()
         {
-            Ok.onClick.AddListener(() => Hide());
-            Cancel.onClick.AddListener(() => Hide());
+            if (Ok != null)
+                Ok.onClick.AddListener(() => Hide());
+            if (Cancel != null)
+                Cancel.onClick.AddListener(() => Hide());
 
             canvasGroup = GetComponent<CanvasGroup>();
             dialogContent = GetComponent<RectTransform>();

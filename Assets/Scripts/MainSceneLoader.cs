@@ -9,12 +9,11 @@ namespace AvatarViewer
     {
         [SerializeField] private PostProcessLayer PostProcessLayer;
         [SerializeField] private SpoutSender SpoutSender;
-        [SerializeField] private OpenSeeIKTarget IKTarget;
-        [SerializeField] private OpenSeeVRMDriver Driver;
+        [SerializeField] private PostProcessVolume PostProcessVolume;
 
         private void Start()
         {
-            RuntimeSettings.Apply(PostProcessLayer, SpoutSender, IKTarget, Driver);
+            RuntimeSettings.Apply(PostProcessLayer, SpoutSender, PostProcessVolume);
         }
     }
 }
